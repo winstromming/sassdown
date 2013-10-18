@@ -85,16 +85,15 @@ exports.init = function (grunt) {
             // Temporary references
             var pagepath  = path.relative(config.cwd, file.src[0]);
             var pagesrc   = grunt.file.read(file.src);
-            var pagename  = pagesrc.match(/(.*)(?=\n==+)/g)
-            // Add these ones to file
-            // use node 'path' for consistent
-            // file system resolving
+            var pagename  = (Markdown.toHTML(pagesrc).match('<h1>')) ? Markdown.toHTML(pagesrc).split('<h1>')[1].split('</h1>')[0] : null;
+            // Add properties to file and use node 'path'
+            // for consistent file system resolving
             file.slug     = path.basename(pagepath, path.extname(pagepath));
-            file.heading  = (pagename) ? pagename[0] : file.slug;
+            file.heading  = (pagename) ? pagename : file.slug;
             file.group    = path.dirname(pagepath).split(path.sep)[0];
             file.path     = file.dest.replace(path.extname(pagepath), '.html');
             file.original = file.src[0];
-            file.site     = {}; // gets filled later
+            file.site     = {};
             file.sections = pagesrc.match(/\/\*([\s\S]*?)\*\//g);
             // Getting rid of some object literal clutter
             delete file.orig;

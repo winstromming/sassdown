@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{heading}} &middot; Styleguide</title>
+    <link rel="stylesheet" href="/{{site.assets}}/style.css" />
+    <script src="/{{site.assets}}/prism.js"></script>
+</head>
+<body>
+
+    <div class="navigation">
+        <div class="gutter">
+            <div class="group {{#if_group ''}}is-active{{/if_group}}">
+                <a href="/{{site.root}}">Home</a>
+            </div>
+            {{#each site.groups}}
+            <div class="group {{#if_name ../group}}is-active{{/if_name}}">
+                <span>{{name}}</span>
+                <ul>
+                    {{#each pages}}
+                    <li><a class="{{#if_path ../../path}}is-active{{/if_path}}" href="/{{path}}">{{heading}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="gutter">
+        {{#each sections}}
+            <div class="section">
+                {{#if comment}}
+                    <div class="comment">{{{comment}}}</div>
+                {{/if}}
+                {{#if result}}
+                    <div class="result">
+                        <iframe height="0" id="iframe_{{{id}}}" src="about:blank"></iframe>
+                        <script id="script_{{{id}}}">
+                            var iframe  = document.getElementById('iframe_{{{id}}}');
+                            var context = iframe.contentWindow.document;
+                            var script  = document.getElementById('script_{{{id}}}');
+                            context.open();
+                            context.write('<!doctype html><html><head><link rel="stylesheet" href="/{{../../ site.output}}" /></head><body>{{{result}}}</body></html>');
+                            context.close();
+                            script.parentNode.removeChild(script);
+                        </script>
+                    </div>
+                {{/if}}
+                {{#if source}}
+                    <div class="source language-markup">{{{source}}}</div>
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+
+    <script>
+        // Resize all iframes to exactly fit content within
+        window.onload=function(){
+            var iframes=document.querySelectorAll('iframe');
+            for (var i=0;i<iframes.length;i++){
+                iframes[i].height=iframes[i].contentWindow.document.height;
+            }
+        };
+    </script>
+
+</body>
+</html>

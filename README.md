@@ -19,6 +19,8 @@ grunt.loadNpmTasks('sassdown');
 
 ## The "sassdown" task
 
+I have created an [example boilerplate](https://github.com/nopr/grunt-sass-boilerplate) using sassdown, if the below isn't particularly clear.
+
 ### Overview
 In your project's Gruntfile, add a section named `sassdown` to the data object passed into `grunt.initConfig()`.
 

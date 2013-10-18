@@ -1,5 +1,5 @@
 {
-  "name": "Sassdown",
+  "name": "sassdown",
   "description": "Generates a documentation styleguide from Markdown comments in sass/scss directories using Handlebars",
   "version": "0.0.1",
   "author": {
@@ -7,14 +7,17 @@
     "email": "jay@nopr.co",
     "url": "http://www.nopr.co"
   },
+  "homepage": "https://github.com/nopr/sassdown",
   "repository": {
     "type": "git",
     "url": "git://github.com/nopr/sassdown.git"
   },
-  "licenses": {
-    "type": "Creative Commons",
-    "url": "http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"
-  },
+  "licenses": [
+    {
+      "type": "Creative Commons",
+      "url": "http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"
+    }
+  ],
   "main": "Gruntfile.js",
   "engines": {
     "node": ">= 0.8.0"

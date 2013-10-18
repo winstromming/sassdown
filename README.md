@@ -122,5 +122,9 @@ Sassdown **does not** compile your .sass or .scss files. Since you're using Grun
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
-## Release History
-_(Nothing yet)_
+## TODO
+
+- Integrate pre-existing Handlebars template into the plugin as a default
+- Document existing Handlebars helpers and structure
+- Confirm and adjust for .sass rather than .scss support?
+- TEST TEST TEST

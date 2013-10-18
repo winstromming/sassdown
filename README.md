@@ -43,13 +43,13 @@ grunt.initConfig({
 Type: `String`
 Default value: `null`
 
-*Required*. A relative path to a Handlebars (.hbs) file. Styleguide is generated from this.
+*Optional*. A relative path to a Handlebars (.hbs) file. Styleguide is generated from this. If unspecified, Sassdown will use its own.
 
 #### options.template_assets
 Type: `String`
 Default value: `null`
 
-*Optional*. A relative path to a directory containing any asset files used by the styleguide template.
+*Optional*. A relative path to a directory containing any asset files used by the styleguide template. If unspecified, Sassdown will use its own.
 
 #### options.css_output
 Type: `String`
@@ -59,8 +59,23 @@ Default value: `null`
 
 ### Usage Examples
 
+#### Simple
+```js
+sassdown: {
+    options: {
+        css_output: 'build/assets/style.css'
+    },
+    files: {
+        expand: true,
+        cwd: 'src/sass',
+        src: ['*.scss'],
+        dest: 'build/guide/'
+    }
+}
+```
+
 #### Default Options
-In this example we have placed our styleguide files (template.hbs and assets) in the *src/* directory. Our SASS compiles from *src/sass/* into *build/assets/*.
+In this example we have placed our styleguide template files (template.hbs and /assets/) in the *src/* directory. Our SASS compiles from *src/sass/* into *build/assets/*.
 
 Our files object will search for anything matching `'**/*.scss'` in the `cwd` folder. This would normally *not* include the file with all your `@import` statements.
 
@@ -119,12 +134,7 @@ Creates an alert box notification using the `.alert-` prefix. The following opti
 ## Compass? Sass?
 Sassdown **does not** compile your .sass or .scss files. Since you're using Grunt, I would recommend the [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass) plugin for this task.
 
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
 ## TODO
 
-- Integrate pre-existing Handlebars template into the plugin as a default
-- Document existing Handlebars helpers and structure
 - Confirm and adjust for .sass rather than .scss support?
 - TEST TEST TEST

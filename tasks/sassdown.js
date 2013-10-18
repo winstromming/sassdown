@@ -10,8 +10,8 @@
 module.exports = function (grunt) {
 
     // Required libs
-    var sassdown = require('./lib/sassdown').init(grunt);
-    var helpers = require('./lib/helpers').init();
+    var sassdown = require('./libs/sassdown').init(grunt);
+    var helpers = require('./libs/helpers').init();
 
     // Main task
     grunt.registerMultiTask('sassdown', function() {
@@ -27,6 +27,7 @@ module.exports = function (grunt) {
         config.opts   = this.options();
         config.files  = this.files;
         config.groups = {};
+        config.module = module.filename;
 
         // Subtask: Template
         grunt.verbose.subhead('Compile the Handlebars template:');

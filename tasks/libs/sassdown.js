@@ -17,13 +17,16 @@ exports.init = function (grunt) {
     var exports = {};
 
     exports.template = function (config) {
-        // Throw fails if checks return false
-        if (!config.opts.template_html){ grunt.fail.warn('Could not find a Handlebars template file!') }
-        if (!config.opts.template_assets) { grunt.fail.warn('Could not find a Handlebars assets folder!') }
+        // If option was left blank, use
+        // the plugin default version
+        if (!config.opts.template_html){ 
+            grunt.verbose.warn('User did not specify their own Handlebars template file');
+            config.opts.template_html = path.relative(path.dirname(), path.resolve(config.module, '..', 'data', 'template.hbs'));
+        }
         // Return config.template object
         config.template = {
             html: Handlebars.compile(grunt.file.read(config.opts.template_html)),
-            assets: config.opts.template_assets
+            assets: null
         };
         return config.template;
     };
@@ -38,9 +41,15 @@ exports.init = function (grunt) {
     };
 
     exports.assets = function (config) {
+        grunt.verbose.subhead('Copy over styleguide assets:');
+        // If option was left blank, use
+        // the plugin default version
+        if (!config.opts.template_assets) {
+            grunt.verbose.warn('User did not specify their own Handlebars assets folder');
+            config.opts.template_assets = path.relative(path.dirname(), path.resolve(config.module, '..', 'data', 'assets'));
+        }
         // Do we have an assets directory set?
         if (config.opts.template_assets) {
-            grunt.verbose.subhead('Copy over styleguide assets:');
             // Create the assets directory
             grunt.file.mkdir(path.relative(path.dirname(), path.resolve(config.dest, 'assets')));
             grunt.verbose.write('Created '.green).writeln(config.dest+'assets/');

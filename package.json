@@ -1,0 +1,34 @@
+{
+  "name": "Sassdown",
+  "description": "Generates a documentation styleguide from Markdown comments in sass/scss directories using Handlebars",
+  "version": "0.0.1",
+  "author": {
+    "name": "Jesper Hills",
+    "email": "jay@nopr.co",
+    "url": "http://www.nopr.co"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nopr/sassdown.git"
+  },
+  "licenses": {
+    "type": "Creative Commons",
+    "url": "http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"
+  },
+  "main": "Gruntfile.js",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "files": [
+    "tasks/sassdown.js",
+    "tasks/lib/sassdown.js",
+    "tasks/lib/helpers.js"
+  ],
+  "peerDependencies": {
+    "grunt": "~0.4.0"
+  },
+  "dependencies": {
+    "markdown": "~0.5.0",
+    "handlebars": "~1.0.12"
+  }
+}

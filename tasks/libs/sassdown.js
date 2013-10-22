@@ -19,7 +19,7 @@ exports.init = function (grunt) {
     exports.template = function (config) {
         // If option was left blank, use
         // the plugin default version
-        if (!config.opts.template_html){ 
+        if (!config.opts.template_html) { 
             grunt.verbose.warn('User did not specify their own Handlebars template file');
             config.opts.template_html = path.relative(path.dirname(), path.resolve(config.module, '..', 'data', 'template.hbs'));
         }
@@ -29,6 +29,16 @@ exports.init = function (grunt) {
             assets: null
         };
         return config.template;
+    };
+
+    exports.includes = function (config) {
+        // Check if we added includes option
+        if (!config.opts.includes) {
+            grunt.verbose.warn('User did not specify their own Handlebars includes file');
+            config.opts.includes = path.relative(path.dirname(), path.resolve(config.module, '..', 'data', 'partials', 'includes.hbs'));
+        }
+        // Register as partial
+        Handlebars.registerPartial("includes", grunt.file.read(config.opts.includes));
     };
 
     exports.scaffold = function (config) {
@@ -201,7 +211,7 @@ exports.init = function (grunt) {
         file.site.root   = config.dest;
         file.site.groups = config.groups;
         file.site.output = config.opts.css_output;
-        file.site.assets = config.opts.template_assets;
+        file.site.assets = path.relative(path.resolve(file.path), path.resolve(config.dest, config.dest, 'assets'));
         // Write out to path with grunt
         return grunt.file.write(
             file.path,

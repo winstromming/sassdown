@@ -32,6 +32,7 @@ module.exports = function (grunt) {
         // Subtask: Template
         grunt.verbose.subhead('Compile the Handlebars template:');
         plugin.template = sassdown.template(config);
+        plugin.includes = sassdown.includes(config);
 
         // Subtask: Files
         grunt.verbose.subhead('Read contents of source files:');

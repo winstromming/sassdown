@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <title>{{heading}} &middot; Styleguide</title>
-    <link rel="stylesheet" href="/{{site.assets}}/style.css" />
-    <script src="/{{site.assets}}/prism.js"></script>
+    <link rel="stylesheet" href="{{site.assets}}/style.css" />
+    <script src="{{site.assets}}/prism.js"></script>
 </head>
 <body>
 
@@ -34,16 +34,26 @@
                 {{#if result}}
                     <div class="result">
                         <iframe height="0" id="iframe_{{{id}}}" src="about:blank"></iframe>
-                        <script id="script_{{{id}}}">
-                            var iframe  = document.getElementById('iframe_{{{id}}}');
-                            var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_{{{id}}}');
-                            context.open();
-                            context.write('<!doctype html><html><head><link rel="stylesheet" href="/{{../../ site.output}}" /></head><body>{{{result}}}</body></html>');
-                            context.close();
-                            script.parentNode.removeChild(script);
-                        </script>
                     </div>
+                {{/if}}
+                {{#if result}}
+                    <script id="script_{{{id}}}">
+                        var iframe  = document.getElementById('iframe_{{{id}}}');
+                        var context = iframe.contentWindow.document;
+                        var script  = document.getElementById('script_{{{id}}}');
+                        context.open();
+                        context.write('<!doctype html>'
+                            +'<html>'
+                            +'    <head>'
+                            +'        {{> includes}}'
+                            +'    </head>'
+                            +'    <body>'
+                            +'        {{{result}}}'
+                            +'    </body>'
+                            +'</html>');
+                        context.close();
+                        script.parentNode.removeChild(script);
+                    </script>
                 {{/if}}
                 {{#if source}}
                     <div class="source language-markup">{{{source}}}</div>

@@ -143,7 +143,7 @@ Sassdown parses through your files using Grunt and before compiling any Handleba
 
 Properties inside the File object can be accessed by the Handlebars template using `{{ helpers }}`. For example, the `heading` property is used in the default template like `<title>{{ heading }}</title>`.
 
-```json
+```js
 {
   slug: '_alerts',
   heading: 'Alerts',

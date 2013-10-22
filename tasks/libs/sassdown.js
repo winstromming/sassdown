@@ -210,7 +210,6 @@ exports.init = function (grunt) {
         // Site rather than page-specific data
         file.site.root   = config.dest;
         file.site.groups = config.groups;
-        file.site.output = config.opts.css_output;
         file.site.assets = path.relative(path.resolve(file.path), path.resolve(config.dest, config.dest, 'assets'));
         // Write out to path with grunt
         return grunt.file.write(

@@ -163,7 +163,7 @@ exports.init = function (grunt) {
             if (section.match('    ')) {
                 section = section.replace('    ','[html]\n    ');
                 output = {
-                    id: Math.random().toString(36).substring(5),
+                    id: Math.random().toString(36).substr(2,5),
                     comment: Markdown.toHTML(section.split('[html]')[0]),
                     source: Markdown.toHTML(section.split('[html]')[1]),
                     result: section.split('[html]')[1].replace(/    /g,'').replace(/(\r\n|\n|\r)/gm,'')

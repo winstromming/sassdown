@@ -9,12 +9,24 @@
 
 exports.init = function (grunt) {
 
+    // Required Node modules
+    // =====================
+
     var fs = require('fs');
     var path = require('path');
     var Markdown = require('markdown').markdown;
     var Handlebars = require('handlebars');
 
+    // Exports
     var exports = {};
+
+    // Short utility functions
+    // =======================
+
+    function uncomment (comment) { return comment.replace(/\/\* | \*\/|\/\*|\*\//g, ''); };
+
+    // Main exported functions
+    // =======================
 
     exports.template = function (config) {
         // If option was left blank, use
@@ -104,9 +116,8 @@ exports.init = function (grunt) {
             // Temporary references
             var pagepath  = path.relative(config.cwd, file.src[0]);
             var pagesrc   = grunt.file.read(file.src);
-            var pagehtml  = pagesrc.replace(/\/\* /g, '').replace(/ \*\//g, '').replace(/\/\*/g, '').replace(/\*\//g, '');
-            var pagename  = (Markdown.toHTML(pagehtml).match('<h1>')) ? Markdown.toHTML(pagehtml).split('<h1>')[1].split('</h1>')[0] : null;
-            // Add properties to file and use node 'path'
+            var pagename  = (Markdown.toHTML(uncomment(pagesrc)).match('<h1>')) ? Markdown.toHTML(uncomment(pagesrc)).split('<h1>')[1].split('</h1>')[0] : null;
+            // Add properties to file and use node path
             // for consistent file system resolving
             file.slug     = path.basename(pagepath, path.extname(pagepath));
             file.heading  = (pagename) ? pagename : file.slug;
@@ -156,25 +167,24 @@ exports.init = function (grunt) {
     exports.sections = function (file) {
         // Loop through any sections (comments) in file
         file.sections.forEach(function(section, index){
-            var output = {};
             // Remove CSS comment tags
-            section = section.replace(/\/\*/, '');
-            section = section.replace(/\*\//, '');
+            section = uncomment(section);
             // If four-spaced indents (code blocks) exist
             if (section.match('    ')) {
                 section = section.replace('    ','[html]\n    ');
-                output = {
+                // Return our sections object
+                file.sections[index] = {
                     id: Math.random().toString(36).substr(2,5),
                     comment: Markdown.toHTML(section.split('[html]')[0]),
                     source: Markdown.toHTML(section.split('[html]')[1]),
                     result: section.split('[html]')[1].replace(/    /g,'').replace(/(\r\n|\n|\r)/gm,'')
                 };
             } else {
-                // Without code, it's just a comment
-                output.comment = Markdown.toHTML(section);
+                // Without code, it is just a comment
+                file.sections[index] = {
+                    comment: Markdown.toHTML(section)
+                };
             }
-            // Return to the file sections by index
-            file.sections[index] = output;
         });
     };
 

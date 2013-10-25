@@ -163,11 +163,9 @@ pre[class*="language-"] {
 }
 pre[class*="language-"] {
   position:relative;
-  max-height:30em;
 }
 code[class*="language"] {
   max-height:29em;
-  display:block;
 }
 .token.comment,
 .token.block-comment,

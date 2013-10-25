@@ -104,7 +104,8 @@ exports.init = function (grunt) {
             // Temporary references
             var pagepath  = path.relative(config.cwd, file.src[0]);
             var pagesrc   = grunt.file.read(file.src);
-            var pagename  = (Markdown.toHTML(pagesrc).match('<h1>')) ? Markdown.toHTML(pagesrc).split('<h1>')[1].split('</h1>')[0] : null;
+            var pagehtml  = pagesrc.replace(/\/\* /g, '').replace(/ \*\//g, '').replace(/\/\*/g, '').replace(/\*\//g, '');
+            var pagename  = (Markdown.toHTML(pagehtml).match('<h1>')) ? Markdown.toHTML(pagehtml).split('<h1>')[1].split('</h1>')[0] : null;
             // Add properties to file and use node 'path'
             // for consistent file system resolving
             file.slug     = path.basename(pagepath, path.extname(pagepath));

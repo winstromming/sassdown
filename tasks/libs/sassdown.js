@@ -212,7 +212,6 @@ exports.init = function (grunt) {
         file.site.root   = config.dest;
         file.site.groups = config.groups;
         file.site.assets = '/'+config.dest+'assets';
-        console.log(file.site.assets);
         // Write out to path with grunt
         return grunt.file.write(
             file.path,

@@ -46,7 +46,7 @@ exports.init = function (grunt) {
         grunt.file.mkdir(path.resolve(config.dest));
         grunt.log.write('Created '.green).writeln(config.dest);
         // Resolve the relative 'root' of the cwd
-        // as we'll need this later
+        // as we will need this later
         config.root = path.relative(path.dirname(), path.resolve(config.cwd, '..'));
     };
 
@@ -91,9 +91,9 @@ exports.init = function (grunt) {
                 path: file.path
             });
         });
-        for (var group in config.groups) {
+        for (var i=0; i<config.groups.length; i++) {
             // Explain how this dir gets created automatically
-            grunt.verbose.writeln('        '+config.dest+group+'/');
+            grunt.verbose.writeln('        '+config.dest+config.groups[i]+'/');
         }
         return config.groups;
     };
@@ -121,12 +121,12 @@ exports.init = function (grunt) {
             delete file.src;
             // Throw any errors
             if (!file.sections || !file.heading) {
-                exports.errors(file)
+                exports.errors(file);
             }
             // Format the content sections
             if (file.sections) {
-                exports.sections(file)
-            };
+                exports.sections(file);
+            }
         });
         // Return back
         return config.files;
@@ -148,7 +148,7 @@ exports.init = function (grunt) {
             }
             if (file.heading) {
                 // Found a heading
-                grunt.verbose.ok("Heading found")
+                grunt.verbose.ok("Heading found");
             }
         }
     };
@@ -171,7 +171,7 @@ exports.init = function (grunt) {
                 };
             } else {
                 // Without code, it's just a comment
-                output.comment = Markdown.toHTML(section)
+                output.comment = Markdown.toHTML(section);
             }
             // Return to the file sections by index
             file.sections[index] = output;

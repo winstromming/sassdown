@@ -23,7 +23,8 @@ exports.init = function (grunt) {
     // Short utility functions
     // =======================
 
-    function uncomment (comment) { return comment.replace(/\/\* | \*\/|\/\*|\*\//g, ''); };
+    function uncomment (comment) { return comment.replace(/\/\* | \*\/|\/\*|\*\//g, ''); }
+    function fromroot (resolve) { return path.relative(path.dirname(), resolve); }
 
     // Main exported functions
     // =======================
@@ -32,8 +33,8 @@ exports.init = function (grunt) {
         // If option was left blank, use
         // the plugin default version
         if (!config.opts.template_html) { 
-            grunt.verbose.warn('User did not specify their own Handlebars template file');
-            config.opts.template_html = path.relative(path.dirname(), path.resolve(config.module, '..', 'data', 'template.hbs'));
+            grunt.verbose.warn('Template file not specified');
+            config.opts.template_html = fromroot(path.resolve(config.module, '..', 'data', 'template.hbs'));
         }
         // Return config.template object
         config.template = {
@@ -46,8 +47,8 @@ exports.init = function (grunt) {
     exports.includes = function (config) {
         // Check if we added includes option
         if (!config.opts.includes) {
-            grunt.verbose.warn('User did not specify their own Handlebars includes file');
-            config.opts.includes = path.relative(path.dirname(), path.resolve(config.module, '..', 'data', 'partials', 'includes.hbs'));
+            grunt.verbose.warn('Includes file not specified');
+            config.opts.includes = fromroot(path.resolve(config.module, '..', 'data', 'partials', 'includes.hbs'));
         }
         // Register as partial
         Handlebars.registerPartial("includes", grunt.file.read(config.opts.includes));
@@ -59,7 +60,7 @@ exports.init = function (grunt) {
         grunt.log.write('Created '.green).writeln(config.dest);
         // Resolve the relative 'root' of the cwd
         // as we will need this later
-        config.root = path.relative(path.dirname(), path.resolve(config.cwd, '..'));
+        config.root = fromroot(path.resolve(config.cwd, '..'));
     };
 
     exports.assets = function (config) {
@@ -67,21 +68,21 @@ exports.init = function (grunt) {
         // If option was left blank, use
         // the plugin default version
         if (!config.opts.template_assets) {
-            grunt.verbose.warn('User did not specify their own Handlebars assets folder');
-            config.opts.template_assets = path.relative(path.dirname(), path.resolve(config.module, '..', 'data', 'assets'));
+            grunt.verbose.warn('Assets folder not specified');
+            config.opts.template_assets = fromroot(path.resolve(config.module, '..', 'data', 'assets'));
         }
         // Do we have an assets directory set?
         if (config.opts.template_assets) {
             // Create the assets directory
-            grunt.file.mkdir(path.relative(path.dirname(), path.resolve(config.dest, 'assets')));
+            grunt.file.mkdir(fromroot(path.resolve(config.dest, 'assets')));
             grunt.verbose.write('Created '.green).writeln(config.dest+'assets/');
             // Read the entire assets directory
-            var assets = fs.readdirSync(path.relative(path.dirname(), path.resolve(config.opts.template_assets)));
+            var assets = fs.readdirSync(fromroot(path.resolve(config.opts.template_assets)));
             assets.forEach(function(file){
                 // Copy each file from assets/file to destination/assets/file
                 grunt.file.copy(
-                    path.relative(path.dirname(), path.resolve(config.opts.template_assets, file)),
-                    path.relative(path.dirname(), path.resolve(config.dest, 'assets', file))
+                    fromroot(path.resolve(config.opts.template_assets, file)),
+                    fromroot(path.resolve(config.dest, 'assets', file))
                 );
             });
         }
@@ -190,7 +191,7 @@ exports.init = function (grunt) {
 
     exports.readme = function (config) {
         // Resolve the relative path to readme
-        var readme = path.relative(path.dirname(), path.resolve(config.root, 'readme.md'));
+        var readme = fromroot(path.resolve(config.root, 'readme.md'));
         // Readme.md not found, create it:
         if (!grunt.file.exists(readme)) {
             grunt.verbose.warn('Readme file not found');
@@ -206,7 +207,7 @@ exports.init = function (grunt) {
             file.slug     = 'index';
             file.heading  = 'Home';
             file.group    = '';
-            file.path     = path.relative(path.dirname(), path.resolve(config.dest, 'index.html'));
+            file.path     = fromroot(path.resolve(config.dest, 'index.html'));
             file.original = readme;
             file.site     = {};
             file.sections = [{

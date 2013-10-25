@@ -165,7 +165,7 @@ pre[class*="language-"] {
   position:relative;
 }
 code[class*="language"] {
-  max-height:29em;
+  display:block;
 }
 .token.comment,
 .token.block-comment,

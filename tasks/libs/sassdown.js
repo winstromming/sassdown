@@ -78,7 +78,7 @@ exports.init = function (grunt) {
     exports.groups = function (config) {
         // Add file data into groups
         config.files.forEach(function(file){
-            // Create if it doesn't exist
+            // Create if it does not exist
             if (!config.groups[file.group]) {
                 config.groups[file.group] = {
                     name: file.group, pages: []
@@ -134,7 +134,7 @@ exports.init = function (grunt) {
 
     exports.errors = function (file) {
         if (!file.sections) {
-            // Couldn't find any sections
+            // Could not find any sections
             grunt.verbose.warn("Comment missing");
             grunt.verbose.or.warn("Comment missing: "+file.original);
         }
@@ -142,7 +142,7 @@ exports.init = function (grunt) {
             // Found sections
             grunt.verbose.ok("Comment found");
             if (!file.heading) {
-                // Couldn't find a heading
+                // Could not find a heading
                 grunt.verbose.warn("Heading missing");
                 grunt.verbose.or.warn("Heading missing: "+file.original);
             }

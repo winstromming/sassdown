@@ -2,6 +2,8 @@
 
 > Generates a documentation styleguide from Markdown comments in sass/scss directories using Handlebars
 
+**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions please let me know.**
+
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
 

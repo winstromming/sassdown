@@ -111,7 +111,7 @@ Sassdown uses [Markdown](https://github.com/evilstreak/markdown-js) to parse any
 
 ### Example (_alerts.scss)
 
-Here is an example of what a .scss file may look like with a Markdown comment block. Notice the indented HTML example. You may use any Markdown-compatible [heading syntax](https://github.com/nopr/sassdown/issues/7) you like. **Note:** currently only code blocks indented with *four spaces* are recognised; this will be fixed to include tabs in a future release.
+Here is an example of what a .scss file may look like with a Markdown comment block. Notice the indented HTML example. You may use any Markdown-compatible [heading syntax](https://github.com/nopr/sassdown/issues/7) you like. You can use either one tab or four spaces to indent your code, just like regular Markdown.
 
 ```scss
 /*

@@ -166,6 +166,16 @@ exports.init = function (grunt) {
     };
 
     exports.sections = function (file) {
+        // Repeatable function
+        function addsection (section, index) {
+            // Return our sections object
+            file.sections[index] = {
+                id: Math.random().toString(36).substr(2,5),
+                comment: Markdown.toHTML(section.split('[html]')[0]),
+                source: Markdown.toHTML(section.split('[html]')[1]),
+                result: section.split('[html]')[1].replace(/    /g,'').replace(/(\r\n|\n|\r)/gm,'')
+            };
+        }
         // Loop through any sections (comments) in file
         file.sections.forEach(function(section, index){
             // Remove CSS comment tags
@@ -173,13 +183,10 @@ exports.init = function (grunt) {
             // If four-spaced indents (code blocks) exist
             if (section.match('    ')) {
                 section = section.replace('    ','[html]\n    ');
-                // Return our sections object
-                file.sections[index] = {
-                    id: Math.random().toString(36).substr(2,5),
-                    comment: Markdown.toHTML(section.split('[html]')[0]),
-                    source: Markdown.toHTML(section.split('[html]')[1]),
-                    result: section.split('[html]')[1].replace(/    /g,'').replace(/(\r\n|\n|\r)/gm,'')
-                };
+                addsection(section, index);
+            } else if (section.match('\t')) {
+                section = section.replace('\t','[html]\n    ');
+                addsection(section, index);
             } else {
                 // Without code, it is just a comment
                 file.sections[index] = {

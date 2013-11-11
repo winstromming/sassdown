@@ -24,6 +24,7 @@ exports.init = function (grunt) {
     // =======================
 
     function uncomment (comment) { return comment.replace(/\/\* | \*\/|\/\*|\*\//g, ''); }
+    function unindent (comment) { return comment.replace(/\n \* |\n \*|\n /g, '\n').replace(/\n   /g, '\n    '); }
     function fromroot (resolve) { return path.relative(path.dirname(), resolve); }
 
     // Main exported functions
@@ -117,7 +118,8 @@ exports.init = function (grunt) {
             // Temporary references
             var pagepath  = path.relative(config.cwd, file.src[0]);
             var pagesrc   = grunt.file.read(file.src);
-            var pagename  = (Markdown.toHTML(uncomment(pagesrc)).match('<h1>')) ? Markdown.toHTML(uncomment(pagesrc)).split('<h1>')[1].split('</h1>')[0] : null;
+            var pagename  = (Markdown.toHTML(unindent(uncomment(pagesrc))).match('<h1>')) ? Markdown.toHTML(unindent(uncomment(pagesrc))).split('<h1>')[1].split('</h1>')[0] : null;
+            console.log(Markdown.toHTML(unindent(uncomment(pagesrc))));
             // Add properties to file and use node path
             // for consistent file system resolving
             file.slug     = path.basename(pagepath, path.extname(pagepath));
@@ -166,27 +168,23 @@ exports.init = function (grunt) {
     };
 
     exports.sections = function (file) {
-        // Repeatable function
-        function addsection (section, index) {
-            // Return our sections object
-            file.sections[index] = {
-                id: Math.random().toString(36).substr(2,5),
-                comment: Markdown.toHTML(section.split('[html]')[0]),
-                source: Markdown.toHTML(section.split('[html]')[1]),
-                result: section.split('[html]')[1].replace(/    /g,'').replace(/(\r\n|\n|\r)/gm,'')
-            };
-        }
         // Loop through any sections (comments) in file
         file.sections.forEach(function(section, index){
-            // Remove CSS comment tags
+            // Remove CSS comment tags and
+            // any SASS-style comment block
+            // indentation
             section = uncomment(section);
-            // If four-spaced indents (code blocks) exist
+            section = unindent(section);
+            // If previously four-spaced indents (code blocks) exist
             if (section.match('    ')) {
                 section = section.replace('    ','[html]\n    ');
-                addsection(section, index);
-            } else if (section.match('\t')) {
-                section = section.replace('\t','[html]\n    ');
-                addsection(section, index);
+                // Return our sections object
+                file.sections[index] = {
+                    id: Math.random().toString(36).substr(2,5),
+                    comment: Markdown.toHTML(section.split('[html]')[0]),
+                    source: Markdown.toHTML(section.split('[html]')[1]),
+                    result: section.split('[html]')[1].replace(/    /g,'').replace(/(\r\n|\n|\r)/gm,'')
+                };
             } else {
                 // Without code, it is just a comment
                 file.sections[index] = {

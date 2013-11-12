@@ -1,0 +1,23 @@
+/*
+
+Alerts
+======
+
+Creates an alert box notification using the `.alert-` prefix. The following options are available:
+
+    <div class="alert-success">Success</div> 
+    <div class="alert-warning">Warning</div> 
+    <div class="alert-error">Error</div>
+
+*/
+@mixin alert($colour){
+    color: darken($colour, 50%);
+    background: $colour;
+    border-radius: 5px;
+    margin-bottom: 1em;
+    padding: 1em;
+}
+
+.alert-success { @include alert(#e2f3c1) }
+.alert-warning { @include alert(#fceabe) }
+.alert-error   { @include alert(#ffdcdc) }

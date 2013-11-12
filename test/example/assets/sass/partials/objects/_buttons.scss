@@ -1,0 +1,82 @@
+/*
+
+Buttons
+=======
+
+Re-usable button elements with action specific variants. You can use the `.btn` prefix for this.
+
+    <button class="btn">Submit</button> 
+    <input class="btn" type="submit" /> 
+    <span class="btn">Submit</span> 
+    <a class="btn">Submit</a>
+
+*/
+.btn {
+
+    display: inline-block;
+    padding: 0 1em;
+    margin: 0;
+
+    border: 0 transparent;
+    outline: 0 transparent;
+    background: #ccc;
+    border-radius: 2px;
+    cursor: pointer;
+
+    color: #444 !important;
+    font-size: 100%;
+    font-weight: normal;
+    font-style: normal;
+    font-family: sans-serif;
+    line-height: inherit;
+    text-decoration: none !important;
+
+    &:hover, &:active, &:focus {
+        color: #222 !important;
+        background: #aaa;
+        outline: 0;
+        box-shadow: 0;
+    }
+
+}
+
+/*
+
+Button (Action)
+----------------
+
+    <button class="btn-action">Submit</button> 
+    <input class="btn-action" type="submit" /> 
+    <span class="btn-action">Submit</span> 
+    <a class="btn-action">Submit</a>
+
+*/
+.btn-action {
+    @extend .btn;
+    color: #ddd !important;
+    background: #444;
+    &:hover, &:active, &:focus {
+        color: #eee !important;
+        background: #222;
+    }
+}
+
+/*
+
+Button (Disabled)
+----------------
+
+    <button class="btn-disabled">Submit</button> 
+    <input class="btn-disabled" type="submit" /> 
+    <span class="btn-disabled">Submit</span> 
+    <a class="btn-disabled">Submit</a>
+
+*/
+.btn-disabled {
+    @extend .btn;
+    &, &:hover, &:active, &:focus {
+        cursor: default;
+        color: #aaa !important;
+        background: #ccc;
+    }
+}

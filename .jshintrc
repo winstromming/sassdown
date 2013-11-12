@@ -16,5 +16,8 @@
   "browser": true,
   "jquery": true,
   "node": true,
-  "devel": true
+  "devel": true,
+  "globals": {
+    "grunt": true
+  }
 }

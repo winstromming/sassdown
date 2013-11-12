@@ -1,10 +1,10 @@
 /*
- * sassdown
- * github.com/nopr/sassdown
- *
- * Copyright (c) 2013 Jesper Hills, contributors
- * Some rights reserved
- */
+    sassdown
+    github.com/nopr/sassdown
+    ------------------------
+    Copyright (c) 2013 Jesper Hills, contributors
+    Some rights reserved
+*/
 'use strict';
 
 module.exports = function (grunt) {
@@ -13,47 +13,34 @@ module.exports = function (grunt) {
     require('./libs/helpers').init();
 
     // Required libs
-    var sassdown = require('./libs/sassdown').init(grunt);
+    var Sassdown = require('./libs/sassdown').init(grunt);
     
-    // Main task
+    // Grunt-registered Task
+    // =====================
     grunt.registerMultiTask('sassdown', function() {
 
-        // Task objects
-        var plugin = {}, config = {};
+        // Subtask: Store configuration options
+        var config = Sassdown.config(this, module);
 
-        // Wrap anything from 'this' as 'config'
-        // so we can access it later. It's our
-        // storage object.
-        config.cwd    = this.data.cwd;
-        config.dest   = this.data.dest;
-        config.opts   = this.options();
-        config.files  = this.files;
-        config.groups = {};
-        config.module = module.filename;
-
-        // Subtask: Template
+        // Subtask: Template, Includes
         grunt.verbose.subhead('Compile the Handlebars template:');
-        plugin.template = sassdown.template(config);
-        plugin.includes = sassdown.includes(config);
-
-        // Subtask: Files
-        grunt.verbose.subhead('Read contents of source files:');
-        plugin.files = sassdown.files(config);
+        Sassdown.template(config);
+        Sassdown.includes(config);
 
         // Subtask: Scaffold, Groups, Assets
         grunt.verbose.subhead('Build styleguide structure:');
-        plugin.scaffold = sassdown.scaffold(config);
-        plugin.groups = sassdown.groups(config);
-        plugin.assets = sassdown.assets(config);
+        Sassdown.scaffold(config);
+        Sassdown.groups(config);
+        Sassdown.assets(config);
 
         // Subtask: Indexing
         grunt.verbose.subhead('Generate index from Readme.md:');
-        plugin.readme = sassdown.readme(config);
+        Sassdown.readme(config);
 
-        // Subtask: Output
+        // Subtask: Files, Output
         grunt.verbose.subhead('Write styleguide copies of source files:');
-        plugin.files.forEach(function(file){
-            sassdown.output(config, file);
+        Sassdown.files(config).forEach(function(file){
+            Sassdown.output(config, file);
         });
 
     });

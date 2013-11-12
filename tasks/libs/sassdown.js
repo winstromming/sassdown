@@ -12,7 +12,7 @@
 var grunt;
 var fs = require('fs');
 var path = require('path');
-var Markdown = require('markdown').markdown;
+var markdown = require('marked');
 var Handlebars = require('handlebars');
 
 // Quick utility functions
@@ -162,7 +162,7 @@ exports.files = function (config) {
         var page = {};
         page._path = path.relative(config.cwd, file.src[0]);
         page._src  = grunt.file.read(file.src);
-        page._name = (Markdown.toHTML(unindent(uncomment(page._src))).match('<h1>')) ? Markdown.toHTML(unindent(uncomment(page._src))).split('<h1>')[1].split('</h1>')[0] : null;
+        page._name = (markdown(unindent(uncomment(page._src))).match('<h1')) ? markdown(unindent(uncomment(page._src))).split('</h1>')[0].split('>')[1] : null;
         // Add properties to file and use node path on
         // page object for consistent file system resolving
         file = exports.metadata(file, page);
@@ -204,20 +204,25 @@ exports.sections = function (file) {
         // indentation
         section = uncomment(section);
         section = unindent(section);
-        // If previously four-spaced indents (code blocks) exist
-        if (section.match('    ')) {
-            section = section.replace('    ','[html]\n    ');
+        // See if any ```-marked or 4-space indented code blocks exist
+        if (section.match(/    |```/)) {
+            // Encapsulate and mark the code block
+            if(section.match(/```/)) {
+                section = section.replace(/```/, '[html]\n```');
+            } else {
+                section = section.replace(/     /g,'    ').replace(/    /, '[html]\n    ');
+            }
             // Return our sections object
             file.sections[index] = {
                 id: Math.random().toString(36).substr(2,5),
-                comment: Markdown.toHTML(section.split('[html]')[0]),
-                source: Markdown.toHTML(section.split('[html]')[1]),
-                result: section.split('[html]')[1].replace(/    /g,'').replace(/(\r\n|\n|\r)/gm,'')
+                comment: markdown(section.split('[html]')[0]),
+                source: markdown(section.split('[html]\n')[1]),
+                result: section.split('[html]\n')[1].replace(/     |    |```/g, '').replace(/(\r\n|\n|\r)/gm,'')
             };
         } else {
             // Without code, it is just a comment
             file.sections[index] = {
-                comment: Markdown.toHTML(section)
+                comment: markdown(section)
             };
         }
     });
@@ -245,7 +250,7 @@ exports.readme = function (config) {
         file.original = readme;
         file.site     = {};
         file.sections = [{
-            comment: Markdown.toHTML(grunt.file.read(readme))
+            comment: markdown(grunt.file.read(readme))
         }];
         // Output the file
         exports.output(config, file);

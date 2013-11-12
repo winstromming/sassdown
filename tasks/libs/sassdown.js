@@ -52,7 +52,7 @@ exports.init = function (grunt) {
             config.opts.includes = fromroot(path.resolve(config.module, '..', 'data', 'partials', 'includes.hbs'));
         }
         // Register as partial
-        Handlebars.registerPartial("includes", grunt.file.read(config.opts.includes));
+        Handlebars.registerPartial('includes', grunt.file.read(config.opts.includes));
     };
 
     exports.scaffold = function (config) {
@@ -95,7 +95,8 @@ exports.init = function (grunt) {
             // Create if it does not exist
             if (!config.groups[file.group]) {
                 config.groups[file.group] = {
-                    name: file.group, pages: []
+                    name: file.group,
+                    pages: []
                 };
             }
             // Push file data
@@ -114,12 +115,11 @@ exports.init = function (grunt) {
 
     exports.files = function (config) {
         // Modify attributes for each file
-        config.files.forEach(function(file){       
+        config.files.forEach(function(file){
             // Temporary references
             var pagepath  = path.relative(config.cwd, file.src[0]);
             var pagesrc   = grunt.file.read(file.src);
             var pagename  = (Markdown.toHTML(unindent(uncomment(pagesrc))).match('<h1>')) ? Markdown.toHTML(unindent(uncomment(pagesrc))).split('<h1>')[1].split('</h1>')[0] : null;
-            console.log(Markdown.toHTML(unindent(uncomment(pagesrc))));
             // Add properties to file and use node path
             // for consistent file system resolving
             file.slug     = path.basename(pagepath, path.extname(pagepath));
@@ -149,20 +149,20 @@ exports.init = function (grunt) {
     exports.errors = function (file) {
         if (!file.sections) {
             // Could not find any sections
-            grunt.verbose.warn("Comment missing");
-            grunt.verbose.or.warn("Comment missing: "+file.original);
+            grunt.verbose.warn('Comment missing');
+            grunt.verbose.or.warn('Comment missing: '+file.original);
         }
         if (file.sections) {
             // Found sections
-            grunt.verbose.ok("Comment found");
+            grunt.verbose.ok('Comment found');
             if (!file.heading) {
                 // Could not find a heading
-                grunt.verbose.warn("Heading missing");
-                grunt.verbose.or.warn("Heading missing: "+file.original);
+                grunt.verbose.warn('Heading missing');
+                grunt.verbose.or.warn('Heading missing: '+file.original);
             }
             if (file.heading) {
                 // Found a heading
-                grunt.verbose.ok("Heading found");
+                grunt.verbose.ok('Heading found');
             }
         }
     };

@@ -9,10 +9,12 @@
 
 module.exports = function (grunt) {
 
+    // Handlebars helpers
+    require('./libs/helpers').init();
+
     // Required libs
     var sassdown = require('./libs/sassdown').init(grunt);
-    var helpers = require('./libs/helpers').init();
-
+    
     // Main task
     grunt.registerMultiTask('sassdown', function() {
 

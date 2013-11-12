@@ -17,7 +17,7 @@ var Handlebars = require('handlebars');
 
 // Quick utility functions
 // =======================
-function gruntWarn (message) { return grunt.verbose.warn(message); }
+function warning   (message) { return grunt.verbose.warn(message); }
 function uncomment (comment) { return comment.replace(/\/\* | \*\/|\/\*|\*\//g, ''); }
 function unindent  (comment) { return comment.replace(/\n \* |\n \*|\n /g, '\n').replace(/\n   /g, '\n    '); }
 function fromroot  (resolve) { return path.relative(path.dirname(), resolve); }
@@ -32,6 +32,7 @@ function fromdata  (resolve) { return fromroot(path.resolve(module.filename, '..
 // - scaffold
 // - assets
 // - groups
+// - metadata
 // - files
 // - errors
 // - sections
@@ -58,7 +59,7 @@ exports.template = function (config) {
     // If option was left blank, use
     // the plugin default version
     if (!config.opts.template_html) { 
-        gruntWarn('Template file not specified');
+        warning('Template file not specified');
         config.opts.template_html = fromdata('template.hbs');
     }
     // Return config.template object
@@ -72,7 +73,7 @@ exports.template = function (config) {
 exports.includes = function (config) {
     // Check if we added includes option
     if (!config.opts.includes) {
-        gruntWarn('Includes file not specified');
+        warning('Includes file not specified');
         config.opts.includes = fromroot(path.resolve(config.module, '..', 'data', 'partials', 'includes.hbs'));
     }
     // Register as partial
@@ -93,7 +94,7 @@ exports.assets = function (config) {
     // If option was left blank, use
     // the plugin default version
     if (!config.opts.template_assets) {
-        gruntWarn('Assets folder not specified');
+        warning('Assets folder not specified');
         config.opts.template_assets = fromdata('assets');
     }
     // Do we have an assets directory set?
@@ -137,34 +138,38 @@ exports.groups = function (config) {
     return config.groups;
 };
 
+exports.metadata = function (file, page) {
+    // Assign metadata properties to file object
+    file.slug     = path.basename(page._path, path.extname(page._path));
+    file.heading  = (page._name) ? page._name : file.slug;
+    file.group    = path.dirname(page._path).split(path.sep)[0];
+    file.path     = file.dest.replace(path.extname(page._path), '.html');
+    file.original = file.src[0];
+    file.site     = {};
+    file.sections = page._src.match(/\/\*([\s\S]*?)\*\//g);
+    // Get rid of some object literal clutter
+    delete file.orig;
+    delete file.dest;
+    delete file.src;
+    // Return file back
+    return file;
+};
+
 exports.files = function (config) {
     // Modify attributes for each file
     config.files.forEach(function(file){
-        // Temporary references
-        var pagepath  = path.relative(config.cwd, file.src[0]);
-        var pagesrc   = grunt.file.read(file.src);
-        var pagename  = (Markdown.toHTML(unindent(uncomment(pagesrc))).match('<h1>')) ? Markdown.toHTML(unindent(uncomment(pagesrc))).split('<h1>')[1].split('</h1>')[0] : null;
-        // Add properties to file and use node path
-        // for consistent file system resolving
-        file.slug     = path.basename(pagepath, path.extname(pagepath));
-        file.heading  = (pagename) ? pagename : file.slug;
-        file.group    = path.dirname(pagepath).split(path.sep)[0];
-        file.path     = file.dest.replace(path.extname(pagepath), '.html');
-        file.original = file.src[0];
-        file.site     = {};
-        file.sections = pagesrc.match(/\/\*([\s\S]*?)\*\//g);
-        // Getting rid of some object literal clutter
-        delete file.orig;
-        delete file.dest;
-        delete file.src;
+        // Page references
+        var page = {};
+        page._path = path.relative(config.cwd, file.src[0]);
+        page._src  = grunt.file.read(file.src);
+        page._name = (Markdown.toHTML(unindent(uncomment(page._src))).match('<h1>')) ? Markdown.toHTML(unindent(uncomment(page._src))).split('<h1>')[1].split('</h1>')[0] : null;
+        // Add properties to file and use node path on
+        // page object for consistent file system resolving
+        exports.metadata(file, page);
         // Throw any errors
-        if (!file.sections || !file.heading) {
-            exports.errors(file);
-        }
+        if (!file.sections || !file.heading) { exports.errors(file); }
         // Format the content sections
-        if (file.sections) {
-            exports.sections(file);
-        }
+        if (file.sections) { exports.sections(file); }
     });
     // Return back
     return config.files;
@@ -173,7 +178,7 @@ exports.files = function (config) {
 exports.errors = function (file) {
     if (!file.sections) {
         // Could not find any sections
-        gruntWarn('Comment missing');
+        warning('Comment missing');
         grunt.verbose.or.warn('Comment missing: '+file.original);
     }
     if (file.sections) {
@@ -181,7 +186,7 @@ exports.errors = function (file) {
         grunt.verbose.ok('Comment found');
         if (!file.heading) {
             // Could not find a heading
-            gruntWarn('Heading missing');
+            warning('Heading missing');
             grunt.verbose.or.warn('Heading missing: '+file.original);
         }
         if (file.heading) {
@@ -223,7 +228,7 @@ exports.readme = function (config) {
     var readme = fromroot(path.resolve(config.root, 'readme.md'));
     // Readme.md not found, create it:
     if (!grunt.file.exists(readme)) {
-        gruntWarn('Readme file not found');
+        warning('Readme file not found');
         grunt.file.write(readme, 'Styleguide\n==========\n\nFill me with your delicious readme content\n');
         grunt.verbose.ok('Readme file created');
         grunt.verbose.or.ok('Readme created at: '+config.root+'/readme.md');

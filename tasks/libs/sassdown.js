@@ -17,9 +17,11 @@ var Handlebars = require('handlebars');
 
 // Quick utility functions
 // =======================
+function gruntWarn (message) { return grunt.verbose.warn(message); }
 function uncomment (comment) { return comment.replace(/\/\* | \*\/|\/\*|\*\//g, ''); }
-function unindent (comment) { return comment.replace(/\n \* |\n \*|\n /g, '\n').replace(/\n   /g, '\n    '); }
-function fromroot (resolve) { return path.relative(path.dirname(), resolve); }
+function unindent  (comment) { return comment.replace(/\n \* |\n \*|\n /g, '\n').replace(/\n   /g, '\n    '); }
+function fromroot  (resolve) { return path.relative(path.dirname(), resolve); }
+function fromdata  (resolve) { return fromroot(path.resolve(module.filename, '..', '..', 'data', resolve)); }
 
 // Exported methods
 // ===========================
@@ -56,8 +58,8 @@ exports.template = function (config) {
     // If option was left blank, use
     // the plugin default version
     if (!config.opts.template_html) { 
-        grunt.verbose.warn('Template file not specified');
-        config.opts.template_html = fromroot(path.resolve(config.module, '..', 'data', 'template.hbs'));
+        gruntWarn('Template file not specified');
+        config.opts.template_html = fromdata('template.hbs');
     }
     // Return config.template object
     config.template = {
@@ -70,7 +72,7 @@ exports.template = function (config) {
 exports.includes = function (config) {
     // Check if we added includes option
     if (!config.opts.includes) {
-        grunt.verbose.warn('Includes file not specified');
+        gruntWarn('Includes file not specified');
         config.opts.includes = fromroot(path.resolve(config.module, '..', 'data', 'partials', 'includes.hbs'));
     }
     // Register as partial
@@ -91,8 +93,8 @@ exports.assets = function (config) {
     // If option was left blank, use
     // the plugin default version
     if (!config.opts.template_assets) {
-        grunt.verbose.warn('Assets folder not specified');
-        config.opts.template_assets = fromroot(path.resolve(config.module, '..', 'data', 'assets'));
+        gruntWarn('Assets folder not specified');
+        config.opts.template_assets = fromdata('assets');
     }
     // Do we have an assets directory set?
     if (config.opts.template_assets) {
@@ -171,7 +173,7 @@ exports.files = function (config) {
 exports.errors = function (file) {
     if (!file.sections) {
         // Could not find any sections
-        grunt.verbose.warn('Comment missing');
+        gruntWarn('Comment missing');
         grunt.verbose.or.warn('Comment missing: '+file.original);
     }
     if (file.sections) {
@@ -179,7 +181,7 @@ exports.errors = function (file) {
         grunt.verbose.ok('Comment found');
         if (!file.heading) {
             // Could not find a heading
-            grunt.verbose.warn('Heading missing');
+            gruntWarn('Heading missing');
             grunt.verbose.or.warn('Heading missing: '+file.original);
         }
         if (file.heading) {
@@ -221,7 +223,7 @@ exports.readme = function (config) {
     var readme = fromroot(path.resolve(config.root, 'readme.md'));
     // Readme.md not found, create it:
     if (!grunt.file.exists(readme)) {
-        grunt.verbose.warn('Readme file not found');
+        gruntWarn('Readme file not found');
         grunt.file.write(readme, 'Styleguide\n==========\n\nFill me with your delicious readme content\n');
         grunt.verbose.ok('Readme file created');
         grunt.verbose.or.ok('Readme created at: '+config.root+'/readme.md');

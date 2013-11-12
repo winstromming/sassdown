@@ -30,11 +30,11 @@ module.exports = function(grunt) {
 
         // Configuration to be run (and then tested).
         sassdown: {
-            // options: {
+            options: {
             //     template_assets: 'source/styleguide/',
             //     template_html: 'source/styleguide.hbs',
             //     includes: 'source/site_includes.hbs'
-            // },
+            },
             files: {
                 expand: true,
                 cwd: 'test/example/assets/sass/partials',

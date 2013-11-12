@@ -58,7 +58,7 @@ exports.config = function (self, module) {
 exports.template = function (config) {
     // If option was left blank, use
     // the plugin default version
-    if (!config.opts.template_html) { 
+    if (!config.opts.template_html) {
         warning('Template file not specified');
         config.opts.template_html = fromdata('template.hbs');
     }
@@ -90,9 +90,7 @@ exports.scaffold = function (config) {
 };
 
 exports.assets = function (config) {
-    grunt.verbose.subhead('Copy over styleguide assets:');
-    // If option was left blank, use
-    // the plugin default version
+    // If option is blank, use plugin default
     if (!config.opts.template_assets) {
         warning('Assets folder not specified');
         config.opts.template_assets = fromdata('assets');
@@ -199,11 +197,9 @@ exports.errors = function (file) {
 exports.sections = function (file) {
     // Loop through any sections (comments) in file
     file.sections.forEach(function(section, index){
-        // Remove CSS comment tags and
-        // any SASS-style comment block
-        // indentation
-        section = uncomment(section);
-        section = unindent(section);
+        // Remove CSS comment tags and any SASS-style
+        // comment block indentation at line beginnings
+        section = unindent(uncomment(section));
         // See if any ```-marked or 4-space indented code blocks exist
         if (section.match(/    |```/)) {
             // Encapsulate and mark the code block

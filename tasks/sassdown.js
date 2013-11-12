@@ -31,10 +31,13 @@ module.exports = function (grunt) {
         grunt.verbose.subhead('Read and parse contents of source files:');
         Sassdown.files(config);
 
-        // Subtask: Scaffold, Groups, Assets
+        // Subtask: Scaffold, Groups
         grunt.verbose.subhead('Build styleguide structure:');
         Sassdown.scaffold(config);
         Sassdown.groups(config);
+
+        // Subtask: Assets
+        grunt.verbose.subhead('Copy over styleguide assets:');
         Sassdown.assets(config);
 
         // Subtask: Indexing

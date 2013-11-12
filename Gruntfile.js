@@ -25,7 +25,7 @@ module.exports = function(grunt) {
 
         // Before generating any new files, remove any previously-created files.
         clean: {
-            example: ['test/example/styleguide/'],
+            example: ['test/example/styleguide/', 'test/example/assets/sass/readme.md'],
         },
 
         // Configuration to be run (and then tested).

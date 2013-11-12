@@ -165,7 +165,7 @@ exports.files = function (config) {
         page._name = (Markdown.toHTML(unindent(uncomment(page._src))).match('<h1>')) ? Markdown.toHTML(unindent(uncomment(page._src))).split('<h1>')[1].split('</h1>')[0] : null;
         // Add properties to file and use node path on
         // page object for consistent file system resolving
-        exports.metadata(file, page);
+        file = exports.metadata(file, page);
         // Throw any errors
         if (!file.sections || !file.heading) { exports.errors(file); }
         // Format the content sections

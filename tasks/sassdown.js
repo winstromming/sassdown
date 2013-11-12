@@ -27,6 +27,10 @@ module.exports = function (grunt) {
         Sassdown.template(config);
         Sassdown.includes(config);
 
+        // Subtask: Files
+        grunt.verbose.subhead('Read and parse contents of source files:');
+        Sassdown.files(config);
+
         // Subtask: Scaffold, Groups, Assets
         grunt.verbose.subhead('Build styleguide structure:');
         Sassdown.scaffold(config);
@@ -39,7 +43,7 @@ module.exports = function (grunt) {
 
         // Subtask: Files, Output
         grunt.verbose.subhead('Write styleguide copies of source files:');
-        Sassdown.files(config).forEach(function(file){
+        config.files.forEach(function(file){
             Sassdown.output(config, file);
         });
 

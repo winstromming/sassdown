@@ -38,7 +38,7 @@ module.exports = function(grunt) {
             files: {
                 expand: true,
                 cwd: 'test/example/assets/sass/partials',
-                src: ['**/*.scss'],
+                src: ['**/*.{scss,sass}'],
                 dest: 'test/example/styleguide/'
             }
         },

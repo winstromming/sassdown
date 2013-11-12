@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git://github.com/nopr/sassdown.git"
   },
+  "bugs": {
+    "url": "https://github.com/nopr/sassdown/issues"
+  },
   "licenses": [
     {
       "type": "Creative Commons",
@@ -21,6 +24,12 @@
   "main": "Gruntfile.js",
   "engines": {
     "node": ">= 0.8.0"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.1"
   },
   "peerDependencies": {
     "grunt": "~0.4.0"

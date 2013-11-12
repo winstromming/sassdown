@@ -207,11 +207,7 @@ exports.sections = function (file) {
         // See if any ```-marked or 4-space indented code blocks exist
         if (section.match(/    |```/)) {
             // Encapsulate and mark the code block
-            if(section.match(/```/)) {
-                section = section.replace(/```/, '[html]\n```');
-            } else {
-                section = section.replace(/     /g,'    ').replace(/    /, '[html]\n    ');
-            }
+            section = section.replace(/```/, '[html]\n```').replace(/     /g,'    ').replace(/    /, '[html]\n    ');
             // Return our sections object
             file.sections[index] = {
                 id: Math.random().toString(36).substr(2,5),

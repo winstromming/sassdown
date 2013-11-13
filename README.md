@@ -2,7 +2,7 @@
 
 > Generates a documentation styleguide from Markdown comments in sass/scss directories using Handlebars
 
-**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch.**
+**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.1.4`.**
 
 1. [Getting started](#getting-started)
 2. [The "sassdown" task](#the-sassdown-task)
@@ -32,7 +32,7 @@ grunt.loadNpmTasks('sassdown');
 
 ## The "sassdown" Task
 
-Run the task using `grunt sassdown`. Task targets, files and options may be specified according to the grunt [Configuring tasks](http://gruntjs.com/configuring-tasks) guide.
+Run the task using `grunt sassdown`. Task targets, files and options may be specified according to the grunt [Configuring tasks](http://gruntjs.com/configuring-tasks) guide. **While in development** if you encounter any confusing issues, do try running `grunt sassdown --verbose` - this will output the full process.
 
 ### Overview
 In your project's Gruntfile, add a section named `sassdown` to the data object passed into `grunt.initConfig()`.

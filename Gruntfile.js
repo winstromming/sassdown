@@ -35,7 +35,8 @@ module.exports = function(grunt) {
                     'test/example/assets/css/*.css',
                     'test/example/assets/js/*.js'
                 ],
-                //theme: ['src/themes/styleguide.css']
+                //theme: 'test/theme.css',
+                //template: 'test/template.hbs'
             },
             files: {
                 expand: true,

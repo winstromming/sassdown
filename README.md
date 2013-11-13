@@ -2,112 +2,119 @@
 
 > Generates a documentation styleguide from Markdown comments in sass/scss directories using Handlebars
 
-**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions please let me know.**
+**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch.**
 
-## Getting Started
-This plugin requires Grunt `~0.4.1`
+1. [Getting started](#getting-started)
+2. [The "sassdown" task](#the-sassdown-task)
+    - [Overview](#overview)
+    - [Options](#options)
+    - [Usage](#usage)
+    - [Themes](#themes)
+        - [Files object](#files-object)
+        - [Config object](#config-object)
+3. [Markdown](#markdown)
+4. [Handlebars](#handlebars)
+5. [Compass? Sass?](#compass-sass)
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
+## Getting started
+Requires Grunt `~0.4.1`
 
-```shell
+_If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins._
+
+Install this plugin with this command:
+
+```bash
 npm install sassdown --save-dev
 ```
 
-Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
+Enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
 grunt.loadNpmTasks('sassdown');
 ```
 
-## The "sassdown" task
+## The "sassdown" Task
 
-I have created an [example boilerplate](https://github.com/nopr/grunt-sass-boilerplate) using sassdown, if the below isn't particularly clear.
+Run the task using `grunt sassdown`. Task targets, files and options may be specified according to the grunt [Configuring tasks](http://gruntjs.com/configuring-tasks) guide.
 
 ### Overview
 In your project's Gruntfile, add a section named `sassdown` to the data object passed into `grunt.initConfig()`.
 
 ```js
-grunt.initConfig({
-  sassdown: {
+sassdown: {
     options: {
-      // Task-specific options go here.
+        // Task-specific options go here.
     },
     your_target: {
-      // Target-specific file lists and/or options go here.
+        // Target-specific file lists and/or options go here.
     },
-  },
-})
+},
 ```
 
 ### Options
 
-#### options.template_html
+#### options.assets
+Type: `Array`
+Default value: `null`
+
+*Required*. Array of file paths. These will be included into result examples in the styleguide. Typically, these assets are your finished compiled stylesheets and/or javascript files.
+
+#### options.template
 Type: `String`
 Default value: `null`
 
-*Optional*. A relative path to a Handlebars (.hbs) file. Styleguide is generated from this. If unspecified, Sassdown will use its own.
+*Optional*. A relative path to a Handlebars file with structure for the styleguide. If unspecified reverts to a default.
 
-#### options.template_assets
+#### options.theme
 Type: `String`
 Default value: `null`
 
-*Optional*. A relative path to a directory containing any asset files used by the styleguide template. If unspecified, Sassdown will use its own.
+*Optional*. A relative path to a Stylesheet file containing the visual theme of the styleguide. If unspecified reverts to a default.
 
-#### options.includes
-Type: `String`
-Default value: `null`
+### Usage
 
-*Optional*. A relative path to a Handlebars (.hbs) partial file, containing includes to website assets such as the compiled CSS or javascript files.
-
-### Usage Examples
-
-#### Simple
-
+You will need to use an [expanded files object](http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically), but here is roughly the minimum settings and setup required.
 ```js
 sassdown: {
+    options: {
+        assets: ['assets/css/*.css']
+    },
     files: {
         expand: true,
         cwd: 'assets/sass',
         src: ['*.scss'],
-        dest: 'public/styleguide/'
+        dest: 'styleguide/'
     }
-}
+},
 ```
 
-#### Complicated (Gruntfile.js)
-
-In this example we have explicitly specified a custom styleguide Handlebars `.hbs` template and includes file. Any assets required (for example, code highlighting for the styleguide) are placed in the folder specified by  `template_assets`.
-
+On larger projects you may need to include additional assets and customise the output with a user theme and template.
 ```js
 sassdown: {
     options: {
-        template_assets: 'source/styleguide/',
-        template_html: 'source/styleguide.hbs',
-        includes: 'source/site_includes.hbs'
+        assets: [
+            'public/css/**/*.min.css',
+            'public/js/*.min.js',
+            'http://use.typekit.net/sea5yvm.js',
+        ],
+        theme: 'src/styleguide/theme.css',
+        template: 'src/styleguide/template.hbs'
     },
     files: {
         expand: true,
-        cwd: 'assets/sass/partials',
-        src: ['**/*.scss'],
+        cwd: 'src/assets/sass',
+        src: [
+            'partials/**/*.{scss,sass}',
+            'modules/**/*.{scss,sass}'
+        ],
         dest: 'public/styleguide/'
     }
-}
-```
-
-#### Complicated (site_includes.hbs)
-
-If the  `includes` option is specified, the file would typically look like this. This gets inserted into the 'result' sections of the styleguide.
-
-```html
-<link rel="stylesheet" href="/public/assets/inuit.css" />
-<link rel="stylesheet" href="/public/assets/screen.css" />
-<script src="//use.typekit.net/example.js"></script>
-<script>try{Typekit.load();}catch(e){}</script>
+},
 ```
 
 # Markdown
 
-Sassdown uses [Markdown](https://github.com/evilstreak/markdown-js) to parse any block comments in your SASS files. From these, it generates the text content in the styleguide. Any indented code blocks will be rendered as HTML source-result pairs.
+Sassdown uses [Markdown](https://github.com/evilstreak/markdown-js) to parse any block comments in your SASS files. From these, it generates the text content in the styleguide. Any recognised code blocks will be rendered as HTML source-result pairs.
 
 ### Example (_alerts.scss)
 
@@ -133,7 +140,6 @@ Creates an alert box notification using the `.alert-` prefix. The following opti
     margin-bottom: 1em;
     padding: 1em;
 }
-
 .alert-success { @include alert(#e2f3c1) }
 .alert-warning { @include alert(#fceabe) }
 .alert-error   { @include alert(#ffdcdc) }
@@ -175,7 +181,7 @@ Properties inside the File object can be accessed by the Handlebars template usi
 
 [Handlebars](http://handlebarsjs.com/) is a semantic templating syntax. Put simply, it allows you to output dynamic properties in HTML using `{{  }}` from a variety of data sources such as JSON.
 
-Sassdown uses Handlebars to output data from the File Objects it creates. Your `.hbs` file specified in the `template_html` option may contain code that looks like this for example:
+Sassdown uses Handlebars to output data from the File Objects it creates. Your `.hbs` file specified in the `template` option may contain code that looks like this for example:
 
 ```html
 {{#each sections}}
@@ -195,8 +201,3 @@ Sassdown uses Handlebars to output data from the File Objects it creates. Your `
 
 ## Compass? Sass?
 Sassdown **does not** compile your .sass or .scss files. Since you're using Grunt, I would recommend the [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass) plugin for this task.
-
-## TODO
-
-- Confirm and adjust for .sass rather than .scss support?
-- TEST TEST TEST

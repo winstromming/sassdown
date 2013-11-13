@@ -12,6 +12,7 @@
 var grunt;
 var fs = require('fs');
 var path = require('path');
+var cssmin = require('cssmin');
 var markdown = require('marked');
 var Handlebars = require('handlebars');
 
@@ -94,7 +95,7 @@ exports.theme = function (config) {
         config.opts.theme = fromdata('theme.css');
     }
     // Assign theme and prism to respective Handlebars partials
-    Handlebars.registerPartial('theme', '<style>'+grunt.file.read(config.opts.theme)+'</style>');
+    Handlebars.registerPartial('theme', '<style>'+cssmin(grunt.file.read(config.opts.theme))+'</style>');
     Handlebars.registerPartial('prism', '<script>'+grunt.file.read(fromdata('prism.js'))+'</script>');
 };
 

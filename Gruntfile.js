@@ -31,9 +31,11 @@ module.exports = function(grunt) {
         // Configuration to be run (and then tested).
         sassdown: {
             options: {
-            //     template_assets: 'source/styleguide/',
-            //     template_html: 'source/styleguide.hbs',
-            //     includes: 'source/site_includes.hbs'
+                assets: [
+                    'test/example/assets/css/*.css',
+                    'test/example/assets/js/*.js'
+                ],
+                //theme: ['src/themes/styleguide.css']
             },
             files: {
                 expand: true,

@@ -19,36 +19,43 @@ module.exports = function (grunt) {
     // =====================
     grunt.registerMultiTask('sassdown', function() {
 
-        // Subtask: Store configuration options
-        var config = Sassdown.config(this, module);
+        // Store configuration options
+        var config = {
+            cwd: this.data.cwd,
+            dest: this.data.dest,
+            opts: this.options(),
+            files: this.files,
+            groups: {},
+            module: module.filename
+        };
 
-        // Subtask: Template, Includes
+        // Subtask: Template, Theme
         grunt.verbose.subhead('Compile the Handlebars template:');
         Sassdown.template(config);
-        Sassdown.includes(config);
+        Sassdown.theme(config);
 
-        // Subtask: Files
+        // Subtask: Files, Groups, Scaffold
         grunt.verbose.subhead('Read and parse contents of source files:');
         Sassdown.files(config);
-
-        // Subtask: Scaffold, Groups
-        grunt.verbose.subhead('Build styleguide structure:');
-        Sassdown.scaffold(config);
         Sassdown.groups(config);
+        Sassdown.scaffold(config);
 
         // Subtask: Assets
-        grunt.verbose.subhead('Copy over styleguide assets:');
+        grunt.verbose.subhead('Add assets to the results output:');
         Sassdown.assets(config);
 
         // Subtask: Indexing
         grunt.verbose.subhead('Generate index from Readme.md:');
         Sassdown.readme(config);
 
-        // Subtask: Files, Output
+        // Subtask: Output
         grunt.verbose.subhead('Write styleguide copies of source files:');
         config.files.forEach(function(file){
             Sassdown.output(config, file);
         });
+
+        // Finish
+        grunt.verbose.or.ok('Styleguide created: '+config.dest);
 
     });
 

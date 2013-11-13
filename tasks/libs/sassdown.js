@@ -44,72 +44,58 @@ exports.init = function (_grunt) {
     return exports;
 };
 
-exports.config = function (self, module) {
-    return {
-        cwd: self.data.cwd,
-        dest: self.data.dest,
-        opts: self.options(),
-        files: self.files,
-        groups: {},
-        module: module.filename
-    };
-};
-
 exports.template = function (config) {
     // If option was left blank, use
     // the plugin default version
-    if (!config.opts.template_html) {
-        warning('Template file not specified');
-        config.opts.template_html = fromdata('template.hbs');
+    if (!config.opts.template) {
+        warning('User template not specified. Using default.');
+        config.opts.template = fromdata('template.hbs');
     }
     // Return config.template object
     config.template = {
-        html: Handlebars.compile(grunt.file.read(config.opts.template_html)),
+        html: Handlebars.compile(grunt.file.read(config.opts.template)),
         assets: null
     };
     return config.template;
 };
 
-exports.includes = function (config) {
+exports.assets = function (config) {
     // Check if we added includes option
-    if (!config.opts.includes) {
-        warning('Includes file not specified');
-        config.opts.includes = fromroot(path.resolve(config.module, '..', 'data', 'partials', 'includes.hbs'));
+    if (!config.opts.assets) {
+        warning('No assets specified');
+    } else {
+        // Create empty listing
+        var assets = '';
+        // Loop through matches
+        grunt.file.expand(config.opts.assets).forEach(function(file){
+            // Write <link> or <script> tag to include
+            if (file.split('.').pop() === 'css') { assets += '<link rel="stylesheet" href="/'+file+'" />'; }
+            if (file.split('.').pop() === 'js') { assets += '<script src="/'+file+'"><\\/script>'; }
+            // Output a read
+            grunt.file.read(file);
+        });
+        // Register as partial
+        Handlebars.registerPartial('assets', assets);
     }
-    // Register as partial
-    Handlebars.registerPartial('includes', grunt.file.read(config.opts.includes));
 };
 
 exports.scaffold = function (config) {
     // Create the destination directory
     grunt.file.mkdir(path.resolve(config.dest));
-    grunt.log.write('Created '.green).writeln(config.dest);
     // Resolve the relative 'root' of the cwd
     // as we will need this later
     config.root = fromroot(path.resolve(config.cwd, '..'));
 };
 
-exports.assets = function (config) {
+exports.theme = function (config) {
     // If option is blank, use plugin default
-    if (!config.opts.template_assets) {
-        warning('Assets folder not specified');
-        config.opts.template_assets = fromdata('assets');
+    if (!config.opts.theme) {
+        warning('User stylesheet not specified. Using default.');
+        config.opts.theme = fromdata('theme.css');
     }
-    // Do we have an assets directory set?
-    if (config.opts.template_assets) {
-        // Create the assets directory
-        grunt.file.mkdir(fromroot(path.resolve(config.dest, 'assets')));
-        grunt.verbose.write('Created '.green).writeln(config.dest+'assets/');
-        // Read the entire assets directory
-        var assets = fs.readdirSync(fromroot(path.resolve(config.opts.template_assets)));
-        assets.forEach(function(file){
-            // Copy each file from assets/file to destination/assets/file
-            grunt.file.copy(
-                fromroot(path.resolve(config.opts.template_assets, file)),
-                fromroot(path.resolve(config.dest, 'assets', file))
-            );
-        });
-    }
+    // Assign theme and prism to respective Handlebars partials
+    Handlebars.registerPartial('theme', '<style>'+grunt.file.read(config.opts.theme)+'</style>');
+    Handlebars.registerPartial('prism', '<script>'+grunt.file.read(fromdata('prism.js'))+'</script>');
 };
 
 exports.groups = function (config) {
@@ -225,10 +211,9 @@ exports.readme = function (config) {
     var readme = fromroot(path.resolve(config.root, 'readme.md'));
     // Readme.md not found, create it:
     if (!grunt.file.exists(readme)) {
-        warning('Readme file not found');
+        warning('Readme file not found. Create it.');
         grunt.file.write(readme, 'Styleguide\n==========\n\nFill me with your delicious readme content\n');
-        grunt.verbose.ok('Readme file created');
-        grunt.verbose.or.ok('Readme created at: '+config.root+'/readme.md');
+        grunt.verbose.or.ok('Readme file created: '+config.root+'/readme.md');
     }
     // Now that a Readme.md exists
     if (grunt.file.exists(readme)) {

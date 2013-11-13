@@ -10,7 +10,6 @@
 // Required Node modules
 // =====================
 var grunt;
-var fs = require('fs');
 var path = require('path');
 var cssmin = require('cssmin');
 var markdown = require('marked');

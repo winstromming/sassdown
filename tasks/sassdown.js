@@ -21,9 +21,14 @@ module.exports = function (grunt) {
 
         // Store configuration options
         var config = {
-            cwd: this.data.cwd,
-            dest: this.data.dest,
-            opts: this.options(),
+           // cwd: this.data.cwd,
+           // dest: this.data.dest,
+            opts: this.options({
+                readme: false,
+                excludeMissing: false,
+                commentStart: /\/\*/,
+                commentEnd: /\*\//
+            }),
             files: this.files,
             groups: {},
             module: module.filename
@@ -55,7 +60,7 @@ module.exports = function (grunt) {
         });
 
         // Finish
-        grunt.verbose.or.ok('Styleguide created: '+config.dest);
+        grunt.verbose.or.ok('Styleguide created: ' + this.files[0].orig.dest);
 
     });
 

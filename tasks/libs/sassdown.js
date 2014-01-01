@@ -112,7 +112,8 @@ exports.groups = function (config) {
         config.groups[file.group].pages.push({
             heading: file.heading,
             group: file.group,
-            path: file.path
+            path: file.path,
+            slug: file.slug
         });
     });
     for (var i=0; i<config.groups.length; i++) {

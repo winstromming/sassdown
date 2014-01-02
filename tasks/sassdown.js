@@ -14,7 +14,7 @@ module.exports = function (grunt) {
 
     // Required libs
     var Sassdown = require('./libs/sassdown').init(grunt);
-    
+
     // Grunt-registered Task
     // =====================
     grunt.registerMultiTask('sassdown', function() {
@@ -24,7 +24,9 @@ module.exports = function (grunt) {
            // cwd: this.data.cwd,
            // dest: this.data.dest,
             opts: this.options({
-                readme: false,
+                readme: true,
+                theme: null,
+                template: null,
                 excludeMissing: false,
                 commentStart: /\/\*/,
                 commentEnd: /\*\//

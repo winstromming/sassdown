@@ -23,9 +23,11 @@ module.exports = function(grunt) {
             },
         },
 
+        test: 'xxx',
+
         // Before generating any new files, remove any previously-created files.
         clean: {
-            example: ['test/example/styleguide/', 'test/custom/styleguide/'],
+            example: ['test/*/styleguide/'],
         },
 
         // Configuration to be run (and then tested).
@@ -52,6 +54,7 @@ module.exports = function(grunt) {
                         'test/custom/assets/css/*.css'
                     ],
                     excludeMissing: true,
+                    readme: false,
                     commentStart: /\/\* (?:[=]{4,}\n[ ]+|(?!\n))/,
                     commentEnd: /[ ]+[=]{4,} \*\//
                 },

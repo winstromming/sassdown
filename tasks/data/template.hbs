@@ -54,8 +54,12 @@
                     </div>
                 {{/if}}
                 {{#if source}}
-                    <div class="source language-markup">{{{source}}}</div>
+                    <div class="source language-markup" data-source-type="html">{{{source}}}</div>
                 {{/if}}
+                {{#if cssSource}}
+                    <div class="source language-{{prismLang}}" data-source-type="{{fileExt}}">{{{cssSource}}}</div>
+                {{/if}}
+
             </div>
         {{/each}}
     </div>

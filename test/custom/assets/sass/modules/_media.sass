@@ -10,8 +10,11 @@
    ========================================================================== */
 
 .media
-  background: #ccc
+  border: 1px solid #ccc
   padding: 10px
+  display: inline-block
+  width: 600px
+  overflow: hidden
 
 .media-img
   float: left
@@ -30,7 +33,7 @@
    The thumbnail is floated to the **right**
 
    ```
-   <div class="media">
+   <div class="media media_right">
     <img src="http://placehold.it/60x60" class="media-img" alt="" />
     <p class="media-body">This is a sample title</p>
    </div>

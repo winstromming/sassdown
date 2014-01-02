@@ -15,11 +15,11 @@ button,
 input,
 select,
 textarea {
-  color: white; }
+  color: black; }
 
 body {
-  background: black;
-  color: white;
+  background: white;
+  color: black;
   font-size: 12px;
   line-height: 1em;
   font-family: Arial; }
@@ -106,7 +106,10 @@ h3 {
  * ```
  * ========================================================================== */
 .media {
-  background: #cccccc;
+  border: 1px solid #ccc;
+  display: inline-block;
+  width: 600px;
+  overflow: hidden;
   padding: 10px; }
 
 .media-img {
@@ -124,7 +127,7 @@ h3 {
  * The thumbnail is floated to the **right**
  *
  * ```
- * <div class="media">
+ * <div class="media media_right">
  *  <img src="http://placehold.it/60x60" class="media-img" alt="" />
  *  <p class="media-body">This is a sample title</p>
  * </div>

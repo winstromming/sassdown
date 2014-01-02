@@ -60,13 +60,13 @@ Default value: `null`
 Type: `String`
 Default value: `null`
 
-*Optional*. A relative path to a Handlebars file with structure for the styleguide. If unspecified reverts to a default.
+*Optional*. A path to a Handlebars file with structure for the styleguide. If unspecified reverts to a default.
 
 #### options.theme
 Type: `String`
 Default value: `null`
 
-*Optional*. A relative path to a Stylesheet file containing the visual theme of the styleguide. If unspecified reverts to a default.
+*Optional*. A path to a Stylesheet file containing the visual theme of the styleguide. If unspecified reverts to a default.
 
 ### Usage
 

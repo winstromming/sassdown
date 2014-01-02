@@ -68,11 +68,11 @@
                 
                 
                     <div class="result">
-                        <iframe id="iframe_bcm11" height="0" src="about:blank"></iframe>
-                        <script id="script_bcm11">
-                            var iframe  = document.getElementById('iframe_bcm11');
+                        <iframe id="iframe_a1o24" height="0" src="about:blank"></iframe>
+                        <script id="script_a1o24">
+                            var iframe  = document.getElementById('iframe_a1o24');
                             var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_bcm11');
+                            var script  = document.getElementById('script_a1o24');
                             context.open();
                             context.write('<!doctype html>'
                                 +'<html>'
@@ -80,7 +80,7 @@
                                 +'        <link rel="stylesheet" href="/test/example/assets/css/screen.css" /><link rel="stylesheet" href="/test/example/assets/css/theme.css" /><link rel="stylesheet" href="/test/example/assets/css/webfonts.css" /><script src="/test/example/assets/js/script.js"><\/script>'
                                 +'    </head>'
                                 +'    <body>'
-                                +'        <button class="btn">Submit</button> <input class="btn" type="submit" /> <span class="btn">Submit</span> <a class="btn">Submit</a>'
+                                +'        <button class="btn">Submit</button>   <input class="btn" type="submit" />   <span class="btn">Submit</span>   <a class="btn">Submit</a>.btn {display: inline-block;  padding: 0 1em;  margin: 0;border: 0 transparent;  outline: 0 transparent;  background: #ccc;  border-radius: 2px;  cursor: pointer;color: #444 !important;  font-size: 100%;  font-weight: normal;  font-style: normal;  font-family: sans-serif;  line-height: inherit;  text-decoration: none !important;&:hover, &:active, &:focus { color: #222 !important; background: #aaa; outline: 0; box-shadow: 0;  }}'
                                 +'    </body>'
                                 +'</html>');
                             context.close();
@@ -89,10 +89,33 @@
                     </div>
                 
                 
-                    <div class="source language-markup"><pre><code>&lt;button class=&quot;btn&quot;&gt;Submit&lt;/button&gt; 
-&lt;input class=&quot;btn&quot; type=&quot;submit&quot; /&gt; 
-&lt;span class=&quot;btn&quot;&gt;Submit&lt;/span&gt; 
-&lt;a class=&quot;btn&quot;&gt;Submit&lt;/a&gt;</code></pre>
+                    <div class="source language-markup"><pre><code>&lt;button class=&quot;btn&quot;&gt;Submit&lt;/button&gt; </code></pre>
+<p>  <input class="btn" type="submit" /> 
+  <span class="btn">Submit</span> 
+  <a class="btn">Submit</a>
+.btn {
+    display: inline-block;
+  padding: 0 1em;
+  margin: 0;
+    border: 0 transparent;
+  outline: 0 transparent;
+  background: #ccc;
+  border-radius: 2px;
+  cursor: pointer;
+    color: #444 !important;
+  font-size: 100%;
+  font-weight: normal;
+  font-style: normal;
+  font-family: sans-serif;
+  line-height: inherit;
+  text-decoration: none !important;
+    &amp;:hover, &amp;:active, &amp;:focus {
+      color: #222 !important;
+      background: #aaa;
+      outline: 0;
+      box-shadow: 0;
+  }
+}</p>
 </div>
                 
             </div>
@@ -104,11 +127,11 @@
                 
                 
                     <div class="result">
-                        <iframe id="iframe_ot0jr" height="0" src="about:blank"></iframe>
-                        <script id="script_ot0jr">
-                            var iframe  = document.getElementById('iframe_ot0jr');
+                        <iframe id="iframe_t1ue1" height="0" src="about:blank"></iframe>
+                        <script id="script_t1ue1">
+                            var iframe  = document.getElementById('iframe_t1ue1');
                             var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_ot0jr');
+                            var script  = document.getElementById('script_t1ue1');
                             context.open();
                             context.write('<!doctype html>'
                                 +'<html>'
@@ -116,7 +139,7 @@
                                 +'        <link rel="stylesheet" href="/test/example/assets/css/screen.css" /><link rel="stylesheet" href="/test/example/assets/css/theme.css" /><link rel="stylesheet" href="/test/example/assets/css/webfonts.css" /><script src="/test/example/assets/js/script.js"><\/script>'
                                 +'    </head>'
                                 +'    <body>'
-                                +'        <button class="btn-action">Submit</button> <input class="btn-action" type="submit" /> <span class="btn-action">Submit</span> <a class="btn-action">Submit</a>'
+                                +'        <button class="btn-action">Submit</button>   <input class="btn-action" type="submit" />   <span class="btn-action">Submit</span>   <a class="btn-action">Submit</a>.btn-action {  @extend .btn;  color: #ddd !important;  background: #444;  &:hover, &:active, &:focus { color: #eee !important; background: #222;  }}'
                                 +'    </body>'
                                 +'</html>');
                             context.close();
@@ -125,46 +148,19 @@
                     </div>
                 
                 
-                    <div class="source language-markup"><pre><code>&lt;button class=&quot;btn-action&quot;&gt;Submit&lt;/button&gt; 
-&lt;input class=&quot;btn-action&quot; type=&quot;submit&quot; /&gt; 
-&lt;span class=&quot;btn-action&quot;&gt;Submit&lt;/span&gt; 
-&lt;a class=&quot;btn-action&quot;&gt;Submit&lt;/a&gt;</code></pre>
-</div>
-                
-            </div>
-        
-            <div class="section">
-                
-                    <div class="comment"><h2 id="button-disabled-">Button (Disabled)</h2>
-</div>
-                
-                
-                    <div class="result">
-                        <iframe id="iframe_qmj3b" height="0" src="about:blank"></iframe>
-                        <script id="script_qmj3b">
-                            var iframe  = document.getElementById('iframe_qmj3b');
-                            var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_qmj3b');
-                            context.open();
-                            context.write('<!doctype html>'
-                                +'<html>'
-                                +'    <head>'
-                                +'        <link rel="stylesheet" href="/test/example/assets/css/screen.css" /><link rel="stylesheet" href="/test/example/assets/css/theme.css" /><link rel="stylesheet" href="/test/example/assets/css/webfonts.css" /><script src="/test/example/assets/js/script.js"><\/script>'
-                                +'    </head>'
-                                +'    <body>'
-                                +'        <button class="btn-disabled">Submit</button> <input class="btn-disabled" type="submit" /> <span class="btn-disabled">Submit</span> <a class="btn-disabled">Submit</a>'
-                                +'    </body>'
-                                +'</html>');
-                            context.close();
-                            script.parentNode.removeChild(script);
-                        </script>
-                    </div>
-                
-                
-                    <div class="source language-markup"><pre><code>&lt;button class=&quot;btn-disabled&quot;&gt;Submit&lt;/button&gt; 
-&lt;input class=&quot;btn-disabled&quot; type=&quot;submit&quot; /&gt; 
-&lt;span class=&quot;btn-disabled&quot;&gt;Submit&lt;/span&gt; 
-&lt;a class=&quot;btn-disabled&quot;&gt;Submit&lt;/a&gt;</code></pre>
+                    <div class="source language-markup"><pre><code>&lt;button class=&quot;btn-action&quot;&gt;Submit&lt;/button&gt; </code></pre>
+<p>  <input class="btn-action" type="submit" /> 
+  <span class="btn-action">Submit</span> 
+  <a class="btn-action">Submit</a>
+.btn-action {
+  @extend .btn;
+  color: #ddd !important;
+  background: #444;
+  &amp;:hover, &amp;:active, &amp;:focus {
+      color: #eee !important;
+      background: #222;
+  }
+}</p>
 </div>
                 
             </div>

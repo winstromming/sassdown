@@ -63,34 +63,11 @@
             <div class="section">
                 
                     <div class="comment"><h1 id="navigation">Navigation</h1>
-<p>Tight example.</p>
+<p>Tight example.
+  <span class="btn">Test</span></p>
 </div>
                 
                 
-                    <div class="result">
-                        <iframe id="iframe_jk5f3" height="0" src="about:blank"></iframe>
-                        <script id="script_jk5f3">
-                            var iframe  = document.getElementById('iframe_jk5f3');
-                            var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_jk5f3');
-                            context.open();
-                            context.write('<!doctype html>'
-                                +'<html>'
-                                +'    <head>'
-                                +'        <link rel="stylesheet" href="/test/example/assets/css/screen.css" /><link rel="stylesheet" href="/test/example/assets/css/theme.css" /><link rel="stylesheet" href="/test/example/assets/css/webfonts.css" /><script src="/test/example/assets/js/script.js"><\/script>'
-                                +'    </head>'
-                                +'    <body>'
-                                +'        <span class="btn">Test</span>'
-                                +'    </body>'
-                                +'</html>');
-                            context.close();
-                            script.parentNode.removeChild(script);
-                        </script>
-                    </div>
-                
-                
-                    <div class="source language-markup"><pre><code>&lt;span class=&quot;btn&quot;&gt;Test&lt;/span&gt;</code></pre>
-</div>
                 
             </div>
         
@@ -102,11 +79,11 @@
                 
                 
                     <div class="result">
-                        <iframe id="iframe_qtx9x" height="0" src="about:blank"></iframe>
-                        <script id="script_qtx9x">
-                            var iframe  = document.getElementById('iframe_qtx9x');
+                        <iframe id="iframe_6pn1n" height="0" src="about:blank"></iframe>
+                        <script id="script_6pn1n">
+                            var iframe  = document.getElementById('iframe_6pn1n');
                             var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_qtx9x');
+                            var script  = document.getElementById('script_6pn1n');
                             context.open();
                             context.write('<!doctype html>'
                                 +'<html>'
@@ -131,16 +108,16 @@
             <div class="section">
                 
                     <div class="comment"><h1 id="navigation">Navigation</h1>
-<p>One-space indented example.</p>
+<p> One-space indented example.</p>
 </div>
                 
                 
                     <div class="result">
-                        <iframe id="iframe_iut5q" height="0" src="about:blank"></iframe>
-                        <script id="script_iut5q">
-                            var iframe  = document.getElementById('iframe_iut5q');
+                        <iframe id="iframe_q6ps8" height="0" src="about:blank"></iframe>
+                        <script id="script_q6ps8">
+                            var iframe  = document.getElementById('iframe_q6ps8');
                             var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_iut5q');
+                            var script  = document.getElementById('script_q6ps8');
                             context.open();
                             context.write('<!doctype html>'
                                 +'<html>'
@@ -164,17 +141,18 @@
         
             <div class="section">
                 
-                    <div class="comment"><h1 id="navigation">Navigation</h1>
-<p>Sass asterisk-delimited indented example.</p>
+                    <div class="comment"><h1 id="-navigation">* Navigation</h1>
+<p>Sass asterisk-delimited indented example.
+ *</p>
 </div>
                 
                 
                     <div class="result">
-                        <iframe id="iframe_n0ss4" height="0" src="about:blank"></iframe>
-                        <script id="script_n0ss4">
-                            var iframe  = document.getElementById('iframe_n0ss4');
+                        <iframe id="iframe_izhmd" height="0" src="about:blank"></iframe>
+                        <script id="script_izhmd">
+                            var iframe  = document.getElementById('iframe_izhmd');
                             var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_n0ss4');
+                            var script  = document.getElementById('script_izhmd');
                             context.open();
                             context.write('<!doctype html>'
                                 +'<html>'
@@ -198,17 +176,17 @@
         
             <div class="section">
                 
-                    <div class="comment"><h1 id="navigation">Navigation</h1>
+                    <div class="comment"><h1 id="-navigation">*Navigation</h1>
 <p>Sass tight asterisk-delimited indented example.</p>
 </div>
                 
                 
                     <div class="result">
-                        <iframe id="iframe_vhv8c" height="0" src="about:blank"></iframe>
-                        <script id="script_vhv8c">
-                            var iframe  = document.getElementById('iframe_vhv8c');
+                        <iframe id="iframe_euzt5" height="0" src="about:blank"></iframe>
+                        <script id="script_euzt5">
+                            var iframe  = document.getElementById('iframe_euzt5');
                             var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_vhv8c');
+                            var script  = document.getElementById('script_euzt5');
                             context.open();
                             context.write('<!doctype html>'
                                 +'<html>'
@@ -216,7 +194,7 @@
                                 +'        <link rel="stylesheet" href="/test/example/assets/css/screen.css" /><link rel="stylesheet" href="/test/example/assets/css/theme.css" /><link rel="stylesheet" href="/test/example/assets/css/webfonts.css" /><script src="/test/example/assets/js/script.js"><\/script>'
                                 +'    </head>'
                                 +'    <body>'
-                                +'        <span class="btn">Test</span>'
+                                +'        <span class="btn">Test</span>.nav {  &, a { display: block }  &, li { margin: 0; padding: 0; list-style: none outside; border-color: lightGrey; border-style: solid; border-width: 0;  }  a { text-decoration: none; color: #ff3333 }  a:hover { text-decoration: underline; }  a.is-active { color: inherit; }}'
                                 +'    </body>'
                                 +'</html>');
                             context.close();
@@ -226,6 +204,20 @@
                 
                 
                     <div class="source language-markup"><pre><code>&lt;span class=&quot;btn&quot;&gt;Test&lt;/span&gt;</code></pre>
+<p>.nav {
+  &amp;, a { display: block }
+  &amp;, li {
+      margin: 0;
+      padding: 0;
+      list-style: none outside;
+      border-color: lightGrey;
+      border-style: solid;
+      border-width: 0;
+  }
+  a { text-decoration: none; color: #ff3333 }
+  a:hover { text-decoration: underline; }
+  a.is-active { color: inherit; }
+}</p>
 </div>
                 
             </div>
@@ -237,11 +229,11 @@
                 
                 
                     <div class="result">
-                        <iframe id="iframe_nk930" height="0" src="about:blank"></iframe>
-                        <script id="script_nk930">
-                            var iframe  = document.getElementById('iframe_nk930');
+                        <iframe id="iframe_s20pv" height="0" src="about:blank"></iframe>
+                        <script id="script_s20pv">
+                            var iframe  = document.getElementById('iframe_s20pv');
                             var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_nk930');
+                            var script  = document.getElementById('script_s20pv');
                             context.open();
                             context.write('<!doctype html>'
                                 +'<html>'
@@ -249,7 +241,7 @@
                                 +'        <link rel="stylesheet" href="/test/example/assets/css/screen.css" /><link rel="stylesheet" href="/test/example/assets/css/theme.css" /><link rel="stylesheet" href="/test/example/assets/css/webfonts.css" /><script src="/test/example/assets/js/script.js"><\/script>'
                                 +'    </head>'
                                 +'    <body>'
-                                +'        <ul class="nav-vertical">  <li><a href="/" class="is-active">One</a></li>   <li><a href="/">Two</a></li>   <li><a href="/">Three</a></li> </ul>'
+                                +'        <ul class="nav-vertical"> <li><a href="/" class="is-active">One</a></li>  <li><a href="/">Two</a></li>  <li><a href="/">Three</a></li>   </ul>.nav-vertical {  @extend .nav;  li { display: block; border-bottom-width: 1px; &:last-child { border-bottom-width: 0 }  }}'
                                 +'    </body>'
                                 +'</html>');
                             context.close();
@@ -259,10 +251,18 @@
                 
                 
                     <div class="source language-markup"><pre><code>&lt;ul class=&quot;nav-vertical&quot;&gt;
-   &lt;li&gt;&lt;a href=&quot;/&quot; class=&quot;is-active&quot;&gt;One&lt;/a&gt;&lt;/li&gt; 
-   &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Two&lt;/a&gt;&lt;/li&gt; 
-   &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Three&lt;/a&gt;&lt;/li&gt; 
-&lt;/ul&gt;</code></pre>
+  &lt;li&gt;&lt;a href=&quot;/&quot; class=&quot;is-active&quot;&gt;One&lt;/a&gt;&lt;/li&gt; 
+  &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Two&lt;/a&gt;&lt;/li&gt; 
+  &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Three&lt;/a&gt;&lt;/li&gt; </code></pre>
+<p>  </ul>
+.nav-vertical {
+  @extend .nav;
+  li {
+      display: block;
+      border-bottom-width: 1px;
+      &amp;:last-child { border-bottom-width: 0 }
+  }
+}</p>
 </div>
                 
             </div>
@@ -274,11 +274,11 @@
                 
                 
                     <div class="result">
-                        <iframe id="iframe_s02jn" height="0" src="about:blank"></iframe>
-                        <script id="script_s02jn">
-                            var iframe  = document.getElementById('iframe_s02jn');
+                        <iframe id="iframe_qhipg" height="0" src="about:blank"></iframe>
+                        <script id="script_qhipg">
+                            var iframe  = document.getElementById('iframe_qhipg');
                             var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_s02jn');
+                            var script  = document.getElementById('script_qhipg');
                             context.open();
                             context.write('<!doctype html>'
                                 +'<html>'
@@ -286,7 +286,7 @@
                                 +'        <link rel="stylesheet" href="/test/example/assets/css/screen.css" /><link rel="stylesheet" href="/test/example/assets/css/theme.css" /><link rel="stylesheet" href="/test/example/assets/css/webfonts.css" /><script src="/test/example/assets/js/script.js"><\/script>'
                                 +'    </head>'
                                 +'    <body>'
-                                +'        <ul class="nav-horizontal">  <li><a href="/" class="is-active">One</a></li>   <li><a href="/">Two</a></li>   <li><a href="/">Three</a></li> </ul>'
+                                +'        <ul class="nav-horizontal"> <li><a href="/" class="is-active">One</a></li>  <li><a href="/">Two</a></li>  <li><a href="/">Three</a></li>   </ul>  .nav-horizontal {  @extend .nav;  font-size: 0;  li { font-size: 14px; display: inline-block; border-right-width: 1px; &:last-child { border-right: 0 } a { padding: 0 0.5em }  }}'
                                 +'    </body>'
                                 +'</html>');
                             context.close();
@@ -296,48 +296,21 @@
                 
                 
                     <div class="source language-markup"><pre><code>&lt;ul class=&quot;nav-horizontal&quot;&gt;
-   &lt;li&gt;&lt;a href=&quot;/&quot; class=&quot;is-active&quot;&gt;One&lt;/a&gt;&lt;/li&gt; 
-   &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Two&lt;/a&gt;&lt;/li&gt; 
-   &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Three&lt;/a&gt;&lt;/li&gt; 
-&lt;/ul&gt;</code></pre>
-</div>
-                
-            </div>
-        
-            <div class="section">
-                
-                    <div class="comment"><h2 id="navigation-button-stack-">Navigation (Button Stack)</h2>
-<p>A navigation block which combines a Horizontal nav with the button pattern partial.</p>
-</div>
-                
-                
-                    <div class="result">
-                        <iframe id="iframe_umy5h" height="0" src="about:blank"></iframe>
-                        <script id="script_umy5h">
-                            var iframe  = document.getElementById('iframe_umy5h');
-                            var context = iframe.contentWindow.document;
-                            var script  = document.getElementById('script_umy5h');
-                            context.open();
-                            context.write('<!doctype html>'
-                                +'<html>'
-                                +'    <head>'
-                                +'        <link rel="stylesheet" href="/test/example/assets/css/screen.css" /><link rel="stylesheet" href="/test/example/assets/css/theme.css" /><link rel="stylesheet" href="/test/example/assets/css/webfonts.css" /><script src="/test/example/assets/js/script.js"><\/script>'
-                                +'    </head>'
-                                +'    <body>'
-                                +'        <ul class="nav-buttons">  <li><a href="/" class="is-active">One</a></li>   <li><a href="/">Two</a></li>   <li><a href="/">Three</a></li> </ul>'
-                                +'    </body>'
-                                +'</html>');
-                            context.close();
-                            script.parentNode.removeChild(script);
-                        </script>
-                    </div>
-                
-                
-                    <div class="source language-markup"><pre><code>&lt;ul class=&quot;nav-buttons&quot;&gt;
-   &lt;li&gt;&lt;a href=&quot;/&quot; class=&quot;is-active&quot;&gt;One&lt;/a&gt;&lt;/li&gt; 
-   &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Two&lt;/a&gt;&lt;/li&gt; 
-   &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Three&lt;/a&gt;&lt;/li&gt; 
-&lt;/ul&gt;</code></pre>
+  &lt;li&gt;&lt;a href=&quot;/&quot; class=&quot;is-active&quot;&gt;One&lt;/a&gt;&lt;/li&gt; 
+  &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Two&lt;/a&gt;&lt;/li&gt; 
+  &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Three&lt;/a&gt;&lt;/li&gt; </code></pre>
+<p>  </ul></p>
+<p>.nav-horizontal {
+  @extend .nav;
+  font-size: 0;
+  li {
+      font-size: 14px;
+      display: inline-block;
+      border-right-width: 1px;
+      &amp;:last-child { border-right: 0 }
+      a { padding: 0 0.5em }
+  }
+}</p>
 </div>
                 
             </div>

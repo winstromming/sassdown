@@ -26,7 +26,7 @@ function uncomment (comment, opts) {
     }
     return comment.replace(new RegExp(opts.commentStart.source + '|' + opts.commentEnd.source, 'g'), '').trim();
 }
-function unindent  (comment) { return comment.replace(/\n\s\*?\s?/g, "\n").replace(/\n   /g, '\n    '); }
+function unindent  (comment) { return comment.replace(/\n \* |\n \*|\n /g, "\n").replace(/\n   /g, '\n    '); }
 function fromroot  (resolve) { return path.relative(path.dirname(), resolve); }
 function fromdata  (resolve) { return fromroot(path.resolve(module.filename, '..', '..', 'data', resolve)); }
 
@@ -133,11 +133,10 @@ exports.metadata = function (file, page, opts) {
     var regexp = new RegExp(
         opts.commentStart.source +
         '([\\\s\\\S]*?)' +
-        opts.commentEnd.source +
-        '([\\\s\\\S]*?)' +
-        '(?=' + opts.commentStart.source + ')',
+        opts.commentEnd.source,
         'g'
     );
+    var sect, sections = [];
     // Assign metadata properties to file object
     file.slug     = path.basename(page._path, path.extname(page._path));
     file.heading  = (page._name) ? page._name : file.slug;
@@ -145,12 +144,25 @@ exports.metadata = function (file, page, opts) {
     file.path     = file.dest.replace(path.extname(page._path), '.html');
     file.original = file.src[0];
     file.site     = {};
+    file.sections = [];
     //file.sections = page._src.match(/\/\*([\s\S]*?)\*\//g);
-   var m = null;
-    while((m = regexp.exec(page._src)) !== null) {
-        console.log(m);
+    while((sect = regexp.exec(page._src)) !== null) {
+        sections.push(sect);
     }
-    file.sections = page._src.match(regexp);
+    //processing sections =
+    sections = sections.map(function (el, index, a) {
+        //captured string sect[0]
+        //first group sect[1]
+        var nextEl = a[index + 1];
+        var nextIndex = nextEl ? nextEl.index : page._src.length;
+        var cssSrc = page._src.slice( el.index + el[0].length, nextIndex );
+
+        el.cssSrc = cssSrc;
+
+        return el;
+
+    });
+    file.sections = sections;//page._src.match(regexp);
     //console.log(file.sections);
     // Get rid of some object literal clutter
     //delete file.orig;
@@ -217,28 +229,43 @@ exports.errors = function (file) {
 
 exports.sections = function (file, config) {
     // Loop through any sections (comments) in file
-    file.sections.forEach(function(section, index){
+    file.sections.forEach(function(sectionObj, index){
         // Remove CSS comment tags and any SASS-style
         // comment block indentation at line beginnings
-        section = unindent(uncomment(section, config.opts));
+        var rawMarkdown = unindent(sectionObj[1], config.opts).trim();
+
+
+        //first line should always have an h1 heading
+        if (rawMarkdown.indexOf('<h1') !== 0 && rawMarkdown.indexOf('#') !== 0) {
+            rawMarkdown = '#' + rawMarkdown;
+        }
+
+
         // See if any ```-marked or 4-space indented code blocks exist
-        if (section.match(/    |```/)) {
+        if (/[ ]{4,}|```/.test(rawMarkdown)) {
             // Encapsulate and mark the code block
-            section = section.replace(/```/, '[html]\n```').replace(/     /g,'    ').replace(/    /, '[html]\n    ');
+            if (rawMarkdown.indexOf('```') !== -1) {
+                rawMarkdown = rawMarkdown.replace(/```/, '[html]\n```');
+            } else if (rawMarkdown.indexOf('    ') !== -1) {
+                rawMarkdown = rawMarkdown.replace(/    /, '[html]\n```');
+            }
             // Return our sections object
             file.sections[index] = {
                 id: Math.random().toString(36).substr(2,5),
-                comment: markdown(section.split('[html]')[0]),
-                source: markdown(section.split('[html]\n')[1]),
-                result: section.split('[html]\n')[1].replace(/     |    |```/g, '').replace(/(\r\n|\n|\r)/gm,'')
+                comment: markdown(rawMarkdown.split('[html]')[0]),
+                source: markdown(rawMarkdown.split('[html]\n')[1]),
+                result: rawMarkdown.split('[html]\n')[1].replace(/     |    |```/g, '').replace(/(\r\n|\n|\r)/gm,'')
             };
         } else {
             // Without code, it is just a comment
             file.sections[index] = {
-                comment: markdown(section)
+                comment: markdown(rawMarkdown)
             };
         }
+        file.sections[index].cssSource = sectionObj.cssSrc;
     });
+
+    console.log(file.sections);
 };
 
 exports.readme = function (config) {

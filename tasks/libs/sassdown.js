@@ -114,7 +114,8 @@ exports.groups = function (config) {
         config.groups[file.group].pages.push({
             heading: file.heading,
             group: file.group,
-            path: file.path
+            path: file.path,
+            url: file.url
         });
     });
     // for (var i=0; i<config.groups.length; i++) {
@@ -136,9 +137,13 @@ exports.metadata = function (file, page, opts) {
     file.slug     = path.basename(page._path, path.extname(page._path));
     file.group    = path.dirname(page._path).split(path.sep)[0];
     file.path     = file.dest.replace(path.extname(page._path), '.html');
+    file.url      = opts.baseUrl ? file.path.replace(file.orig.dest, opts.baseUrl) : '/' + file.path;
     file.original = file.src[0];
     file.site     = {};
     file.sections = [];
+    //replace sigle line comments like `/* a comment */` with SASS-like syntax
+    //TODO: needs a better fix
+    page._src = page._src.replace(/\/\*([^\n]*)\*\//g, '//$1');
     //file.sections = page._src.match(/\/\*([\s\S]*?)\*\//g);
     while((sect = regexp.exec(page._src)) !== null) {
         sections.push(sect);
@@ -317,6 +322,7 @@ exports.readme = function (config) {
 exports.output = function (config, file) {
     // Site rather than page-specific data
     file.site.root   = config.files[0].orig.dest;
+    file.site.rootUrl  = path.normalize( config.opts.baseUrl || ('/' + config.files[0].orig.dest));
     file.site.groups = config.groups;
     file.site.assets = '/'+file.site.root+'assets';
     // Write out to path with grunt

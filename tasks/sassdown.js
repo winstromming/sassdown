@@ -27,6 +27,7 @@ module.exports = function (grunt) {
                 readme: true,
                 theme: null,
                 template: null,
+                baseUrl: null,
                 excludeMissing: false,
                 commentStart: /\/\*/,
                 commentEnd: /\*\//

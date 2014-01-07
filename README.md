@@ -178,11 +178,11 @@ Creates an alert box notification using the `.alert-` prefix. The following opti
 .alert-error   { @include alert(#ffdcdc) }
 ```
 
-# File Object
+# Page object
 
-Sassdown parses through your files using Grunt and before compiling any Handlebars templates it generates a series of File objects. This object contains all data for the `.html` page that gets rendered.
+Sassdown parses through your files using Grunt and before compiling any Handlebars templates it generates a series of Page objects. This object contains all data for the `.html` page that gets rendered.
 
-Properties inside the File object can be accessed by the Handlebars template using `{{ helpers }}`. For example, the `heading` property is used in the default template like `<title>{{ heading }}</title>`.
+Properties inside the File object can be accessed by the Handlebars template using `{{ helpers }}`. For example, the `heading` property is used in the default template like `<title>{{ page.heading }}</title>`.
 
 ```js
 {
@@ -192,8 +192,8 @@ Properties inside the File object can be accessed by the Handlebars template usi
   path: 'public/styleguide/objects/_alerts.html',
   url: '/public/styleguide/objects/_alerts.html',
   original: 'assets/sass/partials/objects/_alerts.scss',
-  prismLang: 'scss', //syntax highlight
-  ext: 'scss' //file extension
+  prismLang: 'scss', // syntax highlight
+  ext: 'scss' // file extension
   site: {
     root: 'styleguide/',
     rootUrl: '/public/styleguide/',
@@ -205,9 +205,9 @@ Properties inside the File object can be accessed by the Handlebars template usi
   },
   sections: [
     {
-      id: 'cr3sor',
-      prismLang: 'scss', //syntax highlight
-      fileExt: 'scss' //file extension
+      id: 'cr3sor', // randomly generated
+      prismLang: 'scss', // syntax highlight
+      fileExt: 'scss' // file extension
       comment: '<h1>Alerts</h1>\n<p>Creates an alert box notification using the <code>.alert-</code> prefix. The following options are available:</p>',
       source: '<pre><code>&lt;div class=&quot;alert-success&quot;&gt;Success&lt;/div&gt;\n&lt;div class=&quot;alert-warning&quot;&gt;Warning&lt;/div&gt;\n&lt;div class=&quot;alert-error&quot;&gt;Error&lt;/div&gt;</code></pre>',
       cssSource: '<pre><code>@mixin alert($colour){\n    color: darken($colour, 50%);\n    background: $colour;\n    border-radius: 5px;\n    margin-bottom: 1em;\n    padding: 1em;\n}\n\n.alert-success { @include alert(#e2f3c1) }\n.alert-warning { @include alert(#fceabe) }\n.alert-error   { @include alert(#ffdcdc) }</code></pre>'
@@ -217,14 +217,96 @@ Properties inside the File object can be accessed by the Handlebars template usi
 }
 ```
 
+# Site object
+
+In addition to the `Page` object, the `Site` object is also passed in when the handlebars template compiles. `Site` contains all the configuration settings (`config`) and global values that Sassdown uses, **as well as** all `Page` (`files`) objects.
+
+Here's an example snapshot of a `Site` object:
+
+```js
+{
+    opts: {
+        readme: false,
+        theme: 'tasks/data/theme.css',
+        template: 'tasks/data/template.hbs',
+        baseUrl: null,
+        excludeMissing: true,
+        commentStart: /\/\* (?:[=]{4,}\n[ ]+|(?!\n))/,
+        commentEnd: /[ ]+[=]{4,} \*\//,
+        assets: ['test/custom/assets/css/*.css']
+    },
+    files: [Object], // full list of all File objects
+    groups: {
+        base: {
+            name: 'base',
+            pages: [{
+                heading: 'Base Styles',
+                group: 'base',
+                path: 'test/custom/styleguide/base/_base.html',
+                url: '/test/custom/styleguide/base/_base.html'
+            }]
+        },
+        modules: {
+            name: 'modules',
+            pages: [{
+                heading: 'Media Object',
+                group: 'modules',
+                path: 'test/custom/styleguide/modules/_media.html',
+                url: '/test/custom/styleguide/modules/_media.html'
+            }]
+        }
+    },
+    module: '/Users/hillsj/Sites/sassdown/tasks/sassdown.js',
+    template: {
+        html: [Function],
+        assets: null
+    },
+    root: 'test/custom/assets',
+    tree: {
+        name: 'sass',
+        path: 'test/custom/assets/sass',
+        type: 'dir',
+        data: {},
+        children: [{
+            name: 'application.sass',
+            path: 'test/custom/assets/sass/application.sass',
+            type: 'file',
+            data: {}
+        }, {
+            name: 'base',
+            path: 'test/custom/assets/sass/base',
+            type: 'dir',
+            data: {},
+            children: [{
+                name: '_base.sass',
+                path: 'test/custom/assets/sass/base/_base.sass',
+                type: 'file',
+                data: [Object] // contains File object
+            }]
+        }, {
+            name: 'modules',
+            path: 'test/custom/assets/sass/modules',
+            type: 'dir',
+            data: {},
+            children: [{
+                name: '_media.sass',
+                path: 'test/custom/assets/sass/modules/_media.sass',
+                type: 'file',
+                data: [Object] // contains File object
+            }]
+        }]
+    }
+}
+```
+
 # Handlebars
 
 [Handlebars](http://handlebarsjs.com/) is a semantic templating syntax. Put simply, it allows you to output dynamic properties in HTML using `{{  }}` from a variety of data sources such as JSON.
 
-Sassdown uses Handlebars to output data from the File Objects it creates. Your `.hbs` file specified in the `template` option may contain code that looks like this for example:
+Sassdown uses Handlebars to output data from the Page Objects it creates. Your `.hbs` file specified in the `template` option may contain code that looks like this for example:
 
 ```html
-{{#each sections}}
+{{#each page.sections }}
     <div class="section">
         {{#if comment}}
             <div class="comment">{{{comment}}}</div>
@@ -239,8 +321,24 @@ Sassdown uses Handlebars to output data from the File Objects it creates. Your `
             <div class="source {{prismLang}}">{{{cssSource}}}</div>
         {{/if}}
     </div>
-{{/each}}
+{{/each }}
 ```
 
-## Compass? Sass?
-Sassdown **does not** compile your .sass or .scss files. Since you're using Grunt, I would recommend the [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass) plugin for this task.
+Since the Handlebars template also pulls in the Site Object, you can use `{{#each}}` to iterate through the `tree` object create navigation structures:
+
+```html
+{{#each site.tree.children }}
+<dl>
+    <dt>{{ name }}</dt>
+    {{#each children }}
+        <dd>{{ name }}</dd>
+    {{/each}}
+</dl>
+{{/each }}
+```
+
+# Sass
+
+It should be noted that, despite the name, Sassdown does not explicitly read only SASS files. It works just fine with .sass, .less, .css or even .txt files.
+
+Sassdown **does not** compile your source files. Assuming you are using SASS, and since you're using Grunt, I would recommend the [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass) plugin for this task. However you may also want to look at [grunt-contrib-stylus](https://github.com/gruntjs/grunt-contrib-stylus).

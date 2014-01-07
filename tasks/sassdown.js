@@ -13,7 +13,7 @@ module.exports = function (grunt) {
     require('./libs/helpers').init();
 
     // Required libs
-    //var util = require('util');
+    var util = require('util');
     var Sassdown = require('./libs/sassdown').init(grunt);
 
     // Grunt-registered Task
@@ -71,7 +71,7 @@ module.exports = function (grunt) {
 
         // Finish: Write out entire completed configuration
         //grunt.verbose.subhead('Complete Sassdown configuration for this task:');
-        //grunt.verbose.write(util.inspect(config, { showHidden: false, depth: null }));
+        //console.log(util.inspect(config, { showHidden: false, depth: null }));
 
     });
 

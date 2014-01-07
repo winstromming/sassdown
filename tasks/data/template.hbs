@@ -74,19 +74,5 @@
         };
     </script>
 
-    {{#each config.tree.children }}
-        <h2>{{ name }}</h2>
-        {{#if children }}
-            <div class="{{name}}">
-            {{#each children }}
-                <h3>{{ name }}</h3>
-                {{#each data.sections }}
-                    <div>{{{ comment }}}</div>
-                {{/each}}
-            {{/each}}
-            </div>
-        {{/if}}
-    {{/each }}
-
 </body>
 </html>

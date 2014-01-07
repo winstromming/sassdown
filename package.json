@@ -1,7 +1,7 @@
 {
   "name": "sassdown",
-  "description": "Generates a documentation styleguide from Markdown comments in sass/scss directories using Handlebars",
-  "version": "0.1.4",
+  "description": "Generates a documentation styleguide from Markdown comments in SASS, LESS or CSS files using Handlebars",
+  "version": "0.1.5",
   "author": {
     "name": "Jesper Hills",
     "email": "jay@nopr.co",

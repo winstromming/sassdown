@@ -13,6 +13,7 @@ module.exports = function (grunt) {
     require('./libs/helpers').init();
 
     // Required libs
+    //var util = require('util');
     var Sassdown = require('./libs/sassdown').init(grunt);
 
     // Grunt-registered Task
@@ -56,14 +57,21 @@ module.exports = function (grunt) {
         grunt.verbose.subhead('Generate index from Readme.md:');
         Sassdown.readme(config);
 
+        // Subtask: Tree
+        Sassdown.tree(config);
+
         // Subtask: Output
         grunt.verbose.subhead('Write styleguide copies of source files:');
         config.files.forEach(function(file){
             Sassdown.output(config, file);
         });
 
-        // Finish
+        // Finish: Notify user of completion
         grunt.verbose.or.ok('Styleguide created: ' + this.files[0].orig.dest);
+
+        // Finish: Write out entire completed configuration
+        //grunt.verbose.subhead('Complete Sassdown configuration for this task:');
+        //grunt.verbose.write(util.inspect(config, { showHidden: false, depth: null }));
 
     });
 

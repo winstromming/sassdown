@@ -10,6 +10,7 @@
 // Required Node modules
 // =====================
 var grunt;
+var fs = require('fs');
 var path = require('path');
 var cssmin = require('cssmin');
 var markdown = require('marked');
@@ -27,20 +28,6 @@ function fromdata  (resolve) { return fromroot(path.resolve(module.filename, '..
 
 // Exported methods
 // ===========================
-// - init
-// - config
-// - template
-// - includes
-// - scaffold
-// - assets
-// - groups
-// - metadata
-// - files
-// - errors
-// - sections
-// - readme
-// - output
-
 exports.init = function (_grunt) {
     grunt = _grunt;
     return exports;
@@ -84,8 +71,7 @@ exports.assets = function (config) {
 exports.scaffold = function (config) {
     // Create the destination directory
     grunt.file.mkdir(path.resolve(config.files[0].orig.dest));
-    // Resolve the relative 'root' of the cwd
-    // as we will need this later
+    // Resolve the relative 'root' of the cwd as we will need this later
     config.root = fromroot(path.resolve(config.files[0].orig.cwd, '..'));
 };
 
@@ -118,10 +104,6 @@ exports.groups = function (config) {
             url: file.url
         });
     });
-    // for (var i=0; i<config.groups.length; i++) {
-    //     // Explain how this dir gets created automatically
-    //     grunt.verbose.writeln('        '+config.dest+config.groups[i]+'/');
-    // }
     return config.groups;
 };
 
@@ -319,15 +301,65 @@ exports.readme = function (config) {
     exports.output(config, file);
 };
 
+exports.recurse = function (filepath, config) {
+    // Match a directory or file name
+    var match = fs.lstatSync(filepath);
+    // Simple metadata for the file tree
+    var tree  = {
+        name: path.basename(filepath),
+        path: filepath,
+        type: null,
+        data: {}
+    };
+    // Check if filepath match is a directory
+    if (match.isDirectory()) {
+        // Assign type
+        tree.type = 'dir';
+        // Add children to the tree
+        tree.children = fs.readdirSync(filepath).map(function(child) {
+            // Run the tree function again for this child
+            return exports.recurse(filepath + '/' + child, config);
+        });
+    }
+    // If the filepath isn't a directory, try
+    // and grab file data from the config.files
+    // object and associate it
+    if (match.isFile()) {
+        // Assign type
+        tree.type = 'file';
+        // Go through all the config.files
+        config.files.map(function(file) {
+            // See if the tree path matches the original file path
+            if (tree.path === file.original) {
+                // Return file object to tree.data
+                tree.data = file;
+            }
+        });
+    }
+    // Return the tree object
+    return tree;
+};
+
+exports.tree = function (config) {
+    // Set the config.tree to be the returned object literal
+    // from the file directory recursion
+    config.tree = exports.recurse(config.files[0].orig.cwd, config);
+    // Return the complete tree
+    return config.tree;
+};
+
 exports.output = function (config, file) {
     // Site rather than page-specific data
-    file.site.root   = config.files[0].orig.dest;
-    file.site.rootUrl  = path.normalize( config.opts.baseUrl || ('/' + config.files[0].orig.dest));
-    file.site.groups = config.groups;
-    file.site.assets = '/'+file.site.root+'assets';
+    file.site.root    = config.files[0].orig.dest;
+    file.site.rootUrl = path.normalize( config.opts.baseUrl || ('/' + config.files[0].orig.dest));
+    file.site.groups  = config.groups;
+    file.site.assets  = '/'+file.site.root+'assets';
     // Write out to path with grunt
     return grunt.file.write(
         file.path,
-        config.template.html(file)
+        config.template.html({
+            page: file,
+            config: config
+        })
     );
 };

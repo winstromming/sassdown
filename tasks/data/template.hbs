@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{heading}} &middot; Styleguide</title>
+    <title>{{ page.heading }} &middot; Styleguide</title>
     {{> theme}}
     {{> prism}}
 </head>
@@ -10,14 +10,14 @@
     <div class="navigation">
         <div class="gutter">
             <div class="group {{#if_group ''}}is-active{{/if_group}}">
-                <a href="{{site.rootUrl}}">Home</a>
+                <a href="{{ page.site.rootUrl }}">Home</a>
             </div>
-            {{#each site.groups}}
+            {{#each page.site.groups}}
             <div class="group {{#if_name ../group}}is-active{{/if_name}}">
-                <span>{{name}}</span>
+                <span>{{ name }}</span>
                 <ul>
                     {{#each pages}}
-                    <li><a class="{{#if_path ../../path}}is-active{{/if_path}}" href="{{url}}">{{heading}}</a></li>
+                    <li><a class="{{#if_path ../../path}}is-active{{/if_path}}" href="{{ url }}">{{ heading }}</a></li>
                     {{/each}}
                 </ul>
             </div>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="gutter">
-        {{#each sections}}
+        {{#each page.sections }}
             <div class="section">
                 {{#if comment}}
                     <div class="comment">{{{comment}}}</div>
@@ -73,6 +73,20 @@
             }
         };
     </script>
+
+    {{#each config.tree.children }}
+        <h2>{{ name }}</h2>
+        {{#if children }}
+            <div class="{{name}}">
+            {{#each children }}
+                <h3>{{ name }}</h3>
+                {{#each data.sections }}
+                    <div>{{{ comment }}}</div>
+                {{/each}}
+            {{/each}}
+            </div>
+        {{/if}}
+    {{/each }}
 
 </body>
 </html>

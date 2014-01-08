@@ -13,6 +13,8 @@
 4. [Handlebars](#handlebars)
 5. [Compass? Sass?](#compass-sass)
 
+**Current [milestones](https://github.com/nopr/sassdown/issues/milestones) for this project**
+
 ## Getting started
 Requires Grunt `~0.4.1`
 

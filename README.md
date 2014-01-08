@@ -2,7 +2,7 @@
 
 > Generates a documentation styleguide from Markdown comments in sass/scss directories using Handlebars
 
-**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.1.4`.**
+**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.1.5`.**
 
 1. [Getting started](#getting-started)
 2. [The "sassdown" task](#the-sassdown-task)

@@ -13,7 +13,6 @@ module.exports = function (grunt) {
     require('./libs/helpers').init();
 
     // Required libs
-    var util = require('util');
     var Sassdown = require('./libs/sassdown').init(grunt);
 
     // Grunt-registered Task
@@ -68,10 +67,6 @@ module.exports = function (grunt) {
 
         // Finish: Notify user of completion
         grunt.verbose.or.ok('Styleguide created: ' + this.files[0].orig.dest);
-
-        // Finish: Write out entire completed configuration
-        //grunt.verbose.subhead('Complete Sassdown configuration for this task:');
-        //console.log(util.inspect(config, { showHidden: false, depth: null }));
 
     });
 

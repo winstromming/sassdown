@@ -1,5 +1,7 @@
 .DS_Store
 Thumbs.db
+test/custom/styleguide
+test/example/styleguide
 node_modules
 npm-debug.log
 tmp

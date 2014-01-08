@@ -13,6 +13,7 @@ var grunt;
 var fs = require('fs');
 var path = require('path');
 var cssmin = require('cssmin');
+var prismjs = require('./prism');
 var markdown = require('marked');
 var Handlebars = require('handlebars');
 

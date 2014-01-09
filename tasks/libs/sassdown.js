@@ -7,9 +7,12 @@
 */
 'use strict';
 
+// Exposing global vars
+// =====================
+var Sassdown, grunt;
+
 // Required Node modules
 // =====================
-var grunt;
 var fs = require('fs');
 var path = require('path');
 var cssmin = require('cssmin');
@@ -31,32 +34,33 @@ function fromdata  (resolve) { return fromroot(path.resolve(module.filename, '..
 // ===========================
 module.exports.init = function (_grunt) {
     grunt = _grunt;
+    Sassdown = this;
 };
 
-module.exports.template = function (config) {
+module.exports.template = function () {
     // If option was left blank, use
     // the plugin default version
-    if (!config.opts.template) {
+    if (!Sassdown.config.opts.template) {
         warning('User template not specified. Using default.');
-        config.opts.template = fromdata('template.hbs');
+        Sassdown.config.opts.template = fromdata('template.hbs');
     }
-    // Return config.template object
-    config.template = {
-        html: Handlebars.compile(grunt.file.read(config.opts.template)),
+    // Return Sassdown.config.template object
+    Sassdown.config.template = {
+        html: Handlebars.compile(grunt.file.read(Sassdown.config.opts.template)),
         assets: null
     };
-    return config.template;
+    return Sassdown.config.template;
 };
 
-module.exports.assets = function (config) {
+module.exports.assets = function () {
     // Check if we added includes option
-    if (!config.opts.assets) {
+    if (!Sassdown.config.opts.assets) {
         warning('No assets specified');
     } else {
         // Create empty listing
         var assets = '';
         // Loop through matches
-        grunt.file.expand(config.opts.assets).forEach(function(file){
+        grunt.file.expand(Sassdown.config.opts.assets).forEach(function(file){
             // Write <link> or <script> tag to include
             if (file.split('.').pop() === 'css') { assets += '<link rel="stylesheet" href="/'+file+'" />'; }
             if (file.split('.').pop() === 'js') { assets += '<script src="/'+file+'"><\\/script>'; }
@@ -68,43 +72,43 @@ module.exports.assets = function (config) {
     }
 };
 
-module.exports.scaffold = function (config) {
+module.exports.scaffold = function () {
     // Create the destination directory
-    grunt.file.mkdir(path.resolve(config.files[0].orig.dest));
+    grunt.file.mkdir(path.resolve(Sassdown.config.files[0].orig.dest));
     // Resolve the relative 'root' of the cwd as we will need this later
-    config.root = fromroot(path.resolve(config.files[0].orig.cwd, '..'));
+    Sassdown.config.root = fromroot(path.resolve(Sassdown.config.files[0].orig.cwd, '..'));
 };
 
-module.exports.theme = function (config) {
+module.exports.theme = function () {
     // If option is blank, use plugin default
-    if (!config.opts.theme) {
+    if (!Sassdown.config.opts.theme) {
         warning('User stylesheet not specified. Using default.');
-        config.opts.theme = fromdata('theme.css');
+        Sassdown.config.opts.theme = fromdata('theme.css');
     }
     // Assign theme and prism to respective Handlebars partials
-    Handlebars.registerPartial('theme', '<style>'+cssmin(grunt.file.read(config.opts.theme))+'</style>');
+    Handlebars.registerPartial('theme', '<style>'+cssmin(grunt.file.read(Sassdown.config.opts.theme))+'</style>');
     Handlebars.registerPartial('prism', '<script>'+grunt.file.read(fromdata('prism.js'))+'</script>');
 };
 
-module.exports.groups = function (config) {
+module.exports.groups = function () {
     // Add file data into groups
-    config.files.forEach(function(file){
+    Sassdown.config.files.forEach(function(file){
         // Create if it does not exist
-        if (!config.groups[file.group]) {
-            config.groups[file.group] = {
+        if (!Sassdown.config.groups[file.group]) {
+            Sassdown.config.groups[file.group] = {
                 name: file.group,
                 pages: []
             };
         }
         // Push file data
-        config.groups[file.group].pages.push({
+        Sassdown.config.groups[file.group].pages.push({
             heading: file.heading,
             group: file.group,
             path: file.path,
             url: file.url
         });
     });
-    return config.groups;
+    return Sassdown.config.groups;
 };
 
 module.exports.metadata = function (file, page, opts) {
@@ -162,9 +166,9 @@ module.exports.metadata = function (file, page, opts) {
     return file;
 };
 
-module.exports.files = function (config) {
+module.exports.files = function () {
     // Modify attributes for each file
-    config.files = config.files.map(function(file){
+    Sassdown.config.files = Sassdown.config.files.map(function(file){
         // Page references
         var page = {};
         var src = '';
@@ -172,32 +176,32 @@ module.exports.files = function (config) {
         page._path = path.relative(file.orig.cwd, file.src[0]);
         page._src  = grunt.file.read(file.src);
 
-        src = unindent(uncomment(page._src, config.opts));
+        src = unindent(uncomment(page._src, Sassdown.config.opts));
 
         page._name = null;
         // MOVED TO METADATApage._name = (markdown(src).match('<h1')) ? markdown(src).split('</h1>')[0].split('>')[1] : null;
         // Add properties to file and use node path on
         // page object for consistent file system resolving
-        file = module.exports.metadata(file, page, config.opts);
+        file = module.exports.metadata(file, page, Sassdown.config.opts);
         // Throw any errors
         if (!file.sections.length || !file.heading) {
-            if (config.opts.excludeMissing) {
+            if (Sassdown.config.opts.excludeMissing) {
                 return null;
             } else {
                 module.exports.errors(file);
             }
         }
         // Format the content sections
-        if (file.sections) { module.exports.sections(file, config); }
+        if (file.sections) { module.exports.sections(file, Sassdown.config); }
         return file;
     }).filter(function (file) {
         return file !== null;
     });
     // Return back
-    return config.files;
+    return Sassdown.config.files;
 };
 
-module.exports.errors = function (file) {
+module.exports.errors = function () {
     if (!file.sections) {
         // Could not find any sections
         warning('Comment missing');
@@ -218,12 +222,12 @@ module.exports.errors = function (file) {
     }
 };
 
-module.exports.sections = function (file, config) {
+module.exports.sections = function (file) {
     // Loop through any sections (comments) in file
     file.sections.forEach(function(sectionObj, index){
         // Remove CSS comment tags and any SASS-style
         // comment block indentation at line beginnings
-        var rawMarkdown = unindent(sectionObj[1], config.opts).trim();
+        var rawMarkdown = unindent(sectionObj[1], Sassdown.config.opts).trim();
 
         // See if any ```-marked or 4-space indented code blocks exist
         if (/    |```/.test(rawMarkdown)) {
@@ -259,20 +263,20 @@ module.exports.sections = function (file, config) {
 
 };
 
-module.exports.readme = function (config) {
+module.exports.readme = function () {
     // Resolve the relative path to readme
-    var readme = config.opts.readme;
+    var readme = Sassdown.config.opts.readme;
 
     if (typeof readme === 'string') {
         readme = grunt.config.process(readme);
     }
     if (readme === true) {
         // Readme.md not found, create it:
-        readme = fromroot(path.resolve(config.root, 'readme.md'));
+        readme = fromroot(path.resolve(Sassdown.config.root, 'readme.md'));
         if (!grunt.file.exists(readme)) {
             warning('Readme file not found. Create it.');
             grunt.file.write(readme, 'Styleguide\n==========\n\nFill me with your delicious readme content\n');
-            grunt.verbose.or.ok('Readme file created: '+config.root+'/readme.md');
+            grunt.verbose.or.ok('Readme file created: '+Sassdown.config.root+'/readme.md');
         }
     }
 
@@ -282,7 +286,7 @@ module.exports.readme = function (config) {
     file.slug     = 'index';
     file.heading  = 'Home';
     file.group    = '';
-    file.path     = fromroot(path.resolve(config.files[0].orig.dest, 'index.html'));
+    file.path     = fromroot(path.resolve(Sassdown.config.files[0].orig.dest, 'index.html'));
     file.site     = {};
 
     if (readme && grunt.file.isFile(readme)) {
@@ -291,17 +295,16 @@ module.exports.readme = function (config) {
             comment: markdown(grunt.file.read(readme))
         }];
         // Output the file
-
     } else {
         file.original = null;
         file.sections = [{
             comment: '<h1>Styleguide Index</h1>'
         }];
     }
-    module.exports.output(config, file);
+    Sassdown.output(file);
 };
 
-module.exports.recurse = function (filepath, config) {
+module.exports.recurse = function (filepath) {
     // Match a directory or file name
     var match = fs.lstatSync(filepath);
     // Simple metadata for the file tree
@@ -318,17 +321,17 @@ module.exports.recurse = function (filepath, config) {
         // Add children to the tree
         tree.children = fs.readdirSync(filepath).map(function(child) {
             // Run the tree function again for this child
-            return module.exports.recurse(filepath + '/' + child, config);
+            return module.exports.recurse(filepath + '/' + child, Sassdown.config);
         });
     }
     // If the filepath isn't a directory, try
-    // and grab file data from the config.files
+    // and grab file data from the Sassdown.config.files
     // object and associate it
     if (match.isFile()) {
         // Assign type
         tree.type = 'file';
-        // Go through all the config.files
-        config.files.map(function(file) {
+        // Go through all the Sassdown.config.files
+        Sassdown.config.files.map(function(file) {
             // See if the tree path matches the original file path
             if (tree.path === file.original) {
                 // Return file object to tree.data
@@ -340,26 +343,26 @@ module.exports.recurse = function (filepath, config) {
     return tree;
 };
 
-module.exports.tree = function (config) {
-    // Set the config.tree to be the returned object literal
+module.exports.tree = function () {
+    // Set the Sassdown.config.tree to be the returned object literal
     // from the file directory recursion
-    config.tree = module.exports.recurse(config.files[0].orig.cwd, config);
+    Sassdown.config.tree = module.exports.recurse(Sassdown.config.files[0].orig.cwd, Sassdown.config);
     // Return the complete tree
-    return config.tree;
+    return Sassdown.config.tree;
 };
 
-module.exports.output = function (config, file) {
+module.exports.output = function (file) {
     // Site rather than page-specific data
-    file.site.root    = config.files[0].orig.dest;
-    file.site.rootUrl = path.normalize( config.opts.baseUrl || ('/' + config.files[0].orig.dest));
-    file.site.groups  = config.groups;
+    file.site.root    = Sassdown.config.files[0].orig.dest;
+    file.site.rootUrl = path.normalize( Sassdown.config.opts.baseUrl || ('/' + Sassdown.config.files[0].orig.dest));
+    file.site.groups  = Sassdown.config.groups;
     file.site.assets  = '/'+file.site.root+'assets';
     // Write out to path with grunt
     return grunt.file.write(
         file.path,
-        config.template.html({
+        Sassdown.config.template.html({
             page: file,
-            config: config
+            config: Sassdown.config
         })
     );
 };

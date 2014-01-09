@@ -20,7 +20,7 @@ module.exports = function (grunt) {
     grunt.registerMultiTask('sassdown', function() {
 
         // Store configuration options
-        var config = {
+        Sassdown.config = {
            // cwd: this.data.cwd,
            // dest: this.data.dest,
             opts: this.options({
@@ -37,35 +37,35 @@ module.exports = function (grunt) {
             module: module.filename
         };
 
-        // Subtask: Init and expose grunt
+        // Subtask: Init (expose module and grunt)
         Sassdown.init(grunt);
 
         // Subtask: Template, Theme
         grunt.verbose.subhead('Compile the Handlebars template:');
-        Sassdown.template(config);
-        Sassdown.theme(config);
+        Sassdown.template();
+        Sassdown.theme();
 
         // Subtask: Files, Groups, Scaffold
         grunt.verbose.subhead('Read and parse contents of source files:');
-        Sassdown.files(config);
-        Sassdown.groups(config);
-        Sassdown.scaffold(config);
+        Sassdown.files();
+        Sassdown.groups();
+        Sassdown.scaffold();
 
         // Subtask: Assets
         grunt.verbose.subhead('Add assets to the results output:');
-        Sassdown.assets(config);
+        Sassdown.assets();
 
         // Subtask: Indexing
         grunt.verbose.subhead('Generate index from Readme.md:');
-        Sassdown.readme(config);
+        Sassdown.readme();
 
         // Subtask: Tree
-        Sassdown.tree(config);
+        Sassdown.tree();
 
         // Subtask: Output
         grunt.verbose.subhead('Write styleguide copies of source files:');
-        config.files.forEach(function(file){
-            Sassdown.output(config, file);
+        Sassdown.config.files.forEach(function(file){
+            Sassdown.output(file);
         });
 
         // Finish: Notify user of completion

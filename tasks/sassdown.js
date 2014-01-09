@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     // Handlebars helpers
     require('./libs/helpers').init();
 
-    // Required libs
+    // Require the Sassdown module
     var Sassdown = require('./libs/sassdown');
 
     // Grunt-registered Task
@@ -21,9 +21,7 @@ module.exports = function (grunt) {
 
         // Store configuration options
         Sassdown.config = {
-           // cwd: this.data.cwd,
-           // dest: this.data.dest,
-            opts: this.options({
+            option: this.options({
                 readme: true,
                 theme: null,
                 template: null,
@@ -64,7 +62,7 @@ module.exports = function (grunt) {
 
         // Subtask: Output
         grunt.verbose.subhead('Write styleguide copies of source files:');
-        Sassdown.config.files.forEach(function(file){
+        Sassdown.config.files.forEach( function (file) {
             Sassdown.output(file);
         });
 

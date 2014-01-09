@@ -1,6 +1,6 @@
 # sassdown
 
-> Generates a documentation styleguide from Markdown comments in sass/scss directories using Handlebars
+> Generates a living styleguide from Markdown comments in CSS, SASS and LESS files using Handlebars
 
 **Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.1.4`.**
 

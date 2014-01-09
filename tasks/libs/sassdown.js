@@ -29,12 +29,11 @@ function fromdata  (resolve) { return fromroot(path.resolve(module.filename, '..
 
 // Exported methods
 // ===========================
-exports.init = function (_grunt) {
+module.exports.init = function (_grunt) {
     grunt = _grunt;
-    return exports;
 };
 
-exports.template = function (config) {
+module.exports.template = function (config) {
     // If option was left blank, use
     // the plugin default version
     if (!config.opts.template) {
@@ -49,7 +48,7 @@ exports.template = function (config) {
     return config.template;
 };
 
-exports.assets = function (config) {
+module.exports.assets = function (config) {
     // Check if we added includes option
     if (!config.opts.assets) {
         warning('No assets specified');
@@ -69,14 +68,14 @@ exports.assets = function (config) {
     }
 };
 
-exports.scaffold = function (config) {
+module.exports.scaffold = function (config) {
     // Create the destination directory
     grunt.file.mkdir(path.resolve(config.files[0].orig.dest));
     // Resolve the relative 'root' of the cwd as we will need this later
     config.root = fromroot(path.resolve(config.files[0].orig.cwd, '..'));
 };
 
-exports.theme = function (config) {
+module.exports.theme = function (config) {
     // If option is blank, use plugin default
     if (!config.opts.theme) {
         warning('User stylesheet not specified. Using default.');
@@ -87,7 +86,7 @@ exports.theme = function (config) {
     Handlebars.registerPartial('prism', '<script>'+grunt.file.read(fromdata('prism.js'))+'</script>');
 };
 
-exports.groups = function (config) {
+module.exports.groups = function (config) {
     // Add file data into groups
     config.files.forEach(function(file){
         // Create if it does not exist
@@ -108,7 +107,7 @@ exports.groups = function (config) {
     return config.groups;
 };
 
-exports.metadata = function (file, page, opts) {
+module.exports.metadata = function (file, page, opts) {
     var regexp = new RegExp(
         opts.commentStart.source +
         '([\\\s\\\S]*?)' +
@@ -163,7 +162,7 @@ exports.metadata = function (file, page, opts) {
     return file;
 };
 
-exports.files = function (config) {
+module.exports.files = function (config) {
     // Modify attributes for each file
     config.files = config.files.map(function(file){
         // Page references
@@ -179,17 +178,17 @@ exports.files = function (config) {
         // MOVED TO METADATApage._name = (markdown(src).match('<h1')) ? markdown(src).split('</h1>')[0].split('>')[1] : null;
         // Add properties to file and use node path on
         // page object for consistent file system resolving
-        file = exports.metadata(file, page, config.opts);
+        file = module.exports.metadata(file, page, config.opts);
         // Throw any errors
         if (!file.sections.length || !file.heading) {
             if (config.opts.excludeMissing) {
                 return null;
             } else {
-                exports.errors(file);
+                module.exports.errors(file);
             }
         }
         // Format the content sections
-        if (file.sections) { exports.sections(file, config); }
+        if (file.sections) { module.exports.sections(file, config); }
         return file;
     }).filter(function (file) {
         return file !== null;
@@ -198,7 +197,7 @@ exports.files = function (config) {
     return config.files;
 };
 
-exports.errors = function (file) {
+module.exports.errors = function (file) {
     if (!file.sections) {
         // Could not find any sections
         warning('Comment missing');
@@ -219,7 +218,7 @@ exports.errors = function (file) {
     }
 };
 
-exports.sections = function (file, config) {
+module.exports.sections = function (file, config) {
     // Loop through any sections (comments) in file
     file.sections.forEach(function(sectionObj, index){
         // Remove CSS comment tags and any SASS-style
@@ -260,7 +259,7 @@ exports.sections = function (file, config) {
 
 };
 
-exports.readme = function (config) {
+module.exports.readme = function (config) {
     // Resolve the relative path to readme
     var readme = config.opts.readme;
 
@@ -299,10 +298,10 @@ exports.readme = function (config) {
             comment: '<h1>Styleguide Index</h1>'
         }];
     }
-    exports.output(config, file);
+    module.exports.output(config, file);
 };
 
-exports.recurse = function (filepath, config) {
+module.exports.recurse = function (filepath, config) {
     // Match a directory or file name
     var match = fs.lstatSync(filepath);
     // Simple metadata for the file tree
@@ -319,7 +318,7 @@ exports.recurse = function (filepath, config) {
         // Add children to the tree
         tree.children = fs.readdirSync(filepath).map(function(child) {
             // Run the tree function again for this child
-            return exports.recurse(filepath + '/' + child, config);
+            return module.exports.recurse(filepath + '/' + child, config);
         });
     }
     // If the filepath isn't a directory, try
@@ -341,15 +340,15 @@ exports.recurse = function (filepath, config) {
     return tree;
 };
 
-exports.tree = function (config) {
+module.exports.tree = function (config) {
     // Set the config.tree to be the returned object literal
     // from the file directory recursion
-    config.tree = exports.recurse(config.files[0].orig.cwd, config);
+    config.tree = module.exports.recurse(config.files[0].orig.cwd, config);
     // Return the complete tree
     return config.tree;
 };
 
-exports.output = function (config, file) {
+module.exports.output = function (config, file) {
     // Site rather than page-specific data
     file.site.root    = config.files[0].orig.dest;
     file.site.rootUrl = path.normalize( config.opts.baseUrl || ('/' + config.files[0].orig.dest));

@@ -13,7 +13,7 @@ module.exports = function (grunt) {
     require('./libs/helpers').init();
 
     // Required libs
-    var Sassdown = require('./libs/sassdown').init(grunt);
+    var Sassdown = require('./libs/sassdown');
 
     // Grunt-registered Task
     // =====================
@@ -36,6 +36,9 @@ module.exports = function (grunt) {
             groups: {},
             module: module.filename
         };
+
+        // Subtask: Init and expose grunt
+        Sassdown.init(grunt);
 
         // Subtask: Template, Theme
         grunt.verbose.subhead('Compile the Handlebars template:');

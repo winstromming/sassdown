@@ -15,11 +15,13 @@
             {{#each page.site.groups}}
             <div class="group {{#if_name ../group}}is-active{{/if_name}}">
                 <span>{{ name }}</span>
+                {{#grouped_each 20 pages}}
                 <ul>
-                    {{#each pages}}
-                    <li><a class="{{#if_path ../../path}}is-active{{/if_path}}" href="{{ url }}">{{ heading }}</a></li>
+                    {{#each this}}
+                    <li><a class="{{#if_path ../../path}}is-active{{/if_path}}" href="/{{path}}">{{heading}}</a></li>
                     {{/each}}
                 </ul>
+                {{/grouped_each}}
             </div>
             {{/each}}
         </div>

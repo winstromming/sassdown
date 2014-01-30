@@ -57,19 +57,19 @@
                         <iframe id="iframe_{{{id}}}" height="0" src="about:blank"></iframe>
                         <script id="script_{{{id}}}">
                             var iframe  = document.getElementById('iframe_{{{id}}}');
-                            var context = iframe.contentWindow.document;
                             var script  = document.getElementById('script_{{{id}}}');
-                            context.open();
-                            context.write('<!doctype html>'
-                                +'<html>'
-                                +'    <head>'
-                                +'        {{> assets}}'
-                                +'    </head>'
-                                +'    <body>'
-                                +'        {{{result}}}'
-                                +'    </body>'
-                                +'</html>');
-                            context.close();
+                            var context = iframe.contentWindow.document;
+                                context.open();
+                                context.write('<!DOCTYPE html>');
+                                context.write('<'+'html>');
+                                context.write('    <'+'head>');
+                                context.write('        {{> assets}}');
+                                context.write('    <'+'/'+'head>');
+                                context.write('    <'+'body>');
+                                context.write('        {{{ result }}}');
+                                context.write('    <'+'/'+'body>');
+                                context.write('<'+'/'+'html>');
+                                context.close();
                             script.parentNode.removeChild(script);
                         </script>
                     </div>

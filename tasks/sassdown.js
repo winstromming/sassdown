@@ -22,7 +22,7 @@ module.exports = function (grunt) {
         // Store configuration options
         Sassdown.config = {
             option: this.options({
-                readme: true,
+                readme: null,
                 theme: null,
                 template: null,
                 excludeMissing: false,
@@ -49,12 +49,12 @@ module.exports = function (grunt) {
         grunt.verbose.subhead('Read and parse contents of source files:');
         Sassdown.files();
 
-        // Subtask: Indexing
-        //grunt.verbose.subhead('Generate index from Readme.md:');
-        //Sassdown.readme();
-
         // Subtask: Trees
         Sassdown.tree();
+
+        // Subtask: Indexing
+        grunt.verbose.subhead('Write styleguide index file:');
+        Sassdown.readme();
 
         // Subtask: Output
         grunt.verbose.subhead('Write styleguide copies of source files:');

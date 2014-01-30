@@ -212,44 +212,27 @@ module.exports.matching = function () {
 };
 
 module.exports.readme = function () {
-    // Resolve the relative path to readme
-    var readme = Sassdown.config.option.readme;
-
-    if (typeof readme === 'string') {
-        readme = grunt.config.process(readme);
-    }
-    if (readme === true) {
-        // Readme.md not found, create it:
-        readme = fromroot(path.resolve(Sassdown.config.root, 'readme.md'));
-        if (!grunt.file.exists(readme)) {
-            warning('Readme file not found. Create it.');
-            grunt.file.write(readme, 'Styleguide\n==========\n\nFill me with your delicious readme content\n');
-            grunt.verbose.or.ok('Readme file created: '+Sassdown.config.root+'/readme.md');
-        }
-    }
-
-    // Create a file object
+    // Create file object
     var file = {};
-    // Fill it with data for an index
-    file.slug     = 'index';
-    file.heading  = 'Home';
-    file.group    = '';
-    file.path     = fromroot(path.resolve(Sassdown.config.files[0].orig.dest, 'index.html'));
-    file.site     = {};
-
-    if (readme && grunt.file.isFile(readme)) {
-        file.original = readme;
+    // Fill with data
+    file.title = 'Styleguide';
+    file.slug  = '_index';
+    file.href  = 'index.html';
+    file.dest  = Sassdown.config.root + file.href;
+    // Has a README file been specified?
+    if (Sassdown.config.option.readme) {
+        // Use the README file for content
+        file.src = Sassdown.config.option.readme;
         file.sections = [{
-            comment: markdown(grunt.file.read(readme))
+            comment: markdown(grunt.file.read(file.src))
         }];
-        // Output the file
     } else {
-        file.original = null;
-        file.sections = [{
-            comment: '<h1>Styleguide Index</h1>'
-        }];
+        // Don't fill with content
+        file.src = file.dest;
+        file.sections = null;
     }
-    Sassdown.output(file);
+    // Write out
+    Sassdown.writeOut(file);
 };
 
 module.exports.recurse = function (filepath) {
@@ -318,21 +301,28 @@ module.exports.tree = function () {
 module.exports.output = function (file) {
     // Run through each page from before
     return Sassdown.pages.map( function (page) {
-        // Generate an indivdual path to root for this file
-        var local_root = path.relative(path.dirname(page.dest), Sassdown.config.root);
-        // Generate asset string
-        var local_assets = '';
-        // Generate path to assets for this file
-        Sassdown.config.assets.forEach( function (asset) {
-            local_assets += Sassdown.include(asset, path.dirname(page.dest));
-        });
-        // Register two unique (local) partials
-        Handlebars.registerPartial('root', local_root);
-        Handlebars.registerPartial('assets', local_assets);
-        // Write file with Grunt
-        grunt.file.write(page.dest, Sassdown.config.template.html({
-            'page': page,
-            'pages': Sassdown.config.tree.pages
-        }));
+        // Write this page out
+        Sassdown.writeOut(page);
     });
+};
+
+module.exports.writeOut = function (page) {
+    // Generate an indivdual path to root for this file
+    var local_root = path.relative(path.dirname(page.dest), Sassdown.config.root);
+    // Make local to self if null (ie for index page)
+    if (!local_root) local_root = '.';
+    // Generate asset string
+    var local_assets = '';
+    // Generate path to assets for this file
+    Sassdown.config.assets.forEach( function (asset) {
+        local_assets += Sassdown.include(asset, path.dirname(page.dest));
+    });
+    // Register two unique (local) partials
+    Handlebars.registerPartial('root', local_root);
+    Handlebars.registerPartial('assets', local_assets);
+    // Write file with Grunt
+    grunt.file.write(page.dest, Sassdown.config.template.html({
+        'page': page,
+        'pages': Sassdown.config.tree.pages
+    }));
 };

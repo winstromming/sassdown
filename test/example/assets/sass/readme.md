@@ -1,4 +1,4 @@
 Styleguide
 ==========
 
-Fill me with your delicious readme content
+I'm an example README file with information about this styleguide!

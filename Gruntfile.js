@@ -39,6 +39,7 @@ module.exports = function(grunt) {
                         'test/example/assets/css/*.css',
                         'test/example/assets/js/*.js',
                     ],
+                    readme: 'test/example/assets/sass/readme.md',
                     //theme: 'test/theme.css',
                     //template: 'test/template.hbs'
                 },

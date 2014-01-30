@@ -98,28 +98,45 @@ ul, ol { margin-left: 1em; list-style: outside; }
 
 /* Sections */
 .section {
-    background: #fff;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-    margin-bottom: 20px;
+  background: #fff;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+  margin-bottom: 20px;
 }
 .section .comment {
-    padding: 20px 20px 5px;
+  padding: 20px 20px 5px;
 }
 .section .result {
-    padding: 0 20px 20px;
+  padding: 0 20px 20px;
 }
 .section .result iframe {
-    display: block;
-    overflow: hidden;
-    position: relative;
-    width: 100%;
+  display: block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
 }
 .section .markup,
-.section .source {
-    border-top: 1px solid #ddd;
-    background: #f7f7f7;
-    padding: 20px;
+.section .styles {
+  border-top: 1px solid #ddd;
+  background: #f7f7f7;
+  position: relative;
 }
+.section .markup pre,
+.section .styles pre {
+  padding: 20px;
+}
+.section .markup:before,
+.section .styles:before {
+  display: block;
+  background: #eee;
+  color: #ccc;
+  padding: 0 20px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border-radius: 0 0 0 4px;
+}
+.section .markup:before { content: "Markup"; }
+.section .styles:before { content: "Styles"; }
 .section pre {
   position: relative;
 	overflow-y: auto;
@@ -131,9 +148,9 @@ ul, ol { margin-left: 1em; list-style: outside; }
 ** ----
 */
 .section .comment code {
-    color: #3fbead;
-    font-family: Consolas, Monaco, 'Andale Mono', monospace;
-    font-size: 13px;
+  color: #3fbead;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  font-size: 13px;
 }
 code,
 pre {
@@ -156,9 +173,6 @@ pre {
 }
 pre {
   position:relative;
-}
-code[class*="language"] {
-  display:block;
 }
 .token.comment {
 	padding: 0;

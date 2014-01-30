@@ -24,6 +24,10 @@ var Handlebars = require('handlebars');
 // Quick utility functions
 // =======================
 function warning   (message) { return grunt.verbose.warn(message); }
+function unspace   (string) { return string.replace(/\r\n|\n| /g,''); }
+function sourcify  (section, file) {
+    return file.data.split(section)[1].split(Sassdown.config.option.commentStart)[0];
+}
 function normalize (comment) {
     comment = comment.replace(Sassdown.config.option.commentStart, '');
     comment = comment.replace(Sassdown.config.option.commentEnd, '');
@@ -170,8 +174,8 @@ module.exports.getSections = function (file) {
         // encapsulate blocks of HTML with ``` fences
         var content = normalize(section);
         // Match the subsequent data (until a commentStart
-        // is found) and split off, this is our 'source'
-        var source = file.data.split(section)[1].split(Sassdown.config.option.commentStart)[0];
+        // is found) and split off, this are our styles
+        var styles = sourcify(section, file);
         // Unique ID
         output.id = Math.random().toString(36).substr(2,5);
         // If we find code blocks
@@ -179,10 +183,10 @@ module.exports.getSections = function (file) {
             output.comment = markdown(content.split(/```/)[0]);
             output.markup  = markdown('```'+content.split(/```/)[1].split(/```/)[0]+'```');
             output.markup  = prism.highlight(output.markup, prism.languages.markup);
-            // If we find code blocks (not empty space!) after the content
-            if (source.replace(/\r\n|\n| /g,'').length > 0) {
-                output.source  = markdown('```'+source+'```');
-                output.source  = prism.highlight(output.source, prism.languages.scss);
+            // Does styles consist of more than whitespace?
+            if (unspace(styles).length > 0) {
+                output.styles  = markdown('```'+styles+'```');
+                output.styles  = prism.highlight(output.styles, prism.languages.scss);
             }
             // Show the result
             output.result  = content.split(/```/)[1];

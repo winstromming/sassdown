@@ -41,6 +41,9 @@ ul, ol { margin-left: 1em; list-style: outside; }
 }
 
 /* Navigation */
+#nav {
+  margin-bottom: 25px;
+}
 #nav ul,
 #nav li,
 #nav a {

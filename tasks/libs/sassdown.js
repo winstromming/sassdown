@@ -169,6 +169,9 @@ module.exports.getSections = function (file) {
         // Remove comment tags, indentation and group
         // encapsulate blocks of HTML with ``` fences
         var content = normalize(section);
+        // Match the subsequent data (until a commentStart
+        // is found) and split off, this is our 'source'
+        var source = file.data.split(section)[1].split(Sassdown.config.option.commentStart)[0];
         // Unique ID
         output.id = Math.random().toString(36).substr(2,5);
         // If we find code blocks
@@ -176,7 +179,13 @@ module.exports.getSections = function (file) {
             output.comment = markdown(content.split(/```/)[0]);
             output.markup  = markdown('```'+content.split(/```/)[1].split(/```/)[0]+'```');
             output.markup  = prism.highlight(output.markup, prism.languages.markup);
-            output.result  = content.split(/```/)[1];//.replace(/(\r\n|\n|\r)/gm,'');
+            // If we find code blocks (not empty space!) after the content
+            if (source.replace(/\r\n|\n| /g,'').length > 0) {
+                output.source  = markdown('```'+source+'```');
+                output.source  = prism.highlight(output.source, prism.languages.scss);
+            }
+            // Show the result
+            output.result  = content.split(/```/)[1];
         } else {
             output.comment = markdown(content);
         }

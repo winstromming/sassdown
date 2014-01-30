@@ -55,12 +55,31 @@ a { color: #000; text-decoration: none; }
     position: absolute;
     z-index: 999;
     box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-    border-radius: 0 5px 5px 5px;
+    border-radius: 0;
     top: 45px;
+}
+.navigation ul:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.navigation ul:nth-child(2) {
+    border-bottom-left-radius: 5px;
     left: 0;
 }
+.navigation ul:nth-child(3) {
+    left: 196px;
+}
+.navigation ul:nth-child(4) {
+    left: 392px;
+}
+.navigation ul:nth-child(5) {
+    left: 588px;
+}
+.navigation ul:nth-child(6) {
+    left: 784px;
+}
 .navigation li a {
-    min-width: 10em;
+    min-width: 12em;
     line-height: 30px;
     padding: 0 20px;
     font-size: 13px;

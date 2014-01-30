@@ -262,7 +262,7 @@ module.exports.recurse = function (filepath) {
             fs.readdirSync(filepath).map( function (child) {
                 // Check this child isn't a junk file
                 if (junk.isnt(child)) {
-                    // Quickly check if this should be excluded
+                    // Check whether this file should be included
                     if (Sassdown.excluded.indexOf(filepath+'/'+child) === -1) {
                         // Run the recurse function again for this child
                         // to determine whether it's a directory or file
@@ -273,6 +273,11 @@ module.exports.recurse = function (filepath) {
                     }
                 }
             });
+            // Don't display as a directory if
+            // this tree node has no pages
+            if (tree.pages.length === 0) {
+                tree.is_directory = false;
+            }
         }
         // If the filepath isn't a directory, try and grab
         // file data from the Sassdown.pages stack and
@@ -291,9 +296,14 @@ module.exports.recurse = function (filepath) {
 };
 
 module.exports.tree = function () {
-    // Set the Sassdown.config.tree to be the returned object literal
-    // from the file directory recursion
+    // Set the Sassdown.config.tree to be the returned object
+    // literal from the file directory recursion
     Sassdown.config.tree = Sassdown.recurse(Sassdown.config.files[0].orig.cwd);
+    // We need to trim out any sections that have
+    // no pages, such as folders with only excluded files
+    //Sassdown.config.tree.map( function (iter) {
+    //    console.log(iter);
+    //});
     // Return the complete tree (without root)
     return Sassdown.config.tree.pages;
 };

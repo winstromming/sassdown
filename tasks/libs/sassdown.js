@@ -28,7 +28,7 @@ function normalize (comment) {
     comment = comment.replace(Sassdown.config.option.commentStart, '');
     comment = comment.replace(Sassdown.config.option.commentEnd, '');
     comment = comment.trim().replace(/^\*/, '').replace(/\n \* |\n \*|\n /g, '\n').replace(/\n   /g, '\n    ');
-    if (comment.match('    ')) {
+    if (!comment.match('```') && comment.match('    ')) {
         comment = comment.replace(/    |```\n    /, '```\n    ');
         comment = comment.replace(/\n    /g, '\n').replace(/\n /g, '\n');
         comment += '\n```';
@@ -65,7 +65,6 @@ module.exports.theme = function () {
     }
     // Assign theme and prism to respective Handlebars partials
     Handlebars.registerPartial('theme', '<style>'+cssmin(grunt.file.read(Sassdown.config.option.theme))+'</style>');
-    //Handlebars.registerPartial('prism', '<script>'+grunt.file.read('prism.js')+'</script>');
 };
 
 module.exports.assets = function () {
@@ -177,7 +176,7 @@ module.exports.getSections = function (file) {
             output.comment = markdown(content.split(/```/)[0]);
             output.markup  = markdown('```'+content.split(/```/)[1].split(/```/)[0]+'```');
             output.markup  = prism.highlight(output.markup, prism.languages.markup);
-            output.result  = content.split(/```/)[1].replace(/(\r\n|\n|\r)/gm,'');
+            output.result  = content.split(/```/)[1];//.replace(/(\r\n|\n|\r)/gm,'');
         } else {
             output.comment = markdown(content);
         }
@@ -299,11 +298,6 @@ module.exports.tree = function () {
     // Set the Sassdown.config.tree to be the returned object
     // literal from the file directory recursion
     Sassdown.config.tree = Sassdown.recurse(Sassdown.config.files[0].orig.cwd);
-    // We need to trim out any sections that have
-    // no pages, such as folders with only excluded files
-    //Sassdown.config.tree.map( function (iter) {
-    //    console.log(iter);
-    //});
     // Return the complete tree (without root)
     return Sassdown.config.tree.pages;
 };

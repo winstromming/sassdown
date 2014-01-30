@@ -56,9 +56,11 @@
                 {{#if result}}
                     <div class="result">
                         <iframe id="iframe_{{{id}}}" height="0" src="about:blank"></iframe>
+                        <script id="result_{{{id}}}" type="text/html">{{{ result }}}</script>
                         <script id="script_{{{id}}}">
                             var iframe  = document.getElementById('iframe_{{{id}}}');
                             var script  = document.getElementById('script_{{{id}}}');
+                            var result  = document.getElementById('result_{{{id}}}');
                             var context = iframe.contentWindow.document;
                                 context.open();
                                 context.write('<!DOCTYPE html>');
@@ -67,10 +69,11 @@
                                 context.write('        {{> assets}}');
                                 context.write('    <'+'/'+'head>');
                                 context.write('    <'+'body>');
-                                context.write('        {{{ result }}}');
+                                context.write(result.innerHTML);
                                 context.write('    <'+'/'+'body>');
                                 context.write('<'+'/'+'html>');
                                 context.close();
+                            result.parentNode.removeChild(result);
                             script.parentNode.removeChild(script);
                         </script>
                     </div>

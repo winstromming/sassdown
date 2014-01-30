@@ -16,6 +16,7 @@ module.exports = function(grunt) {
         jshint: {
             all: [
                 'Gruntfile.js',
+                //'tasks/libs/*.js',
                 'tasks/*.js',
             ],
             options: {
@@ -36,8 +37,11 @@ module.exports = function(grunt) {
                 options: {
                     assets: [
                         'test/example/assets/css/*.css',
-                        'test/example/assets/js/*.js'
-                    ]
+                        'test/example/assets/js/*.js',
+                        'test/custom/assets/css/application.css',
+                        'http://www.nopr.co/assets/css/style.css',
+                    ],
+                    excludeMissing: false
                     //theme: 'test/theme.css',
                     //template: 'test/template.hbs'
                 },
@@ -48,23 +52,23 @@ module.exports = function(grunt) {
                     dest: 'test/example/styleguide/'
                 }]
             },
-            customStyleguide: {
-                options: {
-                    assets: [
-                        'test/custom/assets/css/*.css'
-                    ],
-                    excludeMissing: true,
-                    readme: false,
-                    commentStart: /\/\* (?:[=]{4,}\n[ ]+|(?!\n))/,
-                    commentEnd: /[ ]+[=]{4,} \*\//
-                },
-                files: [{
-                    expand: true,
-                    cwd: 'test/custom/assets/sass',
-                    src: ['**/*.sass'],
-                    dest: 'test/custom/styleguide/'
-                }]
-            }
+            // customStyleguide: {
+            //     options: {
+            //         assets: [
+            //             'test/custom/assets/css/*.css'
+            //         ],
+            //         excludeMissing: true,
+            //         readme: false,
+            //         commentStart: /\/\* (?:[=]{4,}\n[ ]+|(?!\n))/,
+            //         commentEnd: /[ ]+[=]{4,} \*\//
+            //     },
+            //     files: [{
+            //         expand: true,
+            //         cwd: 'test/custom/assets/sass',
+            //         src: ['**/*.sass'],
+            //         dest: 'test/custom/styleguide/'
+            //     }]
+            // }
 
         },
 

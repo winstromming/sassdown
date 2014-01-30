@@ -5,10 +5,12 @@ Buttons
 
 Re-usable button elements with action specific variants. You can use the `.btn` prefix for this.
 
-    <button class="btn">Submit</button> 
-    <input class="btn" type="submit" /> 
-    <span class="btn">Submit</span> 
-    <a class="btn">Submit</a>
+```
+<button class="btn">Submit</button> 
+<input class="btn" type="submit" /> 
+<span class="btn">Submit</span> 
+<a class="btn">Submit</a>
+```
 
 */
 .btn {
@@ -45,10 +47,12 @@ Re-usable button elements with action specific variants. You can use the `.btn` 
 Button (Action)
 ----------------
 
-    <button class="btn-action">Submit</button> 
-    <input class="btn-action" type="submit" /> 
-    <span class="btn-action">Submit</span> 
-    <a class="btn-action">Submit</a>
+```
+<button class="btn-action">Submit</button> 
+<input class="btn-action" type="submit" /> 
+<span class="btn-action">Submit</span> 
+<a class="btn-action">Submit</a>
+```
 
 */
 .btn-action {

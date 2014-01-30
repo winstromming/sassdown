@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>{{ page.heading }} &middot; Styleguide</title>
-    {{> theme}}
-    {{> prism}}
+    <title>{{ page.heading }}</title>
 </head>
 <body>
 
-    <div class="navigation">
-        <div class="gutter">
-            <div class="group {{#if_group ''}}is-active{{/if_group}}">
-                <a href="{{ page.site.rootUrl }}">Home</a>
-            </div>
-            {{#each page.site.groups}}
-            <div class="group {{#if_name ../group}}is-active{{/if_name}}">
-                <span>{{ name }}</span>
+    <ul class="navigation">
+    {{#each pages}}
+        <li>
+            {{#if is_directory }}
+                <h2>{{ name }}</h2>
                 <ul>
-                    {{#each pages}}
-                    <li><a class="{{#if_path ../../path}}is-active{{/if_path}}" href="{{ url }}">{{ heading }}</a></li>
-                    {{/each}}
+                {{#each pages}}
+                    <li>
+                        {{#if is_directory }}
+                            <h2>{{ name }}</h2>
+                            <ul>
+                            {{#each pages}}
+                                <li>
+                                    {{#if is_directory }}
+                                        <h2>{{ name }}</h2>
+                                        <ul>
+                                        {{#each pages}}
+                                            <li>
+                                                <a href="{{> root}}/{{ href }}">{{ title }}</a>
+                                            </li>
+                                        {{/each}}
+                                        </ul>
+                                    {{else}}
+                                        <a href="{{> root}}/{{ href }}">{{ title }}</a>
+                                    {{/if}}
+                                </li>
+                            {{/each}}
+                            </ul>
+                        {{else}}
+                            <a href="{{> root}}/{{ href }}">{{ title }}</a>
+                        {{/if}}
+                    </li>
+                {{/each}}
                 </ul>
-            </div>
-            {{/each}}
-        </div>
-    </div>
+            {{else}}
+                <a href="{{> root}}/{{ href }}">{{ title }}</a>
+            {{/if}}
+        </li>
+    {{/each}}
+    </ul>
 
     <div class="gutter">
         {{#each page.sections }}
@@ -53,19 +74,14 @@
                         </script>
                     </div>
                 {{/if}}
-                {{#if source}}
-                    <div class="source language-markup" data-source-type="html">{{{source}}}</div>
+                {{#if markup}}
+                    <div class="markup">{{{markup}}}</div>
                 {{/if}}
-                {{#if cssSource}}
-                    <div class="source language-{{prismLang}}" data-source-type="{{fileExt}}">{{{cssSource}}}</div>
-                {{/if}}
-
             </div>
         {{/each}}
     </div>
 
     <script>
-        // Resize all iframes to exactly fit content within
         window.onload = function() {
             var iframes = document.querySelectorAll('iframe');
             for ( var i = 0; i < iframes.length; i++ ){
@@ -73,6 +89,8 @@
             }
         };
     </script>
+
+    {{> theme}}
 
 </body>
 </html>

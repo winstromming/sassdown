@@ -1,0 +1,19 @@
+/*
+Visual Hide
+===========
+
+Used to visually remove elements from view, but
+still available to screen readers.
+
+http://nicolasgallagher.com/micro-clearfix-hack/
+*/
+%visual-hide {
+  border: 0;
+  padding: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  position: absolute;
+  clip: rect(0 0 0 0);
+}

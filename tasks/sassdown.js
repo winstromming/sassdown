@@ -25,46 +25,40 @@ module.exports = function (grunt) {
                 readme: true,
                 theme: null,
                 template: null,
-                baseUrl: null,
                 excludeMissing: false,
                 commentStart: /\/\*/,
                 commentEnd: /\*\//
             }),
-            files: this.files,
-            groups: {},
-            module: module.filename
+            files: this.files
         };
 
         // Subtask: Init (expose module and grunt)
         Sassdown.init(grunt);
 
-        // Subtask: Template, Theme
-        grunt.verbose.subhead('Compile the Handlebars template:');
+        // Subtask: Scaffold, Template, Theme
+        grunt.verbose.subhead('Generate the Handlebars template and theme:');
+        Sassdown.scaffold();
         Sassdown.template();
         Sassdown.theme();
 
-        // Subtask: Files, Groups, Scaffold
-        grunt.verbose.subhead('Read and parse contents of source files:');
-        Sassdown.files();
-        Sassdown.groups();
-        Sassdown.scaffold();
-
         // Subtask: Assets
-        grunt.verbose.subhead('Add assets to the results output:');
+        grunt.verbose.subhead('Read and create paths for included assets:');
         Sassdown.assets();
 
-        // Subtask: Indexing
-        grunt.verbose.subhead('Generate index from Readme.md:');
-        Sassdown.readme();
+        // Subtask: Files
+        grunt.verbose.subhead('Read and parse contents of source files:');
+        Sassdown.files();
 
-        // Subtask: Tree
+        // Subtask: Indexing
+        //grunt.verbose.subhead('Generate index from Readme.md:');
+        //Sassdown.readme();
+
+        // Subtask: Trees
         Sassdown.tree();
 
         // Subtask: Output
         grunt.verbose.subhead('Write styleguide copies of source files:');
-        Sassdown.config.files.forEach( function (file) {
-            Sassdown.output(file);
-        });
+        Sassdown.output();
 
         // Finish: Notify user of completion
         grunt.verbose.or.ok('Styleguide created: ' + this.files[0].orig.dest);

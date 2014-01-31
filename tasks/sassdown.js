@@ -22,8 +22,9 @@ module.exports = function (grunt) {
         // Store configuration options
         Sassdown.config = {
             option: this.options({
-                readme: null,
                 theme: null,
+                assets: null,
+                readme: null,
                 template: null,
                 excludeMissing: false,
                 commentStart: /\/\*/,

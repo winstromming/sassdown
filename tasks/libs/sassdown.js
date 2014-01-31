@@ -123,7 +123,6 @@ module.exports.files = function () {
         // Store file source within file
         file.data = grunt.file.read(file.src[0]);
         file.body = file.data.match(Sassdown.matching());
-        //console.log(psrc[0]);
         // Store file data within a page
         var page = Sassdown.getData(file);
         // No matching data

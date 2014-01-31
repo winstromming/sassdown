@@ -1,24 +1,22 @@
 # sassdown
 
-> Generates a living styleguide from Markdown comments in CSS, SASS and LESS files using Handlebars
+> Grunt plugin for building living styleguides with Handlebars from Markdown comments in CSS, SASS and LESS files.
 
-**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.1.5`.**
+**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.2`.**
 
 1. [Getting started](#getting-started)
-2. [The "sassdown" task](#the-sassdown-task)
+2. [Sassdown task](#sassdown-task)
     - [Overview](#overview)
     - [Options](#options)
     - [Usage](#usage)
 3. [Markdown](#markdown)
 4. [Handlebars](#handlebars)
-5. [Compass? Sass?](#compass-sass)
-
-**Current [milestones](https://github.com/nopr/sassdown/issues/milestones) for this project**
+5. [Prism](#prism)
+6. [Data Objects](#data-objects)
+7. [Template](#template)
+8. [SASS](#sass)
 
 ## Getting started
-Requires Grunt `~0.4.1`
-
-_If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins._
 
 Install this plugin with this command:
 
@@ -32,9 +30,9 @@ Enabled inside your Gruntfile with this line of JavaScript:
 grunt.loadNpmTasks('sassdown');
 ```
 
-## The "sassdown" Task
+## Sassdown Task
 
-Run the task using `grunt sassdown`. Task targets, files and options may be specified according to the grunt [Configuring tasks](http://gruntjs.com/configuring-tasks) guide. **While in development** if you encounter any confusing issues, do try running `grunt sassdown --verbose` - this will output the full process.
+Run the task using `grunt sassdown`. Task targets, files and options may be specified according to the grunt [configuring tasks](http://gruntjs.com/configuring-tasks) guide.
 
 ### Overview
 In your project's Gruntfile, add a section named `sassdown` to the data object passed into `grunt.initConfig()`.
@@ -44,7 +42,7 @@ sassdown: {
     options: {
         // Task-specific options go here.
     },
-    your_target: {
+    target: {
         // Target-specific file lists and/or options go here.
     },
 },
@@ -53,69 +51,61 @@ sassdown: {
 ### Options
 
 #### options.assets
-Type: `Array`
-Default value: `null`
+Type: `Array`<br/>
+Default: `null`
 
-*Required*. Array of file paths. These will be included into result examples in the styleguide. Typically, these assets are your finished compiled stylesheets and/or javascript files.
+*Optional*. Array of file paths. Will be included into the styleguide output. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and external file paths (eg. http://).
 
 #### options.template
-Type: `String`
-Default value: `null`
+Type: `String`<br/>
+Default: `null`
 
-*Optional*. A path to a Handlebars file with structure for the styleguide. If unspecified reverts to a default.
+*Optional*. A path to a Handlebars template file. Will use default Sassdown template if left blank.
 
 #### options.theme
-Type: `String`
-Default value: `null`
+Type: `String`<br/>
+Default: `null`
 
-*Optional*. A path to a stylesheet file containing the visual theme of the styleguide. If unspecified reverts to a default.
-
-#### options.commentStart
-Type: `RegExp`
-Default value: `/\/\*/`
-
-*Optional*. A regular expression to match beginning part of a comment block.
-
-#### options.commentEnd
-Type: `RegExp`
-Default value: `/\*\//`
-
-*Optional*. A regular expression to match ending part of a comment block.
-
-#### options.excludeMissing
-Type: `Boolean`
-Default value: `false`
-
-*Optional*. Exclude files without comments.
-
-#### options.baseUrl
-Type: `String`
-Default value: `null`
-
-*Optional*. A custom URL to use as base for styleguide links. If not provided it will default to the `dest` value of the `files` array.
+*Optional*. A path to a theme stylesheet. Will use default Sassdown theme if left blank.
 
 #### options.readme
-Type: `Boolean|String`
-Default value: `true`
+Type: `String`<br/>
+Default: `null`
 
-*Optional*. Path to a markdown file to be used as index page of the styleguide.
+*Optional*. Path to a README file. When set, this file will be parsed with Markdown and used as the index page for the styleguide.
 
-If set to `true` (default) will look for a `readme.md` into the `cwd` folder of the `files` array. Set the option to `false` to completely disable this feature.
+#### options.commentStart
+Type: `RegExp`<br/>
+Default: `/\/\*/`
+
+*Optional*. A regular expression to match beginning part of a comment block. Defaults to regular block comment (`/*`).
+
+#### options.commentEnd
+Type: `RegExp`<br/>
+Default: `/\*\//`
+
+*Optional*. A regular expression to match ending part of a comment block. Defaults to regular block comment (`*/`).
+
+#### options.excludeMissing
+Type: `Boolean`<br/>
+Default: `false`
+
+*Optional*. When set to true, Sassdown will ignore any files that do not contain matching or valid comment blocks.
 
 ### Usage
 
-You will need to use an [expanded files object](http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically), but here is roughly the minimum settings and setup required.
+You will need to use an [expanded files object](http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically), but here is roughly the minimum configuration required.
 ```js
 sassdown: {
     styleguide: {
         options: {
-            assets: ['assets/css/*.css']
+            assets: ['public/css/*.css']
         },
         files: [{
             expand: true,
-            cwd: 'assets/sass',
+            cwd: 'src/sass',
             src: ['*.scss'],
-            dest: 'styleguide/'
+            dest: 'public/styleguide/'
         }]
     }
 },
@@ -132,7 +122,9 @@ sassdown: {
                 'http://use.typekit.net/sea5yvm.js',
             ],
             theme: 'src/styleguide/theme.css',
-            template: 'src/styleguide/template.hbs'
+            template: 'src/styleguide/template.hbs',
+            readme: 'src/assets/sass/readme.md',
+            excludeMissing: true
         },
         files: [{
             expand: true,
@@ -151,9 +143,11 @@ sassdown: {
 
 Sassdown uses [Markdown](https://github.com/chjj/marked) to parse any block comments in your SASS files. From these, it generates the text content in the styleguide. Any recognised code blocks will be rendered as HTML/SCSS source-result pairs.
 
-### Example (_alerts.scss)
+## Structure
 
-Here is an example of what a .scss file may look like with a Markdown comment block. Notice the indented HTML example. You may use any Markdown-compatible [heading syntax](https://github.com/nopr/sassdown/issues/7) you like. You may use any common style of [block-comment syntax](https://github.com/nopr/sassdown/issues/12#issuecomment-28219982) you like. Code blocks may be fenced or indented (four spaces).
+You may use any Markdown-compatible [heading syntax](https://github.com/nopr/sassdown/issues/7) you like. You may use any common style of [block-comment syntax](https://github.com/nopr/sassdown/issues/12#issuecomment-28219982) you like. Code blocks may be fenced or indented (four spaces). Below are several examples; each will be correctly parsed by Sassdown into identical output.
+
+### Example .scss file
 
 ```scss
 /*
@@ -180,132 +174,11 @@ Creates an alert box notification using the `.alert-` prefix. The following opti
 .alert-error   { @include alert(#ffdcdc) }
 ```
 
-# Page object
-
-Sassdown parses through your files using Grunt and before compiling any Handlebars templates it generates a series of Page objects. This object contains all data for the `.html` page that gets rendered.
-
-Properties inside the File object can be accessed by the Handlebars template using `{{ helpers }}`. For example, the `heading` property is used in the default template like `<title>{{ page.heading }}</title>`.
-
-```js
-{
-  slug: '_alerts',
-  heading: 'Alerts',
-  group: 'objects',
-  path: 'public/styleguide/objects/_alerts.html',
-  url: '/public/styleguide/objects/_alerts.html',
-  original: 'assets/sass/partials/objects/_alerts.scss',
-  prismLang: 'scss', // syntax highlight
-  ext: 'scss' // file extension
-  site: {
-    root: 'styleguide/',
-    rootUrl: '/public/styleguide/',
-    groups: {
-      modules: [Object],
-      objects: [Object]
-    },
-    assets: '../../styleguide/assets/'
-  },
-  sections: [
-    {
-      id: 'cr3sor', // randomly generated
-      prismLang: 'scss', // syntax highlight
-      fileExt: 'scss' // file extension
-      comment: '<h1>Alerts</h1>\n<p>Creates an alert box notification using the <code>.alert-</code> prefix. The following options are available:</p>',
-      source: '<pre><code>&lt;div class=&quot;alert-success&quot;&gt;Success&lt;/div&gt;\n&lt;div class=&quot;alert-warning&quot;&gt;Warning&lt;/div&gt;\n&lt;div class=&quot;alert-error&quot;&gt;Error&lt;/div&gt;</code></pre>',
-      cssSource: '<pre><code>@mixin alert($colour){\n    color: darken($colour, 50%);\n    background: $colour;\n    border-radius: 5px;\n    margin-bottom: 1em;\n    padding: 1em;\n}\n\n.alert-success { @include alert(#e2f3c1) }\n.alert-warning { @include alert(#fceabe) }\n.alert-error   { @include alert(#ffdcdc) }</code></pre>'
-      result: '<div class="alert-success">Success</div> <div class="alert-warning">Warning</div> <div class="alert-error">Error</div>'
-    }
-  ]
-}
-```
-
-# Site object
-
-In addition to the `Page` object, the `Site` object is also passed in when the handlebars template compiles. `Site` contains all the configuration settings (`config`) and global values that Sassdown uses, **as well as** all `Page` (`files`) objects.
-
-Here's an example snapshot of a `Site` object:
-
-```js
-{
-    opts: {
-        readme: false,
-        theme: 'tasks/data/theme.css',
-        template: 'tasks/data/template.hbs',
-        baseUrl: null,
-        excludeMissing: true,
-        commentStart: /\/\* (?:[=]{4,}\n[ ]+|(?!\n))/,
-        commentEnd: /[ ]+[=]{4,} \*\//,
-        assets: ['test/custom/assets/css/*.css']
-    },
-    files: [Object], // full list of all File objects
-    groups: {
-        base: {
-            name: 'base',
-            pages: [{
-                heading: 'Base Styles',
-                group: 'base',
-                path: 'test/custom/styleguide/base/_base.html',
-                url: '/test/custom/styleguide/base/_base.html'
-            }]
-        },
-        modules: {
-            name: 'modules',
-            pages: [{
-                heading: 'Media Object',
-                group: 'modules',
-                path: 'test/custom/styleguide/modules/_media.html',
-                url: '/test/custom/styleguide/modules/_media.html'
-            }]
-        }
-    },
-    module: '/Users/hillsj/Sites/sassdown/tasks/sassdown.js',
-    template: {
-        html: [Function],
-        assets: null
-    },
-    root: 'test/custom/assets',
-    tree: {
-        name: 'sass',
-        path: 'test/custom/assets/sass',
-        type: 'dir',
-        data: {},
-        children: [{
-            name: 'application.sass',
-            path: 'test/custom/assets/sass/application.sass',
-            type: 'file',
-            data: {}
-        }, {
-            name: 'base',
-            path: 'test/custom/assets/sass/base',
-            type: 'dir',
-            data: {},
-            children: [{
-                name: '_base.sass',
-                path: 'test/custom/assets/sass/base/_base.sass',
-                type: 'file',
-                data: [Object] // contains File object
-            }]
-        }, {
-            name: 'modules',
-            path: 'test/custom/assets/sass/modules',
-            type: 'dir',
-            data: {},
-            children: [{
-                name: '_media.sass',
-                path: 'test/custom/assets/sass/modules/_media.sass',
-                type: 'file',
-                data: [Object] // contains File object
-            }]
-        }]
-    }
-}
-```
-
 # Handlebars
 
 [Handlebars](http://handlebarsjs.com/) is a semantic templating syntax. Put simply, it allows you to output dynamic properties in HTML using `{{  }}` from a variety of data sources such as JSON.
 
-Sassdown uses Handlebars to output data from the Page Objects it creates. Your `.hbs` file specified in the `template` option may contain code that looks like this for example:
+Sassdown uses Handlebars to output data from the [data objects](#data-objects) it creates. Your `.hbs` file specified in the `template` option may contain code that looks like this for example:
 
 ```html
 {{#each page.sections }}
@@ -316,31 +189,116 @@ Sassdown uses Handlebars to output data from the Page Objects it creates. Your `
         {{#if result}}
             <div class="result">{{{result}}}</div>
         {{/if}}
-        {{#if source}}
-            <div class="source">{{{source}}}</div>
+        {{#if markup}}
+            <div class="markup">{{{markup}}}</div>
         {{/if}}
-        {{#if cssSource}}
-            <div class="source {{prismLang}}">{{{cssSource}}}</div>
+        {{#if styles}}
+            <div class="styles">{{{styles}}}</div>
         {{/if}}
     </div>
 {{/each }}
 ```
 
-Since the Handlebars template also pulls in the Site Object, you can use `{{#each}}` to iterate through the `tree` object create navigation structures:
+### Common partials
 
-```html
-{{#each site.tree.children }}
-<dl>
-    <dt>{{ name }}</dt>
-    {{#each children }}
-        <dd>{{ name }}</dd>
-    {{/each}}
-</dl>
-{{/each }}
+Sassdown also provides a series of Handlebars **partials**, which can be used to output specific information on each page. These are:
+
+* `{{> root}}`<br>Outputs a path to the root directory of the styleguide, relative to whatever page you are on.
+ 
+* `{{> assets}}`<br>Outputs a set of `<link />` or `<script>` tags that include assets specified in the Grunt task options.
+ 
+* `{{> theme}}`<br>Outputs the theme stylesheet, minified, into a `<style>` tag.
+
+# Prism.js
+
+Sassdown uses a modified node-module wrapper of Lea Verou's [Prism.js](https://github.com/LeaVerou/prism/) for syntax highlighting. Markup is parsed through Prism by Node before being output through the template.
+
+# Data Objects
+
+Two objects are parsed into the Handlebars template; `Page` and `Pages`. **Page** contains json data for the current page only; **Pages** is an array literal containing all Page objects in a nested node tree.
+
+Any property within these objects can be output by Handlebars using `{{ helpers }}`. You can iterate through objects using `{{#each}} ... {{/each}}`, for example.
+
+## Page
+
+```js
+{
+  title: 'Alerts',
+  slug: '_alerts',
+  href: 'objects/user/_alerts.html',
+  dest: 'test/example/styleguide/objects/user/_alerts.html',
+  src: 'test/example/assets/sass/partials/objects/user/_alerts.scss',
+  sections: [ 
+    {
+      id: 'mswbu',
+      comment: '<h1 id="alerts">Alerts</h1>\n<p>Creates an alert box notification using the <code>.alert-</code> prefix. The following options are available:</p>\n',
+      result: '\n<div class="alert-success">Success</div> \n<div class="alert-warning">Warning</div> \n<div class="alert-error">Error</div>\n',
+      markup: '<pre><code><span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;</span>div</span> <span class="token attr-name" >class</span><span class="token attr-value" ><span class="token punctuation" >=</span>&quot;alert-success&quot;&gt;</span></span>Success<span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;/</span>div</span><span class="token punctuation" >&gt;</span></span> \n<span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;</span>div</span> <span class="token attr-name" >class</span><span class="token attr-value" ><span class="token punctuation" >=</span>&quot;alert-warning&quot;&gt;</span></span>Warning<span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;/</span>div</span><span class="token punctuation" >&gt;</span></span> \n<span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;</span>div</span> <span class="token attr-name" >class</span><span class="token attr-value" ><span class="token punctuation" >=</span>&quot;alert-error&quot;&gt;</span></span>Error<span class="token tag" ><span class="token tag" ><span class="token punctuation" >&lt;/</span>div</span><span class="token punctuation" >&gt;</span></span></code></pre>\n',
+      styles: '<pre><code><span class="token keyword" >@mixin</span> alert(<span class="token variable" >$colour</span>)<span class="token punctuation" >{</span>\n    <span class="token property" >color</span><span class="token punctuation" >:</span> darken(<span class="token variable" >$colour</span>, 50%)<span class="token punctuation" >;</span>\n    <span class="token property" >background</span><span class="token punctuation" >:</span> <span class="token variable" >$colour</span><span class="token punctuation" >;</span>\n    <span class="token property" >border-radius</span><span class="token punctuation" >:</span> 5px<span class="token punctuation" >;</span>\n    <span class="token property" >margin-bottom</span><span class="token punctuation" >:</span> 1em<span class="token punctuation" >;</span>\n    <span class="token property" >padding</span><span class="token punctuation" >:</span> 1em<span class="token punctuation" >;</span>\n<span class="token punctuation" >}</span>\n\n.alert-success <span class="token punctuation" >{</span> <span class="token keyword" >@include</span> alert(#e2f3c1) <span class="token punctuation" >}</span>\n.alert-warning <span class="token punctuation" >{</span> <span class="token keyword" >@include</span> alert(#fceabe) <span class="token punctuation" >}</span>\n.alert-error   <span class="token punctuation" >{</span> <span class="token keyword" >@include</span> alert(#ffdcdc) <span class="token punctuation" >}</span></code></pre>\n'
+    }
+  ]
+}
 ```
+
+# Pages
+
+```js
+[
+  {
+    name: 'base',
+    is_directory: true,
+    pages: [
+      [Object],
+      {
+        name: 'typography',
+        is_directory: true,
+        pages: [
+          [Object],
+          [Object],
+          [Object]
+        ]
+      },
+      [Object],
+      [Object]
+    ]
+  },
+  {
+    name: 'partials',
+    is_directory: true,
+    pages: [
+      [Object],
+      [Object]
+    ]
+  },
+  {
+    name: 'modules',
+    is_directory: true,
+    pages: [
+      [Object] 
+    ]
+  },
+  {
+    name: 'objects',
+    is_directory: true,
+    pages: [
+      [Object],
+      [Object], 
+      [Object]
+    ]
+  }
+]
+```
+
+# Template
+
+Should you wish to create a new Sassdown template, you may wish to use the [existing default template.hbs](https://github.com/nopr/sassdown/blob/master/tasks/data/template.hbs) as a base to work from. 
 
 # Sass
 
 It should be noted that, despite the name, Sassdown does not explicitly read only SASS files. It works just fine with .sass, .less, .css or even .txt files.
 
 Sassdown **does not** compile your source files. Assuming you are using SASS, and since you're using Grunt, I would recommend the [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass) plugin for this task. However you may also want to look at [grunt-contrib-stylus](https://github.com/gruntjs/grunt-contrib-stylus).
+
+# Project Milestones
+
+*Current [milestones](https://github.com/nopr/sassdown/issues/milestones) for this project*

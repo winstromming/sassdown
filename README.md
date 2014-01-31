@@ -257,12 +257,12 @@ Any property within these objects can be output by Handlebars using `{{ helpers 
 [
   {
     name: 'base',
-    is_directory: true,
+    isDirectory: true,
     pages: [
       [Object],
       {
         name: 'typography',
-        is_directory: true,
+        isDirectory: true,
         pages: [
           [Object],
           [Object],
@@ -275,7 +275,7 @@ Any property within these objects can be output by Handlebars using `{{ helpers 
   },
   {
     name: 'partials',
-    is_directory: true,
+    isDirectory: true,
     pages: [
       [Object],
       [Object]
@@ -283,14 +283,14 @@ Any property within these objects can be output by Handlebars using `{{ helpers 
   },
   {
     name: 'modules',
-    is_directory: true,
+    isDirectory: true,
     pages: [
       [Object] 
     ]
   },
   {
     name: 'objects',
-    is_directory: true,
+    isDirectory: true,
     pages: [
       [Object],
       [Object], 

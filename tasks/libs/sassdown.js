@@ -167,31 +167,14 @@ module.exports.getData = function (file) {
 module.exports.getSections = function (file) {
     // Create sections
     return file.body.map( function (section) {
-        // Output object
-        var output  = {};
         // Remove comment tags, indentation and group
         // encapsulate blocks of HTML with ``` fences
         var content = normalize(section);
         // Match the subsequent data (until a commentStart
         // is found) and split off, this are our styles
         var styles = sourcify(section, file);
-        // Unique ID
-        output.id = Math.random().toString(36).substr(2,5);
-        // If we find code blocks
-        if (content.match(/```/)) {
-            output.comment = markdown(content.split(/```/)[0]);
-            output.markup  = markdown('```'+content.split(/```/)[1].split(/```/)[0]+'```');
-            output.markup  = prism.highlight(output.markup, prism.languages.markup);
-            // Does styles consist of more than whitespace?
-            if (unspace(styles).length > 0) {
-                output.styles  = markdown('```'+styles+'```');
-                output.styles  = prism.highlight(output.styles, prism.languages.scss);
-            }
-            // Show the result
-            output.result  = content.split(/```/)[1];
-        } else {
-            output.comment = markdown(content);
-        }
+        // Output object
+        var output = Sassdown.formatting(content, styles);
         // Apply heading
         if (output.comment.match('</h1>')) {
             file.title = output.comment.split('</h1>')[0].split('>')[1];
@@ -199,6 +182,35 @@ module.exports.getSections = function (file) {
         // Output
         return output;
     });
+};
+
+module.exports.formatting = function (content, styles) {
+    // Create output object with unique id
+    var output = {
+        id: Math.random().toString(36).substr(2,5)
+    };
+    // If we find code blocks
+    if (content.match(/```/)) {
+        // Show comment
+        output.comment = markdown(content.split(/```/)[0]);
+        // Show result
+        output.result  = content.split(/```/)[1];
+        // Show markup
+        output.markup  = markdown('```'+content.split(/```/)[1].split(/```/)[0]+'```');
+        output.markup  = prism.highlight(output.markup, prism.languages.markup);
+        // Does styles consist of more than whitespace?
+        if (unspace(styles).length > 0) {
+            // Show styles
+            output.styles  = markdown('```'+styles+'```');
+            output.styles  = prism.highlight(output.styles, prism.languages.scss);
+        }
+    }
+    // If we don't find code blocks
+    else {
+        output.comment = markdown(content);
+    }
+    // Return
+    return output;
 };
 
 module.exports.matching = function () {

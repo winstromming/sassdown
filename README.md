@@ -11,8 +11,10 @@
     - [Usage](#usage)
 3. [Markdown](#markdown)
 4. [Handlebars](#handlebars)
-5. [Prism](#prism)
+5. [Prism.js](#prismjs)
 6. [Data Objects](#data-objects)
+    - [Page](#page)
+    - [Pages](#pages)
 7. [Template](#template)
 8. [SASS](#sass)
 
@@ -249,7 +251,7 @@ Any property within these objects can be output by Handlebars using `{{ helpers 
 }
 ```
 
-# Pages
+## Pages
 
 ```js
 [

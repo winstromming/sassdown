@@ -2,7 +2,7 @@
 
 > Grunt plugin for building living styleguides with Handlebars from Markdown comments in CSS, SASS and LESS files.
 
-**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.2.3`.**
+**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.2.4`.**
 
 1. [Getting started](#getting-started)
 2. [Sassdown task](#sassdown-task)
@@ -11,20 +11,21 @@
     - [Usage](#usage)
 3. [Markdown](#markdown)
 4. [Handlebars](#handlebars)
-5. [Prism.js](#prismjs)
+5. [Highlight.js](#highlightjs)
 6. [Data Objects](#data-objects)
     - [Page](#page)
     - [Pages](#pages)
 7. [Template](#template)
 8. [SASS](#sass)
 
-### What's new in version 0.2.3?
+### What's new in version 0.2.4?
 
 - Path resolving is relative; no more issues serving from localhost or using file:// protocols
 - Whitespace and preformatting is preserved in markup results
 - Source styles shown in conjunction with markup and result
 - Pages are served form an array-literal node tree; meaning clearer and nested navigation
 - Comment block matching is modifiable via regular expressions
+- Choice of syntax highlighting styles from various popular Highlight.js themes
 - Syntax highlighting is done with Node before templates compile; faster page loads
 
 ## Getting started
@@ -85,6 +86,12 @@ Default: `null`
 
 *Optional*. Path to a README file. When set, this file will be parsed with Markdown and used as the index page for the styleguide.
 
+#### options.highlight
+Type: `String`<br/>
+Default: `github`
+
+*Optional*. Choice of syntax highlighting style. Defaults to `github`, but other available options are: `docco`, `monokai`, `solarized-light`, `solarized-dark` or `xcode`.
+
 #### options.commentStart
 Type: `RegExp`<br/>
 Default: `/\/\*/`
@@ -135,6 +142,7 @@ sassdown: {
             theme: 'src/styleguide/theme.css',
             template: 'src/styleguide/template.hbs',
             readme: 'src/assets/sass/readme.md',
+            highlight: 'monokai',
             excludeMissing: true
         },
         files: [{
@@ -220,9 +228,9 @@ Sassdown also provides a series of Handlebars **partials**, which can be used to
  
 * `{{> theme}}`<br>Outputs the theme stylesheet, minified, into a `<style>` tag.
 
-# Prism.js
+# Highlight.js
 
-Sassdown uses a modified node-module wrapper of Lea Verou's [Prism.js](https://github.com/LeaVerou/prism/) for syntax highlighting. Markup is parsed through Prism by Node before being output through the template.
+Sassdown uses the popular and well-supported [Highlight.js](http://highlightjs.org/) for syntax highlighting. Markup is parsed by a Node module and highlighted before being output through the template. Various popular themes are supported via the task options.
 
 # Data Objects
 

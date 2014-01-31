@@ -18,6 +18,6 @@ Creates an alert box notification using the `.alert-` prefix. The following opti
     padding: 1em;
 }
 
-.alert-success { @include alert(#e2f3c1) }
-.alert-warning { @include alert(#fceabe) }
-.alert-error   { @include alert(#ffdcdc) }
+.alert-success { @include alert(#e2f3c1); }
+.alert-warning { @include alert(#fceabe); }
+.alert-error   { @include alert(#ffdcdc); }

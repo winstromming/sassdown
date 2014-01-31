@@ -16,7 +16,8 @@ var Sassdown, grunt;
 var fs = require('fs');
 var junk = require('junk');
 var path = require('path');
-var prism = require('./prism');
+//var prism = require('./prism');
+var hljs = require('highlight.js');
 var cssmin = require('cssmin');
 var markdown = require('marked');
 var Handlebars = require('handlebars');
@@ -60,8 +61,16 @@ module.exports.template = function () {
 module.exports.theme = function () {
     // Check for existence of user defined theme
     Sassdown.checkfor('theme', 'theme.css');
-    // Assign theme and prism to respective Handlebars partials
+    // Assign theme to Handlebars partial; minify this
     Handlebars.registerPartial('theme', '<style>'+cssmin(grunt.file.read(Sassdown.config.option.theme))+'</style>');
+};
+
+module.exports.highlight = function () {
+    // Check for existence of user defined highlight style
+    if (!Sassdown.config.option.highlight) { Sassdown.config.option.highlight = 'github'; }
+    var highlight = path.resolve(__dirname, '..', 'data', 'highlight', Sassdown.config.option.highlight+'.css');
+    // Assign highlight style to Handlebars partial; minify this
+    Handlebars.registerPartial('highlight', '<style>'+cssmin(grunt.file.read(highlight))+'</style>');
 };
 
 module.exports.checkfor = function (requirement, filename) {
@@ -190,6 +199,7 @@ module.exports.formatting = function (content, styles) {
     var output = {
         id: Math.random().toString(36).substr(2,5)
     };
+    //hljs.configure({useBR: true});
     // If we find code blocks
     if (content.match(/```/)) {
         // Show comment
@@ -197,13 +207,11 @@ module.exports.formatting = function (content, styles) {
         // Show result
         output.result  = content.split(/```/)[1];
         // Show markup
-        output.markup  = markdown('```'+content.split(/```/)[1].split(/```/)[0]+'```');
-        output.markup  = prism.highlight(output.markup, prism.languages.markup);
+        output.markup  = '<pre class="hljs"><code>'+hljs.highlight('html', content.split(/```/)[1].split(/```/)[0]).value+'</code></pre>';
         // Does styles consist of more than whitespace?
         if (unspace(styles).length > 0) {
             // Show styles
-            output.styles  = markdown('```'+styles+'```');
-            output.styles  = prism.highlight(output.styles, prism.languages.scss);
+            output.styles  = '<pre class="hljs"><code>'+hljs.highlight('scss', styles).value+'</code></pre>';
         }
     }
     // If we don't find code blocks

@@ -48,12 +48,8 @@ module.exports.init = function (_grunt) {
 };
 
 module.exports.template = function () {
-    // If option was left blank, use
-    // the plugin default version
-    if (!Sassdown.config.option.template) {
-        warning('User template not specified. Using default.');
-        Sassdown.config.option.template = path.resolve(path.dirname(), 'tasks', 'data', 'template.hbs');
-    }
+    // Check for existence of user defined template
+    Sassdown.checkfor('template', 'template.hbs');
     // Return Sassdown.config.template object
     Sassdown.config.template = {
         html: Handlebars.compile(grunt.file.read(Sassdown.config.option.template)),
@@ -62,13 +58,18 @@ module.exports.template = function () {
 };
 
 module.exports.theme = function () {
-    // If option is blank, use plugin default
-    if (!Sassdown.config.option.theme) {
-        warning('User stylesheet not specified. Using default.');
-        Sassdown.config.option.theme = path.resolve(path.dirname(), 'tasks', 'data', 'theme.css');
-    }
+    // Check for existence of user defined theme
+    Sassdown.checkfor('theme', 'theme.css');
     // Assign theme and prism to respective Handlebars partials
     Handlebars.registerPartial('theme', '<style>'+cssmin(grunt.file.read(Sassdown.config.option.theme))+'</style>');
+};
+
+module.exports.checkfor = function (requirement, filename) {
+    // If the requirement isn't met
+    if (!Sassdown.config.option[requirement]) {
+        warning('User ' + requirement + ' not specified. Using default.');
+        Sassdown.config.option[requirement] = path.resolve(__dirname, '..', 'data', filename);
+    }
 };
 
 module.exports.assets = function () {

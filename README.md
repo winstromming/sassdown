@@ -2,7 +2,7 @@
 
 > Grunt plugin for building living styleguides with Handlebars from Markdown comments in CSS, SASS and LESS files.
 
-**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.2.2`.**
+**Note: *This plugin is still in active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.2.3`.**
 
 1. [Getting started](#getting-started)
 2. [Sassdown task](#sassdown-task)
@@ -18,7 +18,7 @@
 7. [Template](#template)
 8. [SASS](#sass)
 
-### What's new in version 0.2.2?
+### What's new in version 0.2.3?
 
 - Path resolving is relative; no more issues serving from localhost or using file:// protocols
 - Whitespace and preformatting is preserved in markup results

@@ -77,21 +77,21 @@ module.exports.assets = function () {
         warning('User assets not specified. Styleguide will be unstyled!');
     } else {
         // Create empty array
-        var file_list = [];
+        var fileList = [];
         // Expand through matches in options and include both
         // internal and external files into the array
         Sassdown.config.option.assets.forEach( function (asset) {
             grunt.file.expand(asset).forEach( function (file) {
-                file_list.push(file);
+                fileList.push(file);
                 grunt.verbose.write(file+'...').ok();
             });
             if (asset.match('http://')) {
-                file_list.push(asset);
+                fileList.push(asset);
                 grunt.verbose.write(asset+'...').ok();
             }
         });
         // Insert as list of files as new assets object
-        Sassdown.config.assets = file_list;
+        Sassdown.config.assets = fileList;
     }
 };
 
@@ -99,7 +99,7 @@ module.exports.include = function (file, dest) {
     // Output
     var output;
     // If this file is not external, build a local relative path
-    if (!file.match('http://')) { file = path.relative(dest, file) }
+    if (!file.match('http://')) { file = path.relative(dest, file); }
     // Write <link> or <script> tag to include it
     if (file.split('.').pop() === 'css') { output = '<link rel="stylesheet" href="'+file+'" />'; }
     if (file.split('.').pop() === 'js') { output = '<script src="'+file+'"><\\/script>'; }
@@ -161,7 +161,7 @@ module.exports.getData = function (file) {
         href: path.relative(Sassdown.config.root, file.dest.replace(path.extname(file.src[0]), '.html')),
         dest: file.dest.replace(path.extname(file.src[0]), '.html'),
         src: file.src[0]
-    }
+    };
 };
 
 module.exports.getSections = function (file) {
@@ -207,7 +207,7 @@ module.exports.matching = function () {
     var begin = Sassdown.config.option.commentStart.source;
     var end = Sassdown.config.option.commentEnd.source;
     // Return out a new RegExp object
-    return new RegExp(begin+'([\\\s\\\S]*?)'+end, 'g');
+    return new RegExp(begin+'([\\s\\S]*?)'+end, 'g');
 };
 
 module.exports.readme = function () {
@@ -250,7 +250,7 @@ module.exports.recurse = function (filepath) {
         if ( match.isDirectory() ) {
             // Tree node
             tree.name = filename;
-            tree.is_directory = true;
+            tree.isDirectory = true;
             tree.pages = [];
             // Loop through directory and map child pages to tree node
             fs.readdirSync(filepath).map( function (child) {
@@ -270,7 +270,7 @@ module.exports.recurse = function (filepath) {
             // Don't display as a directory if
             // this tree node has no pages
             if (tree.pages.length === 0) {
-                tree.is_directory = false;
+                tree.isDirectory = false;
             }
         }
         // If the filepath isn't a directory, try and grab
@@ -281,7 +281,7 @@ module.exports.recurse = function (filepath) {
             // Loop through the Sassdown.pages
             Sassdown.pages.map( function (page) {
                 // Check for a match to filepath
-                if (filepath === page.src) { tree = page }
+                if (filepath === page.src) { tree = page; }
             });
         }
         // Return this tree node
@@ -297,7 +297,7 @@ module.exports.tree = function () {
     return Sassdown.config.tree.pages;
 };
 
-module.exports.output = function (file) {
+module.exports.output = function () {
     // Run through each page from before
     return Sassdown.pages.map( function (page) {
         // Write this page out
@@ -307,18 +307,18 @@ module.exports.output = function (file) {
 
 module.exports.writeOut = function (page) {
     // Generate an indivdual path to root for this file
-    var local_root = path.relative(path.dirname(page.dest), Sassdown.config.root);
+    var localRoot = path.relative(path.dirname(page.dest), Sassdown.config.root);
     // Make local to self if null (ie for index page)
-    if (!local_root) local_root = '.';
+    if (!localRoot) { localRoot = '.'; }
     // Generate asset string
-    var local_assets = '';
+    var localAssets = '';
     // Generate path to assets for this file
     Sassdown.config.assets.forEach( function (asset) {
-        local_assets += Sassdown.include(asset, path.dirname(page.dest));
+        localAssets += Sassdown.include(asset, path.dirname(page.dest));
     });
     // Register two unique (local) partials
-    Handlebars.registerPartial('root', local_root);
-    Handlebars.registerPartial('assets', local_assets);
+    Handlebars.registerPartial('root', localRoot);
+    Handlebars.registerPartial('assets', localAssets);
     // Write file with Grunt
     grunt.file.write(page.dest, Sassdown.config.template.html({
         'page': page,

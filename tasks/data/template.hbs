@@ -10,17 +10,17 @@
     <div id="nav">
         <h1><a href="{{> root}}/{{ href }}">Styleguide</a></h1>
         {{#each pages}}
-            {{#if is_directory }}
+            {{#if isDirectory }}
                 <h2 class="heading">{{ name }}</h2>
                 <ul class="group">
                 {{#each pages}}
                     <li>
-                        {{#if is_directory }}
+                        {{#if isDirectory }}
                             <h3 class="heading">{{ name }}</h3>
                             <ul class="group">
                             {{#each pages}}
                                 <li>
-                                    {{#if is_directory }}
+                                    {{#if isDirectory }}
                                         <h4 class="heading">{{ name }}</h4>
                                         <ul class="group">
                                         {{#each pages}}

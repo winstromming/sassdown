@@ -24,8 +24,9 @@ var Handlebars = require('handlebars');
 
 // Quick utility functions
 // =======================
-function warning   (message) { return grunt.verbose.warn(message); }
-function unspace   (string) { return string.replace(/\r\n|\n| /g,''); }
+function warning   (message)  { return grunt.verbose.warn(message); }
+function unspace   (string)   { return string.replace(/\r\n|\n| /g,''); }
+function datapath  (filename) { return path.resolve(__dirname, '..', 'data', filename); }
 function sourcify  (section, file) {
     return file.data.split(section)[1].split(Sassdown.config.option.commentStart)[0];
 }
@@ -50,7 +51,7 @@ module.exports.init = function (_grunt) {
 
 module.exports.template = function () {
     // Check for existence of user defined template
-    Sassdown.checkfor('template', 'template.hbs');
+    Sassdown.checkfor('template', datapath('template.hbs'));
     // Return Sassdown.config.template object
     Sassdown.config.template = {
         html: Handlebars.compile(grunt.file.read(Sassdown.config.option.template)),
@@ -60,24 +61,27 @@ module.exports.template = function () {
 
 module.exports.theme = function () {
     // Check for existence of user defined theme
-    Sassdown.checkfor('theme', 'theme.css');
+    Sassdown.checkfor('theme', datapath('theme.css'));
+    // Read file using grunt
+    var minify = grunt.file.read(Sassdown.config.option.theme);
     // Assign theme to Handlebars partial; minify this
-    Handlebars.registerPartial('theme', '<style>'+cssmin(grunt.file.read(Sassdown.config.option.theme))+'</style>');
+    Handlebars.registerPartial('theme', '<style>'+cssmin(minify)+'</style>');
 };
 
 module.exports.highlight = function () {
     // Check for existence of user defined highlight style
-    if (!Sassdown.config.option.highlight) { Sassdown.config.option.highlight = 'github'; }
-    var highlight = path.resolve(__dirname, '..', 'data', 'highlight', Sassdown.config.option.highlight+'.css');
+    Sassdown.checkfor('highlight', 'github');
+    // Read file using grunt
+    var minify = grunt.file.read(datapath('highlight.'+Sassdown.config.option.highlight+'.css'));
     // Assign highlight style to Handlebars partial; minify this
-    Handlebars.registerPartial('highlight', '<style>'+cssmin(grunt.file.read(highlight))+'</style>');
+    Handlebars.registerPartial('highlight', '<style>'+cssmin(minify)+'</style>');
 };
 
-module.exports.checkfor = function (requirement, filename) {
+module.exports.checkfor = function (requirement, defaults) {
     // If the requirement isn't met
     if (!Sassdown.config.option[requirement]) {
         warning('User ' + requirement + ' not specified. Using default.');
-        Sassdown.config.option[requirement] = path.resolve(__dirname, '..', 'data', filename);
+        Sassdown.config.option[requirement] = defaults;
     }
 };
 
@@ -278,12 +282,12 @@ module.exports.recurse = function (filepath) {
                 // Check this child isn't a junk file
                 if (junk.isnt(child)) {
                     // Check whether this file should be included
-                    if (Sassdown.excluded.indexOf(filepath+'/'+child) === -1) {
+                    if (Sassdown.excluded.indexOf(path.normalize(filepath+'/'+child)) === -1) {
                         // Run the recurse function again for this child
                         // to determine whether it's a directory or file
                         // while pushing to pages array of parent
                         tree.pages.push(
-                            Sassdown.recurse(filepath + '/' + child)
+                            Sassdown.recurse(path.normalize(filepath+'/'+child))
                         );
                     }
                 }

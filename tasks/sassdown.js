@@ -9,9 +9,6 @@
 
 module.exports = function (grunt) {
 
-    // Handlebars helpers
-    require('./libs/helpers').init();
-
     // Require the Sassdown module
     var Sassdown = require('./libs/sassdown');
 

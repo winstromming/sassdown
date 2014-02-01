@@ -16,7 +16,6 @@ var Sassdown, grunt;
 var fs = require('fs');
 var junk = require('junk');
 var path = require('path');
-//var prism = require('./prism');
 var hljs = require('highlight.js');
 var cssmin = require('cssmin');
 var markdown = require('marked');

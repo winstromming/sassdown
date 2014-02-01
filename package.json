@@ -1,7 +1,7 @@
 {
   "name": "sassdown",
   "description": "Grunt plugin for building living styleguides with Handlebars from Markdown comments in CSS, SASS and LESS files",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "author": {
     "name": "Jesper Hills",
     "email": "jay@nopr.co",

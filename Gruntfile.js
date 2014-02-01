@@ -51,23 +51,23 @@ module.exports = function(grunt) {
                     dest: 'test/example/styleguide/'
                 }]
             },
-            // customStyleguide: {
-            //     options: {
-            //         assets: [
-            //             'test/custom/assets/css/*.css'
-            //         ],
-            //         excludeMissing: true,
-            //         readme: false,
-            //         commentStart: /\/\* (?:[=]{4,}\n[ ]+|(?!\n))/,
-            //         commentEnd: /[ ]+[=]{4,} \*\//
-            //     },
-            //     files: [{
-            //         expand: true,
-            //         cwd: 'test/custom/assets/sass',
-            //         src: ['**/*.sass'],
-            //         dest: 'test/custom/styleguide/'
-            //     }]
-            // }
+            customStyleguide: {
+                options: {
+                    assets: [
+                        'test/custom/assets/css/*.css'
+                    ],
+                    excludeMissing: true,
+                    readme: false,
+                    commentStart: /\/\* (?:[=]{4,}\n[ ]+|(?!\n))/,
+                    commentEnd: /[ ]+[=]{4,} \*\//
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'test/custom/assets/sass',
+                    src: ['**/*.sass'],
+                    dest: 'test/custom/styleguide/'
+                }]
+            }
 
         },
 

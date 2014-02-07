@@ -113,6 +113,8 @@ module.exports.include = function (file, dest) {
     var output;
     // If this file is not external, build a local relative path
     if (!file.match('http://')) { file = path.relative(dest, file); }
+    // Preserve correct path escaping for <iframe> embedded url paths
+    if (file.match(/\\/)) { file = file.replace(/\\/g, '/'); }
     // Write <link> or <script> tag to include it
     if (file.split('.').pop() === 'css') { output = '<link rel="stylesheet" href="'+file+'" />'; }
     if (file.split('.').pop() === 'js') { output = '<script src="'+file+'"><\\/script>'; }
@@ -305,7 +307,7 @@ module.exports.recurse = function (filepath) {
             // Loop through the Sassdown.pages
             Sassdown.pages.map( function (page) {
                 // Check for a match to filepath
-                if (filepath === page.src) { tree = page; }
+                if (path.normalize(filepath) === path.normalize(page.src)) { tree = page; }
             });
         }
         // Return this tree node
@@ -331,7 +333,7 @@ module.exports.output = function () {
 
 module.exports.writeOut = function (page) {
     // Generate an indivdual path to root for this file
-    var localRoot = path.relative(path.dirname(page.dest), Sassdown.config.root);
+    var localRoot = path.normalize(path.relative(path.dirname(page.dest), Sassdown.config.root));
     // Make local to self if null (ie for index page)
     if (!localRoot) { localRoot = '.'; }
     // Generate asset string

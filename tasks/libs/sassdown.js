@@ -191,7 +191,7 @@ module.exports.getSections = function (file) {
         // Output object
         var output = Sassdown.formatting(content, styles);
         // Apply heading
-        if (output.comment.match('</h1>')) {
+        if (!file.title && output.comment.match('</h1>')) {
             file.title = output.comment.split('</h1>')[0].split('>')[1];
         }
         // Output

@@ -98,7 +98,7 @@ module.exports.assets = function () {
                 fileList.push(file);
                 grunt.verbose.write(file+'...').ok();
             });
-            if (asset.match('http://')) {
+            if (asset.match('://')) {
                 fileList.push(asset);
                 grunt.verbose.write(asset+'...').ok();
             }
@@ -112,7 +112,7 @@ module.exports.include = function (file, dest) {
     // Output
     var output;
     // If this file is not external, build a local relative path
-    if (!file.match('http://')) { file = path.relative(dest, file); }
+    if (!file.match('://')) { file = path.relative(dest, file); }
     // Preserve correct path escaping for <iframe> embedded url paths
     if (file.match(/\\/)) { file = file.replace(/\\/g, '/'); }
     // Write <link> or <script> tag to include it

@@ -2,53 +2,53 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>{{ page.title }}</title>
+    <title>{{page.title}}</title>
 </head>
 <body>
 <div class="gutter">
 
     <div id="nav">
-        <h1><a href="{{> root}}/{{ href }}">Styleguide</a></h1>
+        <h1><a href="{{> root}}/{{href}}">Styleguide</a></h1>
         {{#each pages}}
-            {{#if isDirectory }}
-                <h2 class="heading">{{ name }}</h2>
+            {{#if isDirectory}}
+                <h2 class="heading">{{name}}</h2>
                 <ul class="group">
                 {{#each pages}}
                     <li>
-                        {{#if isDirectory }}
-                            <h3 class="heading">{{ name }}</h3>
+                        {{#if isDirectory}}
+                            <h3 class="heading">{{name}}</h3>
                             <ul class="group">
                             {{#each pages}}
                                 <li>
-                                    {{#if isDirectory }}
-                                        <h4 class="heading">{{ name }}</h4>
+                                    {{#if isDirectory}}
+                                        <h4 class="heading">{{name}}</h4>
                                         <ul class="group">
                                         {{#each pages}}
                                             <li>
-                                                <a href="{{> root}}/{{ href }}">{{ title }}</a>
+                                                <a href="{{> root}}/{{href}}">{{title}}</a>
                                             </li>
                                         {{/each}}
                                         </ul>
                                     {{else}}
-                                        <a href="{{> root}}/{{ href }}">{{ title }}</a>
+                                        <a href="{{> root}}/{{href}}">{{title}}</a>
                                     {{/if}}
                                 </li>
                             {{/each}}
                             </ul>
                         {{else}}
-                            <a href="{{> root}}/{{ href }}">{{ title }}</a>
+                            <a href="{{> root}}/{{href}}">{{title}}</a>
                         {{/if}}
                     </li>
                 {{/each}}
                 </ul>
             {{else}}
-                <a href="{{> root}}/{{ href }}">{{ title }}</a>
+                <a href="{{> root}}/{{href}}">{{title}}</a>
             {{/if}}
         {{/each}}
     </div>
 
     <div id="content">
-        {{#each page.sections }}
+        {{#each page.sections}}
             <div class="section">
                 {{#if comment}}
                     <div class="comment">{{{comment}}}</div>
@@ -56,7 +56,7 @@
                 {{#if result}}
                     <div class="result">
                         <iframe id="iframe_{{{id}}}" height="0" src="about:blank"></iframe>
-                        <script id="result_{{{id}}}" type="text/html">{{{ result }}}</script>
+                        <script id="result_{{{id}}}" type="text/html">{{{result}}}</script>
                         <script id="script_{{{id}}}">
                             var iframe  = document.getElementById('iframe_{{{id}}}');
                             var script  = document.getElementById('script_{{{id}}}');

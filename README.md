@@ -66,7 +66,7 @@ sassdown: {
 Type: `Array`<br/>
 Default: `null`
 
-*Optional*. Array of file paths. Will be included into the styleguide output. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and external file paths (eg. http:// or https://).
+*Optional*. Array of file paths. Will be included into the styleguide output. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and absolute file paths (eg. `http://`, `https://` or even `file://`).
 
 #### options.template
 Type: `String`<br/>

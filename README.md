@@ -66,7 +66,7 @@ sassdown: {
 Type: `Array`<br/>
 Default: `null`
 
-*Optional*. Array of file paths. Will be included into the styleguide output. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and external file paths (eg. http://).
+*Optional*. Array of file paths. Will be included into the styleguide output. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and absolute file paths (eg. `http://`, `https://` or even `file://`).
 
 #### options.template
 Type: `String`<br/>
@@ -195,12 +195,12 @@ Creates an alert box notification using the `.alert-` prefix. The following opti
 
 # Handlebars
 
-[Handlebars](http://handlebarsjs.com/) is a semantic templating syntax. Put simply, it allows you to output dynamic properties in HTML using `{{  }}` from a variety of data sources such as JSON.
+[Handlebars](http://handlebarsjs.com/) is a semantic templating syntax. Put simply, it allows you to output dynamic properties in HTML using `{{var}}` from a variety of data sources such as JSON.
 
 Sassdown uses Handlebars to output data from the [data objects](#data-objects) it creates. Your `.hbs` file specified in the `template` option may contain code that looks like this for example:
 
 ```html
-{{#each page.sections }}
+{{#each page.sections}}
     <div class="section">
         {{#if comment}}
             <div class="comment">{{{comment}}}</div>
@@ -215,7 +215,7 @@ Sassdown uses Handlebars to output data from the [data objects](#data-objects) i
             <div class="styles">{{{styles}}}</div>
         {{/if}}
     </div>
-{{/each }}
+{{/each}}
 ```
 
 ### Common partials
@@ -236,7 +236,7 @@ Sassdown uses the popular and well-supported [Highlight.js](http://highlightjs.o
 
 Two objects are parsed into the Handlebars template; `Page` and `Pages`. **Page** contains json data for the current page only; **Pages** is an array literal containing all Page objects in a nested node tree.
 
-Any property within these objects can be output by Handlebars using `{{ helpers }}`. You can iterate through objects using `{{#each}} ... {{/each}}`, for example.
+Any property within these objects can be output by Handlebars using `{{helpers}}`. You can iterate through objects using `{{#each}} ... {{/each}}`, for example.
 
 ## Page
 
@@ -321,3 +321,11 @@ Sassdown **does not** compile your source files. Assuming you are using SASS, an
 # Project Milestones
 
 *Current [milestones](https://github.com/nopr/sassdown/issues/milestones) for this project*
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request

@@ -103,7 +103,7 @@
             var list = headings[i].nextElementSibling;
             if ( list.innerHTML.match("/{{page.href}}") ) {
                 headings[i].classList.toggle('is-open');
-                list.className = list.className + " is-open";
+                list.classList.toggle('is-open');
             }
             headings[i].addEventListener('click', function () {
                 this.classList.toggle('is-open');

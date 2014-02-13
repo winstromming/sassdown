@@ -102,6 +102,7 @@
         for ( var i = 0; i < headings.length; i++ ){
             var list = headings[i].nextElementSibling;
             if ( list.innerHTML.match("/{{page.href}}") ) {
+                headings[i].classList.toggle('is-open');
                 list.className = list.className + " is-open";
             }
             headings[i].addEventListener('click', function () {

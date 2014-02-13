@@ -100,6 +100,10 @@
         };
         var headings = document.querySelectorAll('#nav .heading');
         for ( var i = 0; i < headings.length; i++ ){
+            var list = headings[i].nextElementSibling;
+            if ( list.innerHTML.match("/{{page.href}}") ) {
+                list.className = list.className + " is-open";
+            }
             headings[i].addEventListener('click', function () {
                 this.classList.toggle('is-open');
                 this.nextElementSibling.classList.toggle('is-open');

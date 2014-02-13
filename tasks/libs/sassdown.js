@@ -201,9 +201,7 @@ module.exports.getSections = function (file) {
 
 module.exports.formatting = function (content, styles) {
     // Create output object with unique id
-    var output = {
-        id: Math.random().toString(36).substr(2,5)
-    };
+    var output = {};
     //hljs.configure({useBR: true});
     // If we find code blocks
     if (content.match(/```/)) {

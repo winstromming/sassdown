@@ -101,7 +101,7 @@
         var headings = document.querySelectorAll('#nav .heading');
         for ( var i = 0; i < headings.length; i++ ){
             var list = headings[i].nextElementSibling;
-            if ( list.innerHTML.match("/{{page.href}}") ) {
+            if ( list.innerHTML.match('/{{page.href}}') ) {
                 headings[i].classList.toggle('is-open');
                 list.classList.toggle('is-open');
             }

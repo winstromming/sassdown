@@ -20,7 +20,7 @@ h1 { font-size: 25px; }
 h2 { font-size: 21px; }
 h3 { font-size: 17px; }
 h4 { font-size: 14px; }
-ul, ol { margin-left: 1em; list-style: outside; }
+ul, ol { margin-left: 1em; list-style-position: outside; }
 
 /* Layout */
 .gutter {

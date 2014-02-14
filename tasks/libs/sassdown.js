@@ -337,9 +337,11 @@ module.exports.writeOut = function (page) {
     // Generate asset string
     var localAssets = '';
     // Generate path to assets for this file
-    Sassdown.config.assets.forEach( function (asset) {
-        localAssets += Sassdown.include(asset, path.dirname(page.dest));
-    });
+    if (Sassdown.config.assets) {
+        Sassdown.config.assets.forEach( function (asset) {
+            localAssets += Sassdown.include(asset, path.dirname(page.dest));
+        });
+    }
     // Register two unique (local) partials
     Handlebars.registerPartial('root', localRoot);
     Handlebars.registerPartial('assets', localAssets);

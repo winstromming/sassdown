@@ -25,11 +25,15 @@ module.exports = function (grunt) {
                 template: null,
                 highlight: null,
                 excludeMissing: false,
+                dryRun: false,
                 commentStart: /\/\*/,
                 commentEnd: /\*\//
             }),
             files: this.files
         };
+        if (Sassdown.config.option.dryRun) {
+            Sassdown.config.option.excludeMissing = true;
+        }
 
         // Subtask: Init (expose module and grunt)
         Sassdown.init(grunt);
@@ -51,6 +55,15 @@ module.exports = function (grunt) {
 
         // Subtask: Trees
         Sassdown.tree();
+
+        if (Sassdown.config.option.dryRun) {
+            if (Sassdown.excluded.length) {
+                grunt.verbose.or.warn('Source files invalid');
+                return false;
+            }
+            grunt.verbose.or.ok('Source files validated');
+            return true;
+        }
 
         // Subtask: Indexing
         grunt.verbose.subhead('Write styleguide index file:');

@@ -110,6 +110,12 @@ Default: `false`
 
 *Optional*. When set to true, Sassdown will ignore any files that do not contain matching or valid comment blocks.
 
+#### options.dryRun
+Type: `Boolean`<br/>
+Default: `false`
+
+*Optional*. When set to true, Sassdown will not generate any files, and will exit with status `1` if any files do not contain matching or valid comment blocks.
+
 ### Usage
 
 You will need to use an [expanded files object](http://gruntjs.com/configuring-tasks#building-the-files-object-dynamically), but here is roughly the minimum configuration required.

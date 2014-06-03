@@ -98,8 +98,20 @@
                 iframes[i].height = iframes[i].contentWindow.document.body.scrollHeight;
             }
         };
+
         var headings = document.querySelectorAll('#nav .heading');
         for ( var i = 0; i < headings.length; i++ ){
+            var list = headings[i].nextElementSibling;
+            var links = list.querySelectorAll('a');
+
+            for ( var j = 0; j < links.length; j++ ){
+                if ( links[j].href.match('/{{page.href}}') ) {
+                    links[j].classList.toggle('is-active');
+                    links[j].parentNode.parentNode.classList.toggle('is-open');
+                    links[j].parentNode.parentNode.previousElementSibling.classList.toggle('is-open');
+                }
+            }
+
             headings[i].addEventListener('click', function () {
                 this.classList.toggle('is-open');
                 this.nextElementSibling.classList.toggle('is-open');

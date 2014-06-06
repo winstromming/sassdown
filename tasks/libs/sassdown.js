@@ -20,6 +20,8 @@ var hljs = require('highlight.js');
 var cssmin = require('cssmin');
 var markdown = require('marked');
 var Handlebars = require('handlebars');
+var AllHtmlEntities = require('html-entities').AllHtmlEntities;
+var entities = new AllHtmlEntities();
 
 // Quick utility functions
 // =======================
@@ -236,7 +238,7 @@ module.exports.matching = function () {
 
 module.exports.readme = function () {
     // Create file object
-    var file = {};
+    var file = {}, html = '';
     // Fill with data
     file.title = 'Styleguide';
     file.slug  = '_index';
@@ -246,9 +248,16 @@ module.exports.readme = function () {
     if (Sassdown.config.option.readme) {
         // Use the README file for content
         file.src = Sassdown.config.option.readme;
+        html = markdown(grunt.file.read(file.src));
+
+        // highlight code in README file
+        html = html.replace(/<pre><code>([^]*?)<\/code><\/pre>/mgi, function(a, b){
+            return '<pre class="hljs"><code>'+hljs.highlightAuto(entities.decode(b)).value+'</code></pre>';
+        });
         file.sections = [{
-            comment: markdown(grunt.file.read(file.src))
+            comment: html
         }];
+
     } else {
         // Don't fill with content
         file.src = file.dest;

@@ -143,8 +143,10 @@ ul, ol { margin-left: 1em; list-style-position: outside; }
 /* Code */
 .section .comment code {
   color: #3fbead;
-  font-family: Consolas, Monaco, 'Andale Mono', monospace;
-  font-size: 13px;
+}
+/* avoids conflict with highlight.js styles */
+.section .comment pre code{
+  color: inherit;
 }
 code,
 pre {

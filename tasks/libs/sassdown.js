@@ -212,11 +212,11 @@ module.exports.formatting = function (content, styles) {
         // Show result
         output.result  = content.split(/```/)[1];
         // Show markup
-        output.markup  = '<pre class="hljs"><code>'+hljs.highlight('html', content.split(/```/)[1].split(/```/)[0]).value+'</code></pre>';
+        output.markup  = '<pre class="hljs"><code>'+hljs.highlight('html', content.split(/```/)[1].split(/```/)[0].trim()).value+'</code></pre>';
         // Does styles consist of more than whitespace?
         if (unspace(styles).length > 0) {
             // Show styles
-            output.styles  = '<pre class="hljs"><code>'+hljs.highlight('scss', styles).value+'</code></pre>';
+            output.styles  = '<pre class="hljs"><code>'+hljs.highlight('scss', styles.trim()).value+'</code></pre>';
         }
     }
     // If we don't find code blocks

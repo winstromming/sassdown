@@ -29,19 +29,22 @@
                                             </li>
                                         {{/each}}
                                         </ul>
-                                    {{else}}
+                                    {{/if}}
+                                    {{#if isFile}}
                                         <a href="{{> root}}/{{href}}">{{title}}</a>
                                     {{/if}}
                                 </li>
                             {{/each}}
                             </ul>
-                        {{else}}
+                        {{/if}}
+                        {{#if isFile}}
                             <a href="{{> root}}/{{href}}">{{title}}</a>
                         {{/if}}
                     </li>
                 {{/each}}
                 </ul>
-            {{else}}
+            {{/if}}
+            {{#if isFile}}
                 <a href="{{> root}}/{{href}}">{{title}}</a>
             {{/if}}
         {{/each}}

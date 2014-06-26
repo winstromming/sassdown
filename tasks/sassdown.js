@@ -23,6 +23,7 @@ module.exports = function (grunt) {
                 assets: null,
                 readme: null,
                 template: null,
+                handlebarsHelpers: null,
                 highlight: null,
                 excludeMissing: false,
                 dryRun: false,
@@ -40,6 +41,7 @@ module.exports = function (grunt) {
 
         // Subtask: Scaffold, Template, Theme
         grunt.verbose.subhead('Compile the Handlebars template, theme and syntax highlighter:');
+        Sassdown.registerHandlebarsHelpers();
         Sassdown.scaffold();
         Sassdown.template();
         Sassdown.theme();

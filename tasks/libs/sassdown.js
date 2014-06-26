@@ -50,6 +50,18 @@ module.exports.init = function (_grunt) {
     Sassdown = this;
 };
 
+module.exports.registerHandlebarsHelpers = function () {
+    var helpers = Sassdown.getFileList(Sassdown.config.option.handlebarsHelpers);
+    helpers.forEach(function (helper) {
+        helper = path.resolve(__dirname, path.relative(__dirname, process.cwd()), helper);
+        if (fs.existsSync(helper)) {
+            helper = require(helper);
+            if (typeof helper.register === 'function') { helper.register(Handlebars); }
+            else if (typeof helper === 'function') { helper(Handlebars); }
+        }
+    });
+};
+
 module.exports.template = function () {
     // Check for existence of user defined template
     Sassdown.checkfor('template', datapath('template.hbs'));
@@ -86,16 +98,12 @@ module.exports.checkfor = function (requirement, defaults) {
     }
 };
 
-module.exports.assets = function () {
-    // Check if we added includes option
-    if (!Sassdown.config.option.assets) {
-        warning('User assets not specified. Styleguide will be unstyled!');
-    } else {
-        // Create empty array
-        var fileList = [];
-        // Expand through matches in options and include both
-        // internal and external files into the array
-        Sassdown.config.option.assets.forEach( function (asset) {
+module.exports.getFileList = function (assets) {
+    var fileList = [];
+    // Expand through matches in options and include both
+    // internal and external files into the array
+    if (assets && typeof assets.forEach === 'function') {
+        assets.forEach( function (asset) {
             grunt.file.expand(asset).forEach( function (file) {
                 fileList.push(file);
                 grunt.verbose.write(file+'...').ok();
@@ -105,8 +113,16 @@ module.exports.assets = function () {
                 grunt.verbose.write(asset+'...').ok();
             }
         });
-        // Insert as list of files as new assets object
-        Sassdown.config.assets = fileList;
+    }
+    return fileList;
+};
+
+module.exports.assets = function () {
+    // Check if we added includes option
+    if (!Sassdown.config.option.assets) {
+        warning('User assets not specified. Styleguide will be unstyled!');
+    } else {
+        Sassdown.config.assets = Sassdown.getFileList(Sassdown.config.option.assets);
     }
 };
 

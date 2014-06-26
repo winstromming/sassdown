@@ -292,11 +292,10 @@ module.exports.recurse = function (filepath) {
                     // Check whether this file should be included
                     if (Sassdown.excluded.indexOf(path.normalize(filepath+'/'+child)) === -1) {
                         // Run the recurse function again for this child
-                        // to determine whether it's a directory or file
-                        // while pushing to pages array of parent
-                        tree.pages.push(
-                            Sassdown.recurse(path.normalize(filepath+'/'+child))
-                        );
+                        // to determine whether it's a directory or file,
+                        // and if it is either, push it to pages array of its parent
+                        var childTree = Sassdown.recurse(path.normalize(filepath+'/'+child));
+                        if (childTree) { tree.pages.push(childTree); }
                     }
                 }
             });
@@ -314,11 +313,14 @@ module.exports.recurse = function (filepath) {
             // Loop through the Sassdown.pages
             Sassdown.pages.map( function (page) {
                 // Check for a match to filepath
-                if (path.normalize(filepath) === path.normalize(page.src)) { tree = page; }
+                if (path.normalize(filepath) === path.normalize(page.src)) {
+                    tree = page;
+                    tree.isFile = true;
+                }
             });
         }
-        // Return this tree node
-        return tree;
+        // Return this tree node if it is a valid directory or file
+        return tree.isDirectory || tree.isFile ? tree : false;
     }
 };
 
@@ -357,6 +359,6 @@ module.exports.writeOut = function (page) {
     // Write file with Grunt
     grunt.file.write(page.dest, Sassdown.config.template.html({
         'page': page,
-        'pages': Sassdown.config.tree.pages
+        'pages': Sassdown.config.tree && Sassdown.config.tree.pages || []
     }));
 };

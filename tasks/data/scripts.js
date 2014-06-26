@@ -20,4 +20,12 @@
         doc.write(content);
         doc.close();
     });
+
+    // Resize the results iframes to match their content height
+
+    window.onload = function() {
+        queryAll('iframe').forEach(function (iframe) {
+            iframe.height = iframe.contentWindow.document.body.scrollHeight;
+        });
+    };
 }(document));

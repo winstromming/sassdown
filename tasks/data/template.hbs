@@ -74,13 +74,6 @@
 </div>
 
     <script>
-        window.onload = function() {
-            var iframes = document.querySelectorAll('iframe');
-            for ( var i = 0; i < iframes.length; i++ ){
-                iframes[i].height = iframes[i].contentWindow.document.body.scrollHeight;
-            }
-        };
-
         var headings = document.querySelectorAll('#nav .heading');
         for ( var i = 0; i < headings.length; i++ ){
             var list = headings[i].nextElementSibling;

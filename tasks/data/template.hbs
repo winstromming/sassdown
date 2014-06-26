@@ -5,6 +5,7 @@
     <title>{{page.title}}</title>
 </head>
 <body>
+
 <div class="gutter">
 
     <div id="nav">
@@ -73,17 +74,17 @@
 
 </div>
 
-    <script class="result-template" type="text/html">
-      <!DOCTYPE html>
-      <html>
-          <head>{{> assets}}</head>
-          <body>[[body]]</body>
-      </html>
-    </script>
+<script class="result-template" type="text/html">
+  <!DOCTYPE html>
+  <html>
+      <head>{{> assets}}</head>
+      <body>[[body]]</body>
+  </html>
+</script>
 
-    {{> theme}}
-    {{> highlight}}
-    {{> scripts}}
+{{> theme}}
+{{> highlight}}
+{{> scripts}}
 
 </body>
 </html>

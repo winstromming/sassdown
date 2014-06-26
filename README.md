@@ -66,7 +66,7 @@ sassdown: {
 Type: `Array`<br/>
 Default: `null`
 
-*Optional*. Array of file paths. Will be included into the styleguide output. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and absolute file paths (eg. `http://`, `https://` or even `file://`).
+*Optional*. Array of file paths. Will be included into the styleguide output. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and absolute file paths (eg. `http://`, `https://`, `//` or even `file://`).
 
 #### options.template
 Type: `String`<br/>
@@ -97,6 +97,14 @@ Type: `String`<br/>
 Default: `github`
 
 *Optional*. Choice of syntax highlighting style. Defaults to `github`, but other available options are: `docco`, `monokai`, `solarized-light`, `solarized-dark` or `xcode`.
+
+#### options.scripts
+Type: `Array`<br/>
+Default: `null`
+
+*Optional*. Array of file paths. The scripts will be linked with script tags with src attributes. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and absolute file paths (eg. `http://`, `https://`, `//` or even `file://`).
+
+If this option is set the default scripts won't be included, but you can include them again by adding `node_modules/sassdown/tasks/data/scripts.js` to the file list, or by copying and modifying that file.
 
 #### options.commentStart
 Type: `RegExp`<br/>
@@ -141,7 +149,7 @@ sassdown: {
 },
 ```
 
-On larger projects you may need to include additional assets and customise the output with a user theme and template.
+On larger projects you may need to include additional assets and customise the output with a user theme, template and scripts.
 ```js
 sassdown: {
     styleguide: {
@@ -153,6 +161,7 @@ sassdown: {
             ],
             theme: 'src/styleguide/theme.css',
             template: 'src/styleguide/template.hbs',
+            scripts: ['src/styleguide/*.js'],
             readme: 'src/assets/sass/readme.md',
             highlight: 'monokai',
             excludeMissing: true

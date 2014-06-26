@@ -40,6 +40,7 @@ module.exports = function(grunt) {
                         'test/example/assets/js/*.js',
                     ],
                     readme: 'test/example/assets/sass/readme.md',
+                    //handlebarsHelpers: ['test/helpers/**/*.js'],
                     //theme: 'test/theme.css',
                     //template: 'test/template.hbs'
                     //highlight: 'github'

@@ -74,6 +74,12 @@ Default: `null`
 
 *Optional*. A path to a Handlebars template file. Will use default Sassdown template if left blank.
 
+#### options.handlebarsHelpers
+Type: `Array`<br/>
+Default: `null`
+
+*Optional*. Array of file paths. The [Handlebars helpers](http://handlebarsjs.com/#helpers) will be available to use in the template. Supports [globbing](http://gruntjs.com/configuring-tasks#globbing-patterns). Supports relative and absolute file paths (eg. `http://`, `https://` or even `file://`).
+
 #### options.theme
 Type: `String`<br/>
 Default: `null`
@@ -233,6 +239,32 @@ Sassdown also provides a series of Handlebars **partials**, which can be used to
 * `{{> assets}}`<br>Outputs a set of `<link />` or `<script>` tags that include assets specified in the Grunt task options.
  
 * `{{> theme}}`<br>Outputs the theme stylesheet, minified, into a `<style>` tag.
+
+### Handlebars helpers
+
+You can add more features to Handlebar templates by using [Helpers](http://handlebarsjs.com/#helpers).
+
+For example you could add a helper that capitalizes all text:
+
+    <big>{{uppercase shoutThis}}</big>
+    
+You load your helpers with the `handlebarsHelpers` option.
+
+    handlebarsHelpers: ['hb-helpers/**/*.js']
+
+The helper module must export a function that does the registration, or else it won't load.
+
+    module.exports = function(Handlebars) {
+        Handlebars.registerHelper('uppercase', function(input) {
+          return typeof input === 'string' ? input.toUpperCase() : input;
+        });
+    };
+    
+    // This also works
+    module.exports = {
+      register: function(Handlebars) {
+        ...
+    }
 
 # Highlight.js
 

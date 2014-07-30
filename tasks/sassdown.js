@@ -25,6 +25,7 @@ module.exports = function (grunt) {
                 template: null,
                 handlebarsHelpers: null,
                 highlight: null,
+                scripts: null,
                 excludeMissing: false,
                 dryRun: false,
                 commentStart: /\/\*/,
@@ -39,13 +40,14 @@ module.exports = function (grunt) {
         // Subtask: Init (expose module and grunt)
         Sassdown.init(grunt);
 
-        // Subtask: Scaffold, Template, Theme
-        grunt.verbose.subhead('Compile the Handlebars template, theme and syntax highlighter:');
+        // Subtask: Scaffold, Template, Theme, Scripts
+        grunt.verbose.subhead('Compile the Handlebars template, theme, syntax highlighter, and scripts:');
         Sassdown.registerHandlebarsHelpers();
         Sassdown.scaffold();
         Sassdown.template();
         Sassdown.theme();
         Sassdown.highlight();
+        Sassdown.scripts();
 
         // Subtask: Assets
         grunt.verbose.subhead('Read and create paths for included assets:');

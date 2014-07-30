@@ -5,6 +5,7 @@
     <title>{{page.title}}</title>
 </head>
 <body>
+
 <div class="gutter">
 
     <div id="nav">
@@ -58,28 +59,7 @@
                 {{/if}}
                 {{#if result}}
                     <div class="result">
-                        <iframe id="iframe{{@index}}" height="0" src="about:blank"></iframe>
-                        <script id="result{{@index}}" type="text/html">{{{result}}}</script>
-                        <script id="script{{@index}}">
-                            var iframe  = document.getElementById('iframe{{@index}}');
-                            var script  = document.getElementById('script{{@index}}');
-                            var result  = document.getElementById('result{{@index}}');
-                            var context = iframe.contentWindow.document;
-                                context.open();
-                                context.write('<!DOCTYPE html>');
-                                context.write('<'+'html>');
-                                context.write('    <'+'head>');
-                                context.write('        {{> assets}}');
-                                context.write('    <'+'/'+'head>');
-                                context.write('    <'+'body>');
-                                context.write(result.innerHTML);
-                                context.write('    <'+'/'+'body>');
-                                context.write('<'+'/'+'html>');
-                                context.close();
-                            iframe.removeAttribute('id')
-                            result.parentNode.removeChild(result);
-                            script.parentNode.removeChild(script);
-                        </script>
+                        <script class="result-placeholder" type="text/html">{{{result}}}</script>
                     </div>
                 {{/if}}
                 {{#if markup}}
@@ -94,36 +74,17 @@
 
 </div>
 
-    <script>
-        var iframes = document.getElementsByTagName('iframe');
-        for ( var i = 0; i < iframes.length; i++ ){
-            iframes[i].contentDocument.addEventListener('DOMContentLoaded', function () {
-                this.height = this.contentDocument.body.scrollHeight;
-            }.bind(iframes[i]), false);
-        }
+<script class="result-template" type="text/html">
+  <!DOCTYPE html>
+  <html>
+      <head>{{> assets}}</head>
+      <body>[[body]]</body>
+  </html>
+</script>
 
-        var headings = document.querySelectorAll('#nav .heading');
-        for ( var i = 0; i < headings.length; i++ ){
-            var list = headings[i].nextElementSibling;
-            var links = list.querySelectorAll('a');
-
-            for ( var j = 0; j < links.length; j++ ){
-                if ( links[j].href.match('/{{page.href}}') ) {
-                    links[j].classList.toggle('is-active');
-                    links[j].parentNode.parentNode.classList.toggle('is-open');
-                    links[j].parentNode.parentNode.previousElementSibling.classList.toggle('is-open');
-                }
-            }
-
-            headings[i].addEventListener('click', function () {
-                this.classList.toggle('is-open');
-                this.nextElementSibling.classList.toggle('is-open');
-            });
-        }
-    </script>
-
-    {{> theme}}
-    {{> highlight}}
+{{> theme}}
+{{> highlight}}
+{{> scripts}}
 
 </body>
 </html>

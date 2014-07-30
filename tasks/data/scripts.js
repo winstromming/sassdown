@@ -23,11 +23,13 @@
 
     // Resize the results iframes to match their content height
 
-    window.onload = function() {
-        queryAll('iframe').forEach(function (iframe) {
-            iframe.height = iframe.contentWindow.document.body.scrollHeight;
-        });
-    };
+    var iframes = document.getElementsByTagName('iframe');
+    
+    for ( var i = 0; i < iframes.length; i++ ){
+        iframes[i].contentDocument.addEventListener('DOMContentLoaded', function () {
+            this.height = this.contentDocument.body.scrollHeight;
+        }.bind(iframes[i]), false);
+    }
 
     // Toggling navigation folders
 

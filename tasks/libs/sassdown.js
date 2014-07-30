@@ -43,6 +43,11 @@ function normalize (comment) {
     return comment;
 }
 
+// Constants
+// =========================
+
+var REGEXP_PATH_HAS_SCHEME = /^((https?|file):)?\/\//;
+
 // Exported Sassdown methods
 // =========================
 module.exports.init = function (_grunt) {
@@ -90,6 +95,34 @@ module.exports.highlight = function () {
     Handlebars.registerPartial('highlight', '<style>'+cssmin(minify)+'</style>');
 };
 
+module.exports.scripts = function () {
+    // Check for existence of user defined scripts
+    Sassdown.checkfor('scripts', [datapath('scripts.js')]);
+    var fileList = Sassdown.getFileList(Sassdown.config.option.scripts);
+    // Process each script to get the partial to use
+    var partial = fileList.map(function (file) {
+        var scriptSrc;
+        if (file.match(REGEXP_PATH_HAS_SCHEME)) {
+            // The file is hosted elsewhere so just link to it
+            scriptSrc = file;
+        } else {
+            // Get the filename and paths
+            var fileName = file.split('/').pop();
+            var src = path.resolve(process.cwd(), file);
+            var dest = path.resolve(Sassdown.config.root, fileName);
+            if (grunt.file.exists(src)) {
+                // Copy the script file to the styleguide root dir
+                grunt.file.write(dest, grunt.file.read(src));
+                // Link to the copied script relative to the styleguide root
+                scriptSrc = '{{> root}}/' + fileName;
+            }
+        }
+        return scriptSrc ? '<script src="'+scriptSrc+'"></script>\n' : '';
+    }).join('');
+    // Register the partial
+    Handlebars.registerPartial('scripts', partial);
+};
+
 module.exports.checkfor = function (requirement, defaults) {
     // If the requirement isn't met
     if (!Sassdown.config.option[requirement]) {
@@ -108,7 +141,7 @@ module.exports.getFileList = function (assets) {
                 fileList.push(file);
                 grunt.verbose.write(file+'...').ok();
             });
-            if (asset.match('://')) {
+            if (asset.match(REGEXP_PATH_HAS_SCHEME)) {
                 fileList.push(asset);
                 grunt.verbose.write(asset+'...').ok();
             }
@@ -130,7 +163,7 @@ module.exports.include = function (file, dest) {
     // Output
     var output;
     // If this file is not external, build a local relative path
-    if (!file.match('://')) { file = path.relative(dest, file); }
+    if (!file.match(REGEXP_PATH_HAS_SCHEME)) { file = path.relative(dest, file); }
     // Preserve correct path escaping for <iframe> embedded url paths
     if (file.match(/\\/)) { file = file.replace(/\\/g, '/'); }
     // Write <link> or <script> tag to include it

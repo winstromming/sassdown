@@ -367,7 +367,7 @@ Sassdown **does not** compile your source files. Assuming you are using SASS, an
 
 # Project Milestones
 
-*Current [milestones](https://github.com/nopr/sassdown/issues/milestones) for this project*
+*Current [milestones](https://github.com/nopr/sassdown/milestones) for this project*
 
 ## Contributing
 

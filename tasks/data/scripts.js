@@ -6,8 +6,11 @@
     function generateId () { return (Math.random()+1).toString(36).substring(2); }
 
     // Insert the results
-
-    var resultTemplate = query('.result-template').innerHTML.replace('\\/script', '/script');
+    var resultTemplate = query('.result-template').innerHTML;
+    while(resultTemplate.indexOf('\\/script') !== -1){
+        // .replace seems to only replace 1 occurrence of '\/script' at a time, even if using regex with the 'g' flag
+        resultTemplate = resultTemplate.replace('\\/script', '/script');
+    }
 
     queryAll('.result-placeholder').forEach(function (placeholder) {
         var parent = placeholder.parentNode;
@@ -24,7 +27,7 @@
         doc.write(content);
         doc.close();
     });
-    
+
     // Toggling navigation folders
 
     queryAll('#nav .heading').forEach(function (heading) {

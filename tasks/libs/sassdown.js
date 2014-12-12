@@ -290,11 +290,9 @@ module.exports.readme = function () {
     var file = {}, html = '';
     // Fill with data
     file.slug  = '_index';
-    file.href  = 'index.html';
-    // Have a custom title?
-    if (Sassdown.config.option.title) { file.title = Sassdown.config.option.title; }
-    else { file.title = 'Styleguide'; }
-
+    file.href  = 'index.html';    
+	// Have a custom title?
+    file.title = Sassdown.config.option.title || 'Styleguide';	
     file.dest  = Sassdown.config.root + file.href;
     // Has a README file been specified?
     if (Sassdown.config.option.readme) {

@@ -1,6 +1,6 @@
 # sassdown
 
-> Grunt plugin for building living styleguides with Handlebars from Markdown comments in CSS, SASS and LESS files.
+> Grunt plugin for building living styleguides with Handlebars from Markdown comments in CSS, Sass and LESS files.
 
 **Note: *This plugin is in semi-active development!* So expect it to be a little rough around the edges. If you have any questions, issues or suggestions get in touch. Currently on version `0.2.7`.**
 
@@ -16,7 +16,7 @@
     - [Page](#page)
     - [Pages](#pages)
 7. [Template](#template)
-8. [SASS](#sass)
+8. [Sass](#sass)
 
 ### What's new in version 0.2.7?
 
@@ -181,7 +181,7 @@ sassdown: {
 
 # Markdown
 
-Sassdown uses [Markdown](https://github.com/chjj/marked) to parse any block comments in your SASS files. From these, it generates the text content in the styleguide. Any recognised code blocks will be rendered as HTML/SCSS source-result pairs.
+Sassdown uses [Markdown](https://github.com/chjj/marked) to parse any block comments in your Sass files. From these, it generates the text content in the styleguide. Any recognised code blocks will be rendered as HTML/SCSS source-result pairs.
 
 ## Structure
 
@@ -361,7 +361,7 @@ Should you wish to create a new Sassdown template, you may wish to use the [exis
 
 # Sass
 
-It should be noted that, despite the name, Sassdown does not explicitly read only SASS files. It works just fine with .sass, .less, .css or even .txt files.
+It should be noted that, despite the name, Sassdown does not explicitly read only Sass files. It works just fine with .sass, .less, .css or even .txt files.
 
 Sassdown **does not** compile your source files. Assuming you are using SASS, and since you're using Grunt, I would recommend the [grunt-contrib-compass](https://github.com/gruntjs/grunt-contrib-compass) plugin for this task. However you may also want to look at [grunt-contrib-stylus](https://github.com/gruntjs/grunt-contrib-stylus).
 

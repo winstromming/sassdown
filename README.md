@@ -185,7 +185,7 @@ Sassdown uses [Markdown](https://github.com/chjj/marked) to parse any block comm
 
 ## Structure
 
-You may use any Markdown-compatible [heading syntax](https://github.com/nopr/sassdown/issues/7) you like. You may use any common style of [block-comment syntax](https://github.com/nopr/sassdown/issues/12#issuecomment-28219982) you like. Code blocks may be fenced or indented (four spaces). Below are several examples; each will be correctly parsed by Sassdown into identical output.
+You may use any Markdown-compatible [heading syntax](https://github.com/nopr/sassdown/issues/7) you like. You may use any common style of [block-comment syntax](https://github.com/nopr/sassdown/issues/12#issuecomment-28219982) you like. Code blocks may be fenced or indented (four spaces or one tab character). Below are several examples; each will be correctly parsed by Sassdown into identical output.
 
 ### Example .scss file
 

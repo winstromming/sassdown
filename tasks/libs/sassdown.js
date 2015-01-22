@@ -174,6 +174,12 @@ module.exports.include = function (file, dest) {
 };
 
 module.exports.scaffold = function () {
+    // Check if files has resolved to anything
+    if (!Sassdown.config.files.length) {
+        // Fail, because too many things break without a resolved root
+        grunt.fail.warn('No files found to process.');
+    }
+
     // Define a path to destination root
     Sassdown.config.root = Sassdown.config.files[0].orig.dest;
     // Create the destination directory

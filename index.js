@@ -19,12 +19,8 @@ function task(grunt) {
   grunt.registerMultiTask('sassdown', function () {
     
     var self = module.exports
-    var options = this.options()
     
-    for (var property in options) {
-      self.set(property, options[property])
-    }
-    
+    self.set(this.options())
     self.set('src', this.data['src'])
     self.set('dest', this.data['dest'])
     
@@ -39,5 +35,11 @@ module.exports.get = function (property) {
   return this.value[property]
 }
 module.exports.set = function (property, value) {
-  this.value[property] = value
+  if (typeof property === 'object') {
+    for (value in property) {
+      this.value[value] = property[value]
+    }
+  } else {
+    this.value[property] = value
+  }
 }

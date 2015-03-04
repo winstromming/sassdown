@@ -7,6 +7,10 @@
     "email": "jay@nopr.co",
     "url": "http://nopr.github.io"
   },
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -R spec ./tests/test.*.js"
+  },
   "homepage": "http://nopr.github.io/sassdown",
   "repository": {
     "type": "git",

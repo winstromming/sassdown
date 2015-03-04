@@ -2,8 +2,8 @@
 
   sassdown | github.com/nopr/sassdown
   -----------------------------------
-  http://www.opensource.org/licenses/mit-license.php/
-  Author: Jesper Hills (jay@nopr.co)
+  http://creativecommons.org/licenses/by-sa/3.0/deed.en_US
+  Jesper Hills (jay@nopr.co)
 
 */
 module.exports = function (caller) {

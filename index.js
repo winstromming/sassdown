@@ -8,7 +8,7 @@
 */
 module.exports = function (caller) {
   if (caller === 'stream') {
-    return module.exports.library('stream')
+    return module.exports.build('stream')
   }
   if (caller.package.name === 'grunt') {
     return task.call(this, caller)
@@ -24,7 +24,7 @@ function task(grunt) {
     self.set('src', this.data['src'])
     self.set('dest', this.data['dest'])
     
-    self.library('directory')
+    self.build('directory')
     self.output()
     
   })

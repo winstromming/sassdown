@@ -20,9 +20,9 @@ function task(grunt) {
     
     var self = module.exports
     
-    self.set(this.options())
     self.set('src', this.data['src'])
     self.set('dest', this.data['dest'])
+    self.set('options', this.options())
     
     self.build('directory')
     self.output()
@@ -44,6 +44,7 @@ module.exports.set = function (property, value) {
   }
 }
 
+module.exports.assets = require('./lib/module/assets')
 module.exports.build = require('./lib/module/build')
 module.exports.files = require('./lib/module/files')
 module.exports.output = require('./lib/module/output')

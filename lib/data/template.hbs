@@ -1,14 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
   <title>{{ this.title }}</title>
 </head>
 <body>
   <div>{{ this.path }}</div>
-  {{#each sections }}
-    <div>{{{ comment }}}</div>
-    <div>{{{ result }}}</div>
-    <div>{{{ markup }}}</div>
+
+  {{#each sections}}
+    <div class="section">
+      {{#if comment}}
+        <div class="comment">{{{comment}}}</div>
+      {{/if}}
+      {{#if result}}
+        <div class="result">
+          <script type="text/html">{{{result}}}</script>
+        </div>
+      {{/if}}
+      {{#if markup}}
+        <div class="markup">{{{markup}}}</div>
+      {{/if}}
+      {{#if styles}}
+        <div class="styles">{{{styles}}}</div>
+      {{/if}}
+    </div>
   {{/each}}
+
 </body>
 </html>

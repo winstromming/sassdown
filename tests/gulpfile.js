@@ -1,7 +1,12 @@
 var gulp = require('gulp')
 var sassdown = require('../index')
 
-sassdown.set('template', '../lib/data/template.hbs')
+var options = {}
+
+sassdown.set('options', {
+  template: '../lib/data/template.hbs',
+  assets: ['./data/assets/foo.css', './data/assets/foo.js']
+});
 
 gulp.task('sassdown', function() {
   return gulp.src('./data/scss/*')

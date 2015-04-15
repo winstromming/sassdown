@@ -1,10 +1,48 @@
 /*
- * # Heading
- * Paragraph to describe something.
- */
+
+# One
+
+```
+<code>one</code>
+```
+
+*/
 code {
 
   font-family: 'Courier New';
   font-color: blue;
 
 }
+
+/*
+
+## two
+
+```
+<code>two</code>
+```
+
+*/
+code.two { color: red; }
+
+/*
+
+## three
+
+```
+<code>three</code>
+```
+
+*/
+code.three { color: orange; }
+
+/*
+
+## four
+
+```
+<code>four</code>
+```
+
+*/
+code.four { color: yellow; }

@@ -9,7 +9,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha -R spec ./tests/test.*.js"
+    "test": "./node_modules/.bin/mocha -R spec ./tests/test.*.js",
+    "gulp": "./node_modules/.bin/gulp --gulpfile ./tests/gulpfile.js",
+    "grunt": "./node_modules/.bin/grunt --base ./ --gruntfile ./tests/gruntfile.js",
+    "clean": "rm -rf ./tests/output"
   },
   "homepage": "http://nopr.github.io/sassdown",
   "repository": {

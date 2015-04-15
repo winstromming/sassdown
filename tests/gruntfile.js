@@ -4,6 +4,9 @@ module.exports = function(grunt) {
   
   grunt.initConfig({
     sassdown: {
+      options: {
+        template: './lib/data/template.hbs'
+      },
       files: {
         src: './tests/data/scss/*',
         dest: './tests/output'

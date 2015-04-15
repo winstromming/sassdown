@@ -43,3 +43,8 @@ module.exports.set = function (property, value) {
     this.value[property] = value
   }
 }
+
+module.exports.build = require('./lib/module/build')
+module.exports.files = require('./lib/module/files')
+module.exports.output = require('./lib/module/output')
+module.exports.format = require('./lib/module/format')

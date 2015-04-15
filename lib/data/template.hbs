@@ -4,6 +4,11 @@
   <title></title>
 </head>
 <body>
-  {{ this.path }}
+  <div>{{ this.path }}</div>
+  {{#each sections }}
+    <div>{{{ comment }}}</div>
+    <div>{{{ result }}}</div>
+    <div>{{{ markup }}}</div>
+  {{/each}}
 </body>
 </html>

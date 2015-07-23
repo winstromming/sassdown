@@ -3,7 +3,6 @@
 > Generate living, modular styleguides with Handlebars from Markdown comments in CSS, SASS and LESS files.
 
 **Note: feature/1.0.0 is not production-ready**
-```
 
 ## Getting started
 

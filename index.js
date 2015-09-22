@@ -17,16 +17,16 @@ module.exports = function (caller) {
 
 function task(grunt) {
   grunt.registerMultiTask('sassdown', function () {
-    
+
     var self = module.exports
-    
+
     self.set('src', this.data['src'])
     self.set('dest', this.data['dest'])
     self.set('options', this.options())
-    
+
     self.build('directory')
     self.output()
-    
+
   })
 }
 

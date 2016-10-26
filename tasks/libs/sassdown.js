@@ -229,7 +229,7 @@ module.exports.files = function () {
 module.exports.getData = function (file) {
     return {
         title: null,
-        slug: path.basename(file.src, path.extname(file.src[0])),
+        slug: path.basename(file.src[0], path.extname(file.src[0])),
         href: path.relative(Sassdown.config.root, file.dest.replace(path.extname(file.src[0]), '.html')),
         dest: file.dest.replace(path.extname(file.src[0]), '.html'),
         src: file.src[0]
@@ -296,9 +296,9 @@ module.exports.readme = function () {
     var file = {}, html = '';
     // Fill with data
     file.slug  = '_index';
-    file.href  = 'index.html';    
+    file.href  = 'index.html';
 	// Have a custom title?
-    file.title = Sassdown.config.option.title || 'Styleguide';	
+    file.title = Sassdown.config.option.title || 'Styleguide';
     file.dest  = Sassdown.config.root + file.href;
     // Has a README file been specified?
     if (Sassdown.config.option.readme) {
